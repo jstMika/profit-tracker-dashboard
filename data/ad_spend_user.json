@@ -1,0 +1,32 @@
+{
+  "entries": {
+    "2026-05-27": {
+      "saved_at": "2026-05-27T23:17:09.868Z",
+      "source": "dashboard",
+      "campaigns": [
+        {
+          "name": "ABO Testing Schieferherzen",
+          "group": "Schieferherzen",
+          "spend": 32.3
+        },
+        {
+          "name": "ABO Testing Weingläser",
+          "group": "Weingläser",
+          "spend": 47.99
+        }
+      ]
+    }
+  },
+  "campaigns": [
+    {
+      "name": "ABO Testing Schieferherzen",
+      "group": "Schieferherzen",
+      "added_at": "2026-05-27T23:17:09.868Z"
+    },
+    {
+      "name": "ABO Testing Weingläser",
+      "group": "Weingläser",
+      "added_at": "2026-05-27T23:17:09.868Z"
+    }
+  ]
+}
