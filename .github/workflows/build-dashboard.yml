@@ -1,0 +1,114 @@
+name: Build Dashboard
+
+on:
+  schedule:
+    # Daily at 04:00 UTC ≈ 06:00 Europe/Berlin (winter)/05:00 (summer).
+    # Pulls Shopify for the last 14 days each run; idempotent.
+    - cron: '0 4 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'data/**'
+      - 'scripts/**'
+      - 'config.json'
+      - 'dashboard_template.html'
+      - '.github/workflows/build-dashboard.yml'
+  workflow_dispatch:
+
+# Allow the workflow to write back to the repo
+permissions:
+  contents: write
+
+# Avoid concurrent runs racing on the same commit
+concurrency:
+  group: build-dashboard-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install StatiCrypt
+        run: npm install -g staticrypt
+
+      - name: Pull Shopify orders (last 14 days)
+        env:
+          SHOPIFY_SHOP: ${{ vars.SHOPIFY_SHOP }}
+          SHOPIFY_TOKEN: ${{ secrets.SHOPIFY_TOKEN }}
+        run: |
+          set -e
+          mkdir -p data
+          for offset in $(seq 1 14); do
+            d=$(date -u -d "$offset days ago" +%Y-%m-%d)
+            echo "::group::Pull $d"
+            python3 scripts/pull_shopify.py --date "$d" --out-dir data/ || echo "(skip $d)"
+            echo "::endgroup::"
+          done
+
+      - name: Build dashboard_data.json
+        run: python3 scripts/build_dashboard_data.py --root .
+
+      - name: Regenerate dashboard HTML
+        run: python3 scripts/regen_dashboard.py
+
+      - name: Inject deploy-time placeholders
+        env:
+          GITHUB_USERNAME: ${{ github.repository_owner }}
+          GITHUB_REPO: ${{ github.event.repository.name }}
+          DASHBOARD_PAT: ${{ secrets.DASHBOARD_PAT }}
+        run: |
+          python3 - <<'PY'
+          import os, pathlib
+          p = pathlib.Path('dashboard.html')
+          t = p.read_text(encoding='utf-8')
+          t = t.replace('__WRITE_OWNER__', os.environ['GITHUB_USERNAME'])
+          t = t.replace('__WRITE_REPO__',  os.environ['GITHUB_REPO'])
+          t = t.replace('__WRITE_TOKEN__', os.environ['DASHBOARD_PAT'])
+          p.write_text(t, encoding='utf-8')
+          PY
+
+      - name: Encrypt with StatiCrypt
+        env:
+          DASHBOARD_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
+        run: |
+          mkdir -p encrypted
+          staticrypt dashboard.html -p "$DASHBOARD_PASSWORD" --short -d encrypted/ \
+            --template-color-primary "#2563eb" \
+            --template-color-secondary "#1e293b" \
+            --template-title "Profit Tracker" \
+            --template-instructions "Bitte Passwort eingeben." \
+            --template-button "Anmelden" \
+            --template-placeholder "Passwort" \
+            --template-error "Falsches Passwort"
+          cp encrypted/dashboard.html index.html
+          touch .nojekyll
+
+      - name: Commit and push if changed
+        run: |
+          git config user.email "profit-tracker@github-actions"
+          git config user.name "Profit Tracker Bot"
+          # Never commit the un-encrypted dashboard or the staging dir or pulled Shopify cache
+          git rm --cached --ignore-unmatch dashboard.html 2>/dev/null || true
+          rm -f dashboard.html
+          rm -rf encrypted/
+          git add index.html .nojekyll dashboard_data.json data/shopify_orders_*.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Auto-build $(date -u +%FT%TZ)"
+            git push
+          fi

@@ -1,0 +1,21 @@
+{
+  "shop_subdomain": "4b841b",
+  "ust_factor": 1.19,
+  "tz": "Europe/Berlin",
+  "product_groups": [
+    {"substring": "Weinglas", "name": "Weingläser"},
+    {"substring": "Schiefer", "name": "Schieferherzen"},
+    {"substring": "Aufsteller", "name": "Schieferherzen"},
+    {"substring": "Geschenkbeutel", "name": "Schieferherzen"}
+  ],
+  "default_group": "Sonstiges",
+  "active_campaigns": [
+    {"name": "ABO Testing Schieferherzen", "group": "Schieferherzen"},
+    {"name": "ABO Testing Weingläser", "group": "Weingläser"}
+  ],
+  "drive": {
+    "folder_id": "1byzQc01INMOu8cz7m9PwUChn_mmLkvFk",
+    "master_file_id": "1pV5XchwHwo2TGMbbunn5MdR9g9PtWmwJ"
+  },
+  "printlabs_url": "https://betapi.print-labs.de/store/orders/"
+}

@@ -1,0 +1,11 @@
+.github_secrets.sh
+.cloudflare_secrets.sh
+.node_tools/
+dashboard.html
+encrypted/
+.staticrypt.json
+master.xlsx
+master_*.xlsx
+logs/
+__pycache__/
+*.pyc

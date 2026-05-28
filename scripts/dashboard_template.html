@@ -1,0 +1,1446 @@
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #1a1a1a; background: #f7f6f1; min-height: 100vh; }
+  .pt-wrap { padding: 1rem 1.25rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .pt-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 0.5rem; flex-wrap: wrap; }
+  .pt-title { font-size: 20px; font-weight: 600; margin: 0; }
+  .pt-meta { font-size: 12px; color: #666; }
+  .pt-sub { font-size: 13px; color: #666; margin: 0 0 1rem; }
+
+  /* Range picker */
+  .pt-range { background: #fff; border: 0.5px solid rgba(0,0,0,0.1); border-radius: 10px; padding: 0.6rem 0.75rem; margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .pt-range-btn { font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 6px; border: 0.5px solid rgba(0,0,0,0.1); background: #f6f5ef; color: #333; cursor: pointer; transition: all 0.15s; }
+  .pt-range-btn:hover { background: #ebe9df; }
+  .pt-range-btn.active { background: #1a7a3e; color: #fff; border-color: #1a7a3e; }
+  .pt-range-input { display: none; font: inherit; font-size: 13px; padding: 5px 10px; border-radius: 5px; border: 0.5px solid rgba(0,0,0,0.15); background: #fff; cursor: pointer; min-width: 200px; margin-left: 6px; }
+  .pt-range-input.show { display: inline-block; }
+  .pt-range-label { font-size: 12px; color: #888; margin-left: auto; }
+  /* flatpickr theme overrides — match dashboard accent */
+  .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange,
+  .flatpickr-day.selected.inRange, .flatpickr-day.startRange.inRange, .flatpickr-day.endRange.inRange,
+  .flatpickr-day.selected:focus, .flatpickr-day.startRange:focus, .flatpickr-day.endRange:focus,
+  .flatpickr-day.selected:hover, .flatpickr-day.startRange:hover, .flatpickr-day.endRange:hover,
+  .flatpickr-day.selected.prevMonthDay, .flatpickr-day.startRange.prevMonthDay, .flatpickr-day.endRange.prevMonthDay,
+  .flatpickr-day.selected.nextMonthDay, .flatpickr-day.startRange.nextMonthDay, .flatpickr-day.endRange.nextMonthDay {
+    background: #1a7a3e; border-color: #1a7a3e; color: #fff;
+  }
+  .flatpickr-day.inRange, .flatpickr-day.inRange:hover { background: #d5ebde; border-color: #d5ebde; box-shadow: -5px 0 0 #d5ebde, 5px 0 0 #d5ebde; }
+  .flatpickr-day.today { border-color: #1a7a3e; }
+  .flatpickr-day.today:hover { background: #1a7a3e; color: #fff; }
+  /* Spend-Annotation: kleine Zahl unter dem Tag — overrides flatpickr defaults */
+  .flatpickr-day { height: 48px !important; line-height: 30px !important; position: relative !important; padding-bottom: 12px; }
+  .pt-fp-spend { display: block; position: absolute; bottom: 3px; left: 0; right: 0; text-align: center; font-size: 9px; font-weight: 600; line-height: 1; color: #1a7a3e; pointer-events: none; }
+  .flatpickr-day.selected .pt-fp-spend, .flatpickr-day.startRange .pt-fp-spend, .flatpickr-day.endRange .pt-fp-spend, .flatpickr-day.inRange .pt-fp-spend, .flatpickr-day.today:hover .pt-fp-spend { color: #fff; }
+  .pt-fp-marked { font-weight: 600; }
+
+  /* KPIs */
+  .pt-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+  .pt-card { background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: 10px; padding: 0.85rem 1rem; position: relative; }
+  .pt-card-label { font-size: 11px; color: #777; margin: 0 0 4px; text-transform: uppercase; letter-spacing: 0.04em; display: flex; align-items: center; gap: 4px; }
+  .pt-card-value { font-size: 22px; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+  .pt-card-sub { font-size: 11px; color: #888; margin: 4px 0 0; }
+  .pt-card-delta { font-size: 12px; margin: 4px 0 0; font-weight: 500; }
+  .pt-positive { color: #1a7a3e; }
+  .pt-negative { color: #b42318; }
+  .pt-neutral { color: #888; }
+  .pt-info { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #ddd; color: #666; font-size: 9px; line-height: 12px; text-align: center; font-weight: 600; }
+  .pt-card-hover { cursor: help; }
+  .pt-card-hover:hover { background: #fbfaf5; }
+  .pt-tip { display: none; position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #1a1a1a; color: #fff; border-radius: 8px; padding: 0.55rem 0.7rem; z-index: 20; min-width: 220px; font-size: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.22); line-height: 1.4; }
+  .pt-tip::before { content: ""; position: absolute; top: -5px; left: 18px; width: 10px; height: 10px; background: #1a1a1a; transform: rotate(45deg); }
+  .pt-card-hover:hover .pt-tip, .pt-card-hover.pt-tip-open .pt-tip { display: block; }
+  .pt-tip-row { display: flex; justify-content: space-between; gap: 12px; padding: 3px 0; }
+  .pt-tip-row.total { border-top: 1px solid #444; margin-top: 4px; padding-top: 6px; font-weight: 600; }
+  .pt-tip-name { color: #d8d6d0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+  .pt-tip-val { color: #fff; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .pt-tip-empty { color: #aaa; padding: 4px 0; text-align: center; }
+  .pt-tip-sub { color: #aaa; font-size: 10px; margin-top: 4px; }
+
+  /* Ad spend entry form */
+  .pt-entry { background: #fff; border: 0.5px solid rgba(0,0,0,0.1); border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 1.5rem; }
+  .pt-entry-head { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+  .pt-entry-head-title { font-size: 13px; font-weight: 600; color: #444; text-transform: uppercase; letter-spacing: 0.04em; flex: 1; }
+  .pt-entry-toggle { font-size: 18px; color: #888; transition: transform 0.2s; }
+  .pt-entry.open .pt-entry-toggle { transform: rotate(45deg); }
+  .pt-entry-body { display: none; margin-top: 0.8rem; padding-top: 0.8rem; border-top: 0.5px solid rgba(0,0,0,0.06); }
+  .pt-entry.open .pt-entry-body { display: block; }
+  .pt-entry-row { display: grid; grid-template-columns: 1fr 130px; gap: 8px; align-items: center; margin-bottom: 6px; }
+  .pt-entry-row label { font-size: 13px; color: #444; display: flex; align-items: center; gap: 6px; }
+  .pt-entry input[type="date"], .pt-entry input[type="text"], .pt-entry input[type="number"], .pt-entry .pt-entry-date-alt { font: inherit; font-size: 13px; padding: 6px 8px; border: 0.5px solid rgba(0,0,0,0.18); border-radius: 6px; width: 100%; background: #fff; }
+  .pt-entry input[type="text"][readonly], .pt-entry .pt-entry-date-alt { cursor: pointer; }
+  .pt-entry input[type="number"] { text-align: right; font-variant-numeric: tabular-nums; }
+  .pt-entry-actions { display: flex; gap: 8px; align-items: center; margin-top: 10px; flex-wrap: wrap; }
+  .pt-btn { font: inherit; font-size: 13px; padding: 7px 14px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; }
+  .pt-btn-primary { background: #1a7a3e; color: #fff; }
+  .pt-btn-primary:hover { background: #14622f; }
+  .pt-btn-primary:disabled { background: #9bbfa9; cursor: not-allowed; }
+  .pt-btn-ghost { background: transparent; color: #666; border: 0.5px solid rgba(0,0,0,0.15); }
+  .pt-entry-status { font-size: 12px; margin-left: auto; }
+  .pt-entry-status.ok { color: #1a7a3e; }
+  .pt-entry-status.err { color: #b42318; }
+  .pt-entry-hint { font-size: 11px; color: #888; margin-top: 8px; line-height: 1.5; }
+  /* Add new campaign */
+  .pt-entry-addcamp { margin-top: 6px; }
+  .pt-entry-addcamp-toggle { font-size: 12px; color: #1a7a3e; cursor: pointer; user-select: none; padding: 4px 0; display: inline-block; font-weight: 500; }
+  .pt-entry-addcamp-toggle:hover { text-decoration: underline; }
+  .pt-entry-addcamp-form { display: none; gap: 6px; margin-top: 6px; padding: 8px 10px; background: #fafaf5; border: 0.5px dashed rgba(0,0,0,0.15); border-radius: 6px; align-items: center; flex-wrap: wrap; }
+  .pt-entry-addcamp.open .pt-entry-addcamp-form { display: flex; }
+  .pt-entry-addcamp.open .pt-entry-addcamp-toggle { color: #888; }
+  .pt-entry-addcamp-form input[type="text"], .pt-entry-addcamp-form select { font: inherit; font-size: 13px; padding: 5px 8px; border: 0.5px solid rgba(0,0,0,0.15); border-radius: 5px; background: #fff; }
+  .pt-entry-addcamp-form input[type="text"] { flex: 1; min-width: 160px; }
+  .pt-entry-addcamp-form .pt-btn { padding: 5px 10px; font-size: 12px; }
+  .pt-entry-row-meta { font-size: 9px; color: #999; margin-left: 4px; font-weight: 400; text-transform: none; letter-spacing: 0; }
+  .pt-entry-saved { margin-bottom: 14px; font-size: 12px; color: #666; }
+  .pt-entry-saved-title { font-size: 12px; font-weight: 600; margin-bottom: 6px; color: #444; }
+  .pt-entry-saved-empty { font-size: 12px; color: #888; margin-bottom: 14px; padding: 8px 10px; background: #faf9f3; border-radius: 6px; }
+  .pt-entry-saved-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 6px; }
+  .pt-entry-saved-cell { display: flex; flex-direction: column; align-items: flex-start; padding: 6px 9px; border: 0.5px solid #cfe3d6; border-radius: 6px; background: #f0f8f3; cursor: pointer; font: inherit; text-align: left; transition: background 0.12s; }
+  .pt-entry-saved-cell:hover { background: #e2f1e8; border-color: #aed3bd; }
+  .pt-entry-saved-cell.active { background: #1a7a3e; border-color: #1a7a3e; }
+  .pt-entry-saved-cell.active .pt-entry-saved-cell-date, .pt-entry-saved-cell.active .pt-entry-saved-cell-amount { color: #fff; }
+  .pt-entry-saved-cell-date { font-size: 11px; color: #1a7a3e; font-weight: 600; line-height: 1.2; }
+  .pt-entry-saved-cell-amount { font-size: 13px; color: #1a1a1a; font-variant-numeric: tabular-nums; line-height: 1.2; margin-top: 2px; }
+  /* MHTML upload */
+  .pt-mhtml-drop { border: 1.5px dashed #cfd6c8; border-radius: 8px; padding: 12px; background: #fafaf5; text-align: center; cursor: pointer; transition: all 0.15s; margin-bottom: 8px; }
+  .pt-mhtml-drop:hover, .pt-mhtml-drop.dragover { background: #f0f4eb; border-color: #6b8b46; }
+  .pt-mhtml-drop input[type="file"] { display: none; }
+  .pt-mhtml-drop-label { font-size: 13px; color: #666; }
+  .pt-mhtml-drop-label strong { color: #1a7a3e; }
+  .pt-mhtml-preview { background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: 8px; padding: 10px 12px; margin: 10px 0; font-size: 12px; color: #444; }
+  .pt-mhtml-preview-row { display: flex; justify-content: space-between; padding: 2px 0; }
+  .pt-mhtml-preview strong { color: #1a1a1a; }
+  .pt-mhtml-existing-count { display: inline-block; margin-left: 6px; padding: 2px 7px; border-radius: 10px; background: #e1f5ee; color: #0f6e56; font-size: 11px; font-weight: 600; }
+
+  .pt-section { margin: 1.5rem 0; }
+  .pt-section-h { font-size: 13px; font-weight: 600; margin: 0 0 0.75rem; color: #444; text-transform: uppercase; letter-spacing: 0.04em; }
+  .pt-chart-wrap { position: relative; height: 280px; background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: 10px; padding: 1rem; }
+  .pt-table { width: 100%; border-collapse: collapse; font-size: 13px; background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: 10px; overflow: hidden; }
+  .pt-table th { text-align: left; padding: 8px 12px; font-weight: 500; color: #666; background: #fafafa; border-bottom: 0.5px solid rgba(0,0,0,0.08); font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; }
+  .pt-table td { padding: 8px 12px; border-bottom: 0.5px solid rgba(0,0,0,0.04); }
+  .pt-table tr:last-child td { border-bottom: 0; }
+  .pt-num { text-align: right; font-variant-numeric: tabular-nums; }
+  .pt-empty { color: #888; font-size: 13px; padding: 1rem; text-align: center; background: #fafafa; border-radius: 8px; }
+  .pt-warn { background: #fef3c7; border: 0.5px solid #f59e0b; border-radius: 8px; padding: 0.75rem 1rem; font-size: 13px; color: #92400e; margin: 1rem 0; }
+  .pt-pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 500; }
+  .pt-pill-wine { background: #fbeaf0; color: #993556; }
+  .pt-pill-slate { background: #e1f5ee; color: #0f6e56; }
+  .pt-pill-other { background: #f1efe8; color: #5f5e5a; }
+  .pt-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 8px; font-size: 12px; color: #666; }
+  .pt-legend span { display: flex; align-items: center; gap: 5px; }
+  .pt-legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .pt-detail-toggle { font-size: 12px; color: #1a7a3e; cursor: pointer; user-select: none; margin-left: 6px; }
+  .pt-detail-toggle:hover { text-decoration: underline; }
+
+  /* Manual nightly-run trigger button */
+  .pt-trigger { display: flex; align-items: center; gap: 10px; margin: 0.5rem 0 1rem; flex-wrap: wrap; }
+  .pt-trigger-btn { font: inherit; font-size: 14px; font-weight: 600; padding: 9px 18px; border-radius: 8px; border: none; cursor: pointer; background: #1a7a3e; color: #fff; display: inline-flex; align-items: center; gap: 6px; transition: background 0.15s; }
+  .pt-trigger-btn:hover { background: #14622f; }
+  .pt-trigger-btn:disabled { background: #9bbfa9; cursor: progress; }
+  .pt-trigger-status { font-size: 12px; color: #666; }
+  .pt-trigger-status.ok { color: #1a7a3e; }
+  .pt-trigger-status.err { color: #b42318; }
+  .pt-trigger-hint { font-size: 11px; color: #888; margin-top: 4px; flex-basis: 100%; }
+
+  @media (max-width: 1000px) {
+    .pt-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (max-width: 700px) {
+    .pt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pt-wrap { padding: 0.75rem 0.75rem 1.5rem; }
+    .pt-card-value { font-size: 18px; }
+    .pt-chart-wrap { height: 240px; padding: 0.6rem; }
+    .pt-table th, .pt-table td { padding: 6px 8px; font-size: 12px; }
+    .pt-tip { left: 0; right: auto; min-width: 200px; max-width: 90vw; }
+  }
+</style>
+
+<h2 style="position:absolute;left:-10000px">Profit-Tracker dashboard mit Datumsbereich-Auswahl, KPIs, Trend-Chart, Produktgruppen- und Kampagnen-Aufschlüsselung.</h2>
+
+<div class="pt-wrap">
+  <div class="pt-head">
+    <p class="pt-title">Profit-Tracker</p>
+    <span class="pt-meta" id="pt-meta">Lade…</span>
+  </div>
+  <p class="pt-sub" id="pt-sub">Shopify-Umsatz, Print-Labs-Kosten und Meta-Ad-Spend — täglich aktualisiert.</p>
+
+  <div class="pt-trigger" id="pt-trigger">
+    <button class="pt-trigger-btn" id="pt-trigger-btn" type="button">▶ Nightly Run jetzt starten</button>
+    <span class="pt-trigger-status" id="pt-trigger-status"></span>
+    <span class="pt-trigger-hint" id="pt-trigger-hint">Holt Shopify-Bestellungen, Print-Labs-Kosten und Ad-Spend für gestern und aktualisiert das Dashboard.</span>
+  </div>
+
+  <div class="pt-range" id="pt-range">
+    <button class="pt-range-btn" data-range="today">Heute</button>
+    <button class="pt-range-btn" data-range="yesterday">Gestern</button>
+    <button class="pt-range-btn active" data-range="7d">7 Tage</button>
+    <button class="pt-range-btn" data-range="30d">30 Tage</button>
+    <button class="pt-range-btn" data-range="thisMonth">Dieser Monat</button>
+    <button class="pt-range-btn" data-range="lastMonth">Letzter Monat</button>
+    <button class="pt-range-btn" data-range="all">Alles</button>
+    <button class="pt-range-btn" data-range="custom">Eigener Zeitraum</button>
+    <input type="text" id="pt-range-input" class="pt-range-input" placeholder="Zeitraum wählen…" readonly>
+    <span class="pt-range-label" id="pt-range-label"></span>
+  </div>
+
+  <div class="pt-grid" id="pt-kpis">
+    <div class="pt-card"><p class="pt-card-label">Gewinn</p><p class="pt-card-value" id="kpi-profit">–</p><p class="pt-card-delta" id="kpi-profit-delta"></p><p class="pt-card-sub" id="kpi-profit-sub"></p></div>
+    <div class="pt-card pt-card-hover" id="card-revenue" tabindex="0"><p class="pt-card-label">Umsatz <span class="pt-info">i</span></p><p class="pt-card-value" id="kpi-revenue">–</p><p class="pt-card-delta" id="kpi-revenue-delta"></p><p class="pt-card-sub" id="kpi-revenue-sub"></p><div class="pt-tip" id="tip-revenue"></div></div>
+    <div class="pt-card pt-card-hover" id="card-spend" tabindex="0"><p class="pt-card-label">Ad Spend <span class="pt-info">i</span></p><p class="pt-card-value" id="kpi-spend">–</p><p class="pt-card-delta" id="kpi-spend-delta"></p><p class="pt-card-sub" id="kpi-spend-sub"></p><div class="pt-tip" id="tip-spend"></div></div>
+    <div class="pt-card"><p class="pt-card-label">Marge</p><p class="pt-card-value" id="kpi-margin">–</p><p class="pt-card-delta" id="kpi-margin-delta"></p><p class="pt-card-sub" id="kpi-margin-sub"></p></div>
+    <div class="pt-card"><p class="pt-card-label">ROAS</p><p class="pt-card-value" id="kpi-roas">–</p><p class="pt-card-delta" id="kpi-roas-delta"></p><p class="pt-card-sub" id="kpi-roas-sub"></p></div>
+  </div>
+
+  <div class="pt-entry" id="pt-entry">
+    <div class="pt-entry-head" id="pt-entry-head">
+      <span class="pt-entry-toggle">+</span>
+      <span class="pt-entry-head-title">Ad Spend eintragen</span>
+      <span class="pt-entry-status" id="pt-entry-status-mini"></span>
+    </div>
+    <div class="pt-entry-body" id="pt-entry-body">
+      <div class="pt-entry-saved" id="pt-entry-saved"></div>
+      <div class="pt-entry-row">
+        <label for="pt-entry-date">Datum</label>
+        <input type="text" id="pt-entry-date" readonly placeholder="Tag wählen">
+      </div>
+      <div id="pt-entry-camps"></div>
+      <div class="pt-entry-actions">
+        <button class="pt-btn pt-btn-primary" id="pt-entry-save">Speichern</button>
+        <button class="pt-btn pt-btn-ghost" id="pt-entry-cancel">Schließen</button>
+        <span class="pt-entry-status" id="pt-entry-status"></span>
+      </div>
+      <div class="pt-entry-hint" id="pt-entry-hint">Wird beim nächsten Workflow-Lauf automatisch übernommen.</div>
+    </div>
+  </div>
+
+  <div class="pt-entry" id="pt-mhtml">
+    <div class="pt-entry-head" id="pt-mhtml-head">
+      <span class="pt-entry-toggle">+</span>
+      <span class="pt-entry-head-title">Print-Labs MHTML hochladen <span class="pt-mhtml-existing-count" id="pt-mhtml-existing"></span></span>
+      <span class="pt-entry-status" id="pt-mhtml-status-mini"></span>
+    </div>
+    <div class="pt-entry-body" id="pt-mhtml-body">
+      <div class="pt-entry-hint">In Chrome → Print-Labs-Bestellungen-Tab öffnen → <strong>Cmd/Strg+S</strong> → "Webseite, vollständig" (.mhtml) → Datei hier hochladen. Alte Bestellungen bleiben gespeichert, neue/aktualisierte werden ergänzt.</div>
+      <label class="pt-mhtml-drop" id="pt-mhtml-drop">
+        <input type="file" id="pt-mhtml-file" accept=".mhtml,.mht,.eml,.html">
+        <div class="pt-mhtml-drop-label"><strong>Datei wählen</strong> oder hier reinziehen</div>
+      </label>
+      <div class="pt-mhtml-preview" id="pt-mhtml-preview" style="display:none;"></div>
+      <div class="pt-entry-actions">
+        <button class="pt-btn pt-btn-primary" id="pt-mhtml-save" disabled>Hochladen + speichern</button>
+        <button class="pt-btn pt-btn-ghost" id="pt-mhtml-cancel">Schließen</button>
+        <span class="pt-entry-status" id="pt-mhtml-status"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pt-section">
+    <p class="pt-section-h">Trend</p>
+    <div class="pt-legend">
+      <span><i style="background:#185fa5"></i>Umsatz</span>
+      <span><i style="background:#ba7517"></i>COGS</span>
+      <span><i style="background:#a32d2d"></i>Ad Spend</span>
+      <span><i style="background:#3b6d11"></i>Gewinn</span>
+    </div>
+    <div class="pt-chart-wrap"><canvas id="trend-chart" role="img"></canvas></div>
+  </div>
+
+  <div class="pt-section">
+    <p class="pt-section-h">Produktgruppen im Zeitraum</p>
+    <div class="pt-chart-wrap" style="height: 220px;"><canvas id="group-chart" role="img"></canvas></div>
+    <table class="pt-table" id="group-table" style="margin-top: 10px;">
+      <thead><tr><th>Gruppe</th><th class="pt-num">Bestellungen</th><th class="pt-num">Umsatz</th><th class="pt-num">COGS</th><th class="pt-num">Spend</th><th class="pt-num">Gewinn</th><th class="pt-num">Marge</th><th class="pt-num">ROAS</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="pt-section">
+    <p class="pt-section-h">Kampagnen im Zeitraum</p>
+    <table class="pt-table" id="camp-table">
+      <thead><tr><th>Kampagne</th><th>Gruppe</th><th class="pt-num">Spend</th><th class="pt-num">Käufe</th><th class="pt-num">ROAS Ø</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="pt-section">
+    <p class="pt-section-h">Bestellungen im Zeitraum <span class="pt-detail-toggle" id="order-toggle">[anzeigen]</span></p>
+    <div id="order-wrap" style="display:none;">
+      <table class="pt-table" id="order-table">
+        <thead><tr><th>Datum</th><th>#</th><th>Gruppe</th><th class="pt-num">Umsatz</th><th class="pt-num">COGS netto</th><th class="pt-num">COGS m.USt</th><th class="pt-num">Beitrag</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="warn-box"></div>
+</div>
+
+<script type="application/json" id="pt-data">__DATA_PLACEHOLDER__</script>
+<script type="application/json" id="pt-cfg">{"writeOwner":"__WRITE_OWNER__","writeRepo":"__WRITE_REPO__","writeToken":"__WRITE_TOKEN__","writePath":"data/ad_spend_user.json"}</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+<script>
+(function () {
+  const STORAGE_KEY = 'pt-range-v1';
+
+  const eur = (n) => (n == null || isNaN(n) ? '–' : new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(n));
+  const pct = (n) => (n == null || isNaN(n) ? '–' : (n * 100).toFixed(1) + ' %');
+  const roasFmt = (n) => (n == null || !isFinite(n) || n === 0 ? '–' : n.toFixed(2) + '×');
+  const fmtDate = (s) => { if (!s) return '–'; const d = new Date(s); return d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' }); };
+  const fmtDateLong = (s) => { if (!s) return '–'; const d = new Date(s); return d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }); };
+  const isoDate = (d) => {
+    // Use local date components — avoids UTC offset bugs in Europe/Berlin near midnight.
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + day;
+  };
+
+  function groupPill(g) {
+    const cls = g && g.indexOf('Weingl') === 0 ? 'pt-pill-wine' : (g && g.indexOf('Schiefer') === 0 ? 'pt-pill-slate' : 'pt-pill-other');
+    return '<span class="pt-pill ' + cls + '">' + (g || '–') + '</span>';
+  }
+
+  function addDays(d, n) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
+  function startOfMonth(d) { return new Date(d.getFullYear(), d.getMonth(), 1); }
+  function endOfMonth(d) { return new Date(d.getFullYear(), d.getMonth() + 1, 0); }
+
+  function rangeFor(preset, today, customFrom, customTo) {
+    today = today || new Date();
+    const t = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    switch (preset) {
+      case 'today':      return { from: t, to: t };
+      case 'yesterday':  { const y = addDays(t, -1); return { from: y, to: y }; }
+      case '7d':         return { from: addDays(t, -6), to: t };
+      case '30d':        return { from: addDays(t, -29), to: t };
+      case 'thisMonth':  return { from: startOfMonth(t), to: t };
+      case 'lastMonth':  { const lm = addDays(startOfMonth(t), -1); return { from: startOfMonth(lm), to: endOfMonth(lm) }; }
+      case 'all':        return { from: null, to: null };
+      case 'custom':     return { from: customFrom, to: customTo };
+      default:           return { from: addDays(t, -6), to: t };
+    }
+  }
+
+  function inRange(dateStr, from, to) {
+    if (!from && !to) return true;
+    if (from && dateStr < isoDate(from)) return false;
+    if (to && dateStr > isoDate(to)) return false;
+    return true;
+  }
+
+  function aggregateDays(days) {
+    const a = { orders: 0, revenue: 0, cogs: 0, spend: 0 };
+    days.forEach(d => { a.orders += d.orders||0; a.revenue += d.revenue||0; a.cogs += d.cogs||0; a.spend += d.spend||0; });
+    a.profit = a.revenue - a.cogs - a.spend;
+    a.margin = a.revenue ? a.profit / a.revenue : 0;
+    a.roas = a.spend ? a.revenue / a.spend : 0;
+    a.be_roas = (a.revenue && a.cogs < a.revenue) ? 1 / (1 - a.cogs / a.revenue) : 0;
+    return a;
+  }
+
+  function aggregateByGroup(groupRows) {
+    const m = new Map();
+    groupRows.forEach(g => {
+      const k = g.group || '–';
+      if (!m.has(k)) m.set(k, { group: k, orders: 0, revenue: 0, cogs: 0, spend: 0 });
+      const a = m.get(k);
+      a.orders += g.orders || 0; a.revenue += g.revenue || 0; a.cogs += g.cogs || 0; a.spend += g.spend || 0;
+    });
+    return Array.from(m.values()).map(a => ({
+      ...a,
+      profit: a.revenue - a.cogs - a.spend,
+      margin: a.revenue ? (a.revenue - a.cogs - a.spend) / a.revenue : 0,
+      roas: a.spend ? a.revenue / a.spend : 0,
+    })).sort((x, y) => y.revenue - x.revenue);
+  }
+
+  function aggregateByCampaign(campRows) {
+    const m = new Map();
+    campRows.forEach(c => {
+      const k = c.campaign || '–';
+      if (!m.has(k)) m.set(k, { campaign: k, group: c.group, spend: 0, purchases: 0, revenue_proxy: 0 });
+      const a = m.get(k);
+      a.spend += c.spend || 0;
+      if (c.purchases != null) a.purchases += c.purchases;
+      // Build revenue proxy via roas * spend so we can compute weighted ROAS Ø
+      if (c.roas && c.spend) a.revenue_proxy += c.roas * c.spend;
+    });
+    return Array.from(m.values()).map(a => ({
+      ...a,
+      roas: a.spend ? a.revenue_proxy / a.spend : 0,
+    })).sort((x, y) => y.spend - x.spend);
+  }
+
+  let trendChart, groupChart;
+
+  function destroyCharts() {
+    if (trendChart) { trendChart.destroy(); trendChart = null; }
+    if (groupChart) { groupChart.destroy(); groupChart = null; }
+  }
+
+  function render(data, preset, customFrom, customTo) {
+    document.getElementById('pt-meta').textContent =
+      'Stand: ' + new Date(data.generated_at).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+    const allDays = (data.days || []).slice().sort((a, b) => a.date.localeCompare(b.date));
+    // "Heute" / "Gestern" beziehen sich auf den echten heutigen Tag im Browser
+    // (Lokalzeit), nicht auf den letzten erfassten Datentag.
+    const today = new Date();
+
+    const { from, to } = rangeFor(preset, today, customFrom, customTo);
+    const fromIso = from ? isoDate(from) : (allDays.length ? allDays[0].date : null);
+    const toIso = to ? isoDate(to) : (allDays.length ? allDays[allDays.length - 1].date : null);
+
+    document.getElementById('pt-range-label').textContent =
+      from && to ? (fmtDateLong(isoDate(from)) + ' – ' + fmtDateLong(isoDate(to))) : 'Alle verfügbaren Tage';
+
+    // Range button active state
+    document.querySelectorAll('.pt-range-btn[data-range]').forEach(b => {
+      b.classList.toggle('active', b.dataset.range === preset);
+    });
+    document.getElementById('pt-range-input').classList.toggle('show', preset === 'custom');
+
+    const rangeDays = allDays.filter(d => inRange(d.date, from, to));
+    const agg = aggregateDays(rangeDays);
+
+    // Comparison period: same length immediately before
+    let prev = null;
+    if (from && to) {
+      const len = Math.round((to - from) / (1000 * 60 * 60 * 24)) + 1;
+      const prevTo = addDays(from, -1);
+      const prevFrom = addDays(prevTo, -(len - 1));
+      const prevDays = allDays.filter(d => inRange(d.date, prevFrom, prevTo));
+      if (prevDays.length) prev = aggregateDays(prevDays);
+    }
+
+    function deltaHtml(curr, prevVal, isPct) {
+      if (prevVal == null || prevVal === 0) return '';
+      const diff = curr - prevVal;
+      const pctChange = (diff / Math.abs(prevVal)) * 100;
+      const cls = diff > 0 ? 'pt-positive' : (diff < 0 ? 'pt-negative' : 'pt-neutral');
+      const sign = diff > 0 ? '+' : '';
+      return '<span class="' + cls + '">' + sign + pctChange.toFixed(1) + ' %</span> vs. Vorperiode';
+    }
+
+    // KPI cards
+    const profitClass = agg.profit >= 0 ? 'pt-positive' : 'pt-negative';
+    const pe = document.getElementById('kpi-profit');
+    pe.textContent = eur(agg.profit); pe.className = 'pt-card-value ' + profitClass;
+    document.getElementById('kpi-profit-delta').innerHTML = prev ? deltaHtml(agg.profit, prev.profit) : '';
+    document.getElementById('kpi-profit-sub').textContent = agg.orders + ' Bestellungen' + (rangeDays.length ? ' · ' + rangeDays.length + ' Tag(e)' : '');
+
+    document.getElementById('kpi-revenue').textContent = eur(agg.revenue);
+    document.getElementById('kpi-revenue-delta').innerHTML = prev ? deltaHtml(agg.revenue, prev.revenue) : '';
+    document.getElementById('kpi-revenue-sub').textContent = 'COGS ' + eur(agg.cogs);
+
+    document.getElementById('kpi-spend').textContent = eur(agg.spend);
+    document.getElementById('kpi-spend-delta').innerHTML = prev ? deltaHtml(agg.spend, prev.spend) : '';
+
+    document.getElementById('kpi-margin').textContent = pct(agg.margin);
+    document.getElementById('kpi-margin-delta').innerHTML = prev ? deltaHtml(agg.margin, prev.margin) : '';
+    document.getElementById('kpi-margin-sub').textContent = 'Gewinn / Umsatz';
+
+    const roasClass = agg.roas >= (agg.be_roas || 0) && agg.roas > 0 ? 'pt-positive' : (agg.roas > 0 ? 'pt-negative' : 'pt-neutral');
+    const re = document.getElementById('kpi-roas');
+    re.textContent = roasFmt(agg.roas); re.className = 'pt-card-value ' + roasClass;
+    document.getElementById('kpi-roas-delta').innerHTML = prev ? deltaHtml(agg.roas, prev.roas) : '';
+    const beTxt = agg.be_roas > 0 ? 'Break-Even ' + roasFmt(agg.be_roas) : 'Break-Even –';
+    const statusTxt = agg.roas > 0 ? ' · ' + (agg.roas >= (agg.be_roas || 0) ? 'profitabel' : 'unter BE') : '';
+    document.getElementById('kpi-roas-sub').textContent = beTxt + statusTxt;
+
+    destroyCharts();
+
+    // Trend chart for range
+    const trendLabels = rangeDays.map(d => fmtDate(d.date));
+    trendChart = new Chart(document.getElementById('trend-chart'), {
+      type: 'line',
+      data: {
+        labels: trendLabels,
+        datasets: [
+          { label: 'Umsatz', data: rangeDays.map(d => d.revenue), borderColor: '#185fa5', backgroundColor: '#185fa5', tension: 0.2, pointRadius: rangeDays.length > 30 ? 0 : 3 },
+          { label: 'COGS', data: rangeDays.map(d => d.cogs), borderColor: '#ba7517', backgroundColor: '#ba7517', tension: 0.2, pointRadius: rangeDays.length > 30 ? 0 : 3, borderDash: [4, 4] },
+          { label: 'Ad Spend', data: rangeDays.map(d => d.spend), borderColor: '#a32d2d', backgroundColor: '#a32d2d', tension: 0.2, pointRadius: rangeDays.length > 30 ? 0 : 3, borderDash: [2, 3] },
+          { label: 'Gewinn', data: rangeDays.map(d => d.profit), borderColor: '#3b6d11', backgroundColor: '#3b6d11', tension: 0.2, pointRadius: rangeDays.length > 30 ? 0 : 4, borderWidth: 2.5 },
+        ],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => ctx.dataset.label + ': ' + eur(ctx.parsed.y) } } },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#888', font: { size: 11 }, maxTicksLimit: 12 } },
+          y: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { color: '#888', font: { size: 11 }, callback: (v) => eur(v) } },
+        },
+      },
+    });
+
+    // Group aggregation for range
+    const grpRowsInRange = (data.groups || []).filter(g => inRange(g.date, from, to));
+    const grpAgg = aggregateByGroup(grpRowsInRange);
+
+    groupChart = new Chart(document.getElementById('group-chart'), {
+      type: 'bar',
+      data: {
+        labels: grpAgg.map(g => g.group),
+        datasets: [
+          { label: 'Umsatz', data: grpAgg.map(g => g.revenue), backgroundColor: '#185fa5', borderRadius: 4 },
+          { label: 'COGS', data: grpAgg.map(g => g.cogs), backgroundColor: '#ba7517', borderRadius: 4 },
+          { label: 'Ad Spend', data: grpAgg.map(g => g.spend), backgroundColor: '#a32d2d', borderRadius: 4 },
+          { label: 'Gewinn', data: grpAgg.map(g => g.profit), backgroundColor: '#3b6d11', borderRadius: 4 },
+        ],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, indexAxis: 'x',
+        plugins: { legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 10, boxHeight: 10 } }, tooltip: { callbacks: { label: (ctx) => ctx.dataset.label + ': ' + eur(ctx.parsed.y) } } },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#555', font: { size: 12 } } },
+          y: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { color: '#888', font: { size: 11 }, callback: (v) => eur(v) } },
+        },
+      },
+    });
+
+    // Group table
+    const grpBody = document.querySelector('#group-table tbody');
+    if (grpAgg.length === 0) {
+      grpBody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#888;">Keine Daten im Zeitraum</td></tr>';
+    } else {
+      grpBody.innerHTML = grpAgg.map(g => {
+        const cls = g.profit >= 0 ? 'pt-positive' : 'pt-negative';
+        return '<tr><td>' + groupPill(g.group) + '</td><td class="pt-num">' + g.orders + '</td><td class="pt-num">' + eur(g.revenue) + '</td><td class="pt-num">' + eur(g.cogs) + '</td><td class="pt-num">' + eur(g.spend) + '</td><td class="pt-num ' + cls + '">' + eur(g.profit) + '</td><td class="pt-num">' + pct(g.margin) + '</td><td class="pt-num">' + roasFmt(g.roas) + '</td></tr>';
+      }).join('');
+    }
+
+    // Campaigns aggregated
+    const campsInRange = (data.campaigns || []).filter(c => inRange(c.date, from, to));
+    const campAgg = aggregateByCampaign(campsInRange);
+    const campBody = document.querySelector('#camp-table tbody');
+    if (campAgg.length === 0) {
+      campBody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#888;">Keine Kampagnen im Zeitraum</td></tr>';
+    } else {
+      campBody.innerHTML = campAgg.map(c =>
+        '<tr><td>' + c.campaign + '</td><td>' + groupPill(c.group) + '</td><td class="pt-num">' + eur(c.spend) + '</td><td class="pt-num">' + (c.purchases || '–') + '</td><td class="pt-num">' + roasFmt(c.roas) + '</td></tr>'
+      ).join('');
+    }
+
+    // --- Hover tooltips: Umsatz (per Produktgruppe), Ad Spend (per Kampagne) ---
+    const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+
+    const tipRev = document.getElementById('tip-revenue');
+    if (!grpAgg.length || agg.revenue === 0) {
+      tipRev.innerHTML = '<div class="pt-tip-empty">Kein Umsatz im Zeitraum</div>';
+    } else {
+      const sorted = grpAgg.slice().sort((a, b) => b.revenue - a.revenue);
+      tipRev.innerHTML =
+        '<div style="font-weight:600; margin-bottom:4px; color:#fff;">Umsatz nach Produkt</div>' +
+        sorted.map(g => {
+          const share = agg.revenue ? (g.revenue / agg.revenue * 100).toFixed(0) + ' %' : '–';
+          return '<div class="pt-tip-row"><span class="pt-tip-name">' + esc(g.group) + '</span><span class="pt-tip-val">' + eur(g.revenue) + ' <span style="color:#888;">(' + share + ')</span></span></div>';
+        }).join('') +
+        '<div class="pt-tip-row total"><span class="pt-tip-name">Gesamt</span><span class="pt-tip-val">' + eur(agg.revenue) + '</span></div>';
+    }
+
+    const tipSpend = document.getElementById('tip-spend');
+    if (!campAgg.length || agg.spend === 0) {
+      tipSpend.innerHTML = '<div class="pt-tip-empty">Kein Ad Spend im Zeitraum</div>';
+    } else {
+      tipSpend.innerHTML =
+        '<div style="font-weight:600; margin-bottom:4px; color:#fff;">Spend nach Kampagne</div>' +
+        campAgg.map(c => {
+          const share = agg.spend ? (c.spend / agg.spend * 100).toFixed(0) + ' %' : '–';
+          return '<div class="pt-tip-row"><span class="pt-tip-name">' + esc(c.campaign) + '</span><span class="pt-tip-val">' + eur(c.spend) + ' <span style="color:#888;">(' + share + ')</span></span></div>';
+        }).join('') +
+        '<div class="pt-tip-row total"><span class="pt-tip-name">Gesamt</span><span class="pt-tip-val">' + eur(agg.spend) + '</span></div>';
+    }
+
+    // Spend sub line
+    const spendSubEl = document.getElementById('kpi-spend-sub');
+    if (agg.spend > 0) {
+      spendSubEl.textContent = campAgg.length + ' Kampagne' + (campAgg.length === 1 ? '' : 'n');
+    } else {
+      spendSubEl.textContent = 'kein Spend';
+    }
+
+    // Orders in range
+    const ordsInRange = (data.orders || []).filter(o => inRange(o.date, from, to)).sort((a, b) => b.date.localeCompare(a.date) || b.shopify_name.localeCompare(a.shopify_name));
+    const ordBody = document.querySelector('#order-table tbody');
+    if (ordsInRange.length === 0) {
+      ordBody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#888;">Keine Bestellungen im Zeitraum</td></tr>';
+    } else {
+      ordBody.innerHTML = ordsInRange.map(o => {
+        const contribution = (o.total || 0) - (o.cogs_gross || 0);
+        const cls = contribution >= 0 ? 'pt-positive' : 'pt-negative';
+        return '<tr><td>' + fmtDate(o.date) + '</td><td>' + o.shopify_name + '</td><td>' + groupPill(o.group) + '</td><td class="pt-num">' + eur(o.total) + '</td><td class="pt-num">' + eur(o.cogs_net) + '</td><td class="pt-num">' + eur(o.cogs_gross) + '</td><td class="pt-num ' + cls + '">' + eur(contribution) + '</td></tr>';
+      }).join('');
+    }
+    document.getElementById('order-toggle').textContent = ordsInRange.length ? '[' + ordsInRange.length + ' anzeigen]' : '[keine]';
+
+    // Warnings
+    const miss = (data.missing_costs || []).filter(m => inRange(m.date, from, to));
+    const warn = document.getElementById('warn-box');
+    if (miss.length > 0) {
+      warn.innerHTML = '<div class="pt-warn">⚠ Print-Labs-Kosten fehlen für ' + miss.length + ' Bestellung(en) im Zeitraum: ' + miss.map(m => m.shopify_name + ' (' + m.date + ')').join(', ') + '.</div>';
+    } else {
+      warn.innerHTML = '';
+    }
+  }
+
+  let payload, currentPreset, customFrom, customTo;
+
+  function saveState() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        preset: currentPreset,
+        from: customFrom ? isoDate(customFrom) : null,
+        to: customTo ? isoDate(customTo) : null,
+      }));
+    } catch (e) {}
+  }
+  function loadState() {
+    try {
+      const s = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      if (s) {
+        currentPreset = s.preset || '7d';
+        if (s.from) customFrom = new Date(s.from);
+        if (s.to) customTo = new Date(s.to);
+      } else {
+        currentPreset = '7d';
+      }
+    } catch (e) { currentPreset = '7d'; }
+  }
+
+  function update() {
+    if (currentPreset === 'custom' && (!customFrom || !customTo)) return;
+    render(payload, currentPreset, customFrom, customTo);
+    saveState();
+  }
+
+  function fmtRangeInput(from, to) {
+    return fmtDateLong(isoDate(from)) + ' – ' + fmtDateLong(isoDate(to));
+  }
+
+  // German locale (shared by all flatpickrs)
+  const deLocale = {
+    weekdays: { shorthand: ['So','Mo','Di','Mi','Do','Fr','Sa'], longhand: ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'] },
+    months: { shorthand: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'], longhand: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'] },
+    firstDayOfWeek: 1,
+    rangeSeparator: ' – ',
+    weekAbbreviation: 'KW',
+    scrollTitle: 'Scrollen zum Ändern',
+    toggleTitle: 'Klicken zum Umschalten'
+  };
+
+  // Map { 'YYYY-MM-DD': { total, source, campaigns: [...] } } — combined dashboard + historical spend
+  let spendByDateMap = {};
+
+  function buildSpendByDate() {
+    const map = {};
+    // 1) Dashboard-form entries (pendingSpend.entries) — these are authoritative for matching dates
+    Object.entries(pendingSpend.entries || {}).forEach(([date, e]) => {
+      const total = (e.campaigns || []).reduce((s, c) => s + (c.spend || 0), 0);
+      if (total > 0) map[date] = { total, source: 'dashboard', campaigns: (e.campaigns || []).map(c => ({ name: c.name, group: c.group, spend: c.spend })) };
+    });
+    // 2) Historical days from dashboard_data.json (chat-entered via scheduled task)
+    (payload.days || []).forEach(d => {
+      if (!d.spend || d.spend <= 0) return;
+      if (map[d.date]) return; // dashboard entry wins
+      const camps = (payload.campaigns || [])
+        .filter(c => c.date === d.date && (c.spend || 0) > 0)
+        .map(c => ({ name: c.campaign, group: c.group, spend: c.spend }));
+      map[d.date] = { total: d.spend, source: 'historical', campaigns: camps };
+    });
+    return map;
+  }
+
+  function fmtSpendShort(n) {
+    if (n == null || n === 0) return '';
+    if (n >= 1000) return (n / 1000).toFixed(n >= 10000 ? 0 : 1) + 'k';
+    if (n >= 100) return Math.round(n).toString();
+    return n.toFixed(0);
+  }
+
+  function makeOnDayCreate() {
+    return function (dObj, dStr, fp, dayElem) {
+      if (!dayElem.dateObj) return;
+      const d = dayElem.dateObj;
+      const iso = isoDate(d);
+      const entry = spendByDateMap[iso];
+      if (!entry || !entry.total) return;
+      const tag = document.createElement('span');
+      tag.className = 'pt-fp-spend';
+      tag.textContent = fmtSpendShort(entry.total) + '€';
+      dayElem.appendChild(tag);
+      dayElem.classList.add('pt-fp-marked');
+      // Improve tooltip on desktop
+      dayElem.setAttribute('title', 'Ad Spend ' + iso + ': ' + new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(entry.total));
+    };
+  }
+
+  function redrawPickers() {
+    if (rangePicker && rangePicker.redraw) rangePicker.redraw();
+    if (formPicker && formPicker.redraw) formPicker.redraw();
+  }
+
+  let rangePicker = null;
+  let formPicker = null;
+  function buildRangePicker(minIso, maxIso) {
+    const opts = {
+      mode: 'range',
+      dateFormat: 'Y-m-d',
+      locale: deLocale,
+      showMonths: 1,
+      minDate: minIso || undefined,
+      maxDate: maxIso || undefined,
+      defaultDate: (customFrom && customTo) ? [isoDate(customFrom), isoDate(customTo)] : undefined,
+      onDayCreate: makeOnDayCreate(),
+      onClose: function (selectedDates) {
+        if (selectedDates.length === 2) {
+          customFrom = selectedDates[0];
+          customTo = selectedDates[1];
+          document.getElementById('pt-range-input').value = fmtRangeInput(customFrom, customTo);
+          currentPreset = 'custom';
+          update();
+        }
+      }
+    };
+    rangePicker = flatpickr('#pt-range-input', opts);
+  }
+
+  // ----- Ad spend entry: writes to GitHub Contents API -----
+  let ghCfg = null;
+  let pendingSpend = { entries: {} };
+  let pendingSpendSha = null;
+
+  function ghHeaders() {
+    return {
+      'Authorization': 'Bearer ' + ghCfg.writeToken,
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+    };
+  }
+
+  async function ghLoadSpend() {
+    const url = 'https://api.github.com/repos/' + ghCfg.writeOwner + '/' + ghCfg.writeRepo + '/contents/' + ghCfg.writePath + '?ref=main&t=' + Date.now();
+    try {
+      const r = await fetch(url, { headers: ghHeaders(), cache: 'no-store' });
+      if (r.status === 404) {
+        pendingSpend = { entries: {} };
+        pendingSpendSha = null;
+        return;
+      }
+      if (!r.ok) throw new Error('GET ' + r.status);
+      const j = await r.json();
+      pendingSpendSha = j.sha;
+      try {
+        const decoded = atob((j.content || '').replace(/\n/g, ''));
+        const obj = JSON.parse(decoded);
+        pendingSpend = obj && obj.entries ? obj : { entries: {} };
+      } catch (e) {
+        pendingSpend = { entries: {} };
+      }
+    } catch (e) {
+      console.warn('ghLoadSpend failed', e);
+      pendingSpend = { entries: {} };
+      pendingSpendSha = null;
+    }
+  }
+
+  async function ghSaveSpend(commitMsg) {
+    const url = 'https://api.github.com/repos/' + ghCfg.writeOwner + '/' + ghCfg.writeRepo + '/contents/' + ghCfg.writePath;
+    const json = JSON.stringify(pendingSpend, null, 2);
+    // btoa requires latin-1 — encode utf-8 properly via TextEncoder
+    const bytes = new TextEncoder().encode(json);
+    let bin = '';
+    for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    const b64 = btoa(bin);
+    const body = { message: commitMsg, content: b64, branch: 'main' };
+    if (pendingSpendSha) body.sha = pendingSpendSha;
+    const r = await fetch(url, { method: 'PUT', headers: { ...ghHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    if (!r.ok) {
+      let msg = 'PUT ' + r.status;
+      try { const j = await r.json(); if (j.message) msg += ' — ' + j.message; } catch (e) {}
+      throw new Error(msg);
+    }
+    const j = await r.json();
+    pendingSpendSha = j.content && j.content.sha ? j.content.sha : pendingSpendSha;
+  }
+
+  // ----- Manual trigger button: starts the nightly task on demand -----
+  // Two paths:
+  //  (A) Cowork sidebar artifact → calls window.cowork.runScheduledTask() directly (instant).
+  //  (B) Public GitHub-Pages dashboard → writes data/trigger.json to the repo via the GitHub
+  //      Contents API. A small Cowork trigger-watcher task polls every few minutes and fires
+  //      the nightly run when it sees a fresh request.
+  async function ghWriteTrigger(source) {
+    const triggerPath = 'data/trigger.json';
+    const triggerUrl = 'https://api.github.com/repos/' + ghCfg.writeOwner + '/' + ghCfg.writeRepo + '/contents/' + triggerPath;
+    let sha = null;
+    try {
+      const r = await fetch(triggerUrl + '?ref=main&t=' + Date.now(), { headers: ghHeaders(), cache: 'no-store' });
+      if (r.ok) { const j = await r.json(); sha = j.sha; }
+    } catch (e) { /* 404 is fine, first write */ }
+    const payload = {
+      requested_at: new Date().toISOString(),
+      task: 'profit-tracker-nightly',
+      source: source || 'dashboard',
+    };
+    const json = JSON.stringify(payload, null, 2);
+    const bytes = new TextEncoder().encode(json);
+    let bin = '';
+    for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    const b64 = btoa(bin);
+    const body = { message: 'Trigger nightly @ ' + payload.requested_at, content: b64, branch: 'main' };
+    if (sha) body.sha = sha;
+    const r = await fetch(triggerUrl, { method: 'PUT', headers: { ...ghHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    if (!r.ok) {
+      let msg = 'PUT ' + r.status;
+      try { const j = await r.json(); if (j.message) msg += ' — ' + j.message; } catch (e) {}
+      throw new Error(msg);
+    }
+  }
+
+  function initTriggerButton() {
+    const btn = document.getElementById('pt-trigger-btn');
+    const status = document.getElementById('pt-trigger-status');
+    if (!btn || !status) return;
+    const inCowork = !!(window.cowork && typeof window.cowork.runScheduledTask === 'function');
+    if (inCowork) {
+      btn.title = 'Startet den Nightly Run sofort (Cowork)';
+    } else {
+      btn.title = 'Schreibt eine Trigger-Datei ins GitHub-Repo. Der Mac startet beim nächsten Check (max. 5 Min).';
+    }
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      status.textContent = 'Starte…';
+      status.className = 'pt-trigger-status';
+      try {
+        if (inCowork) {
+          await window.cowork.runScheduledTask('profit-tracker-nightly');
+          status.textContent = '✓ Nightly Run gestartet — läuft in Cowork.';
+          status.className = 'pt-trigger-status ok';
+          setTimeout(() => { btn.disabled = false; status.textContent = ''; status.className = 'pt-trigger-status'; }, 8000);
+          return;
+        }
+        if (ghCfg && ghCfg.writeToken && ghCfg.writeToken.indexOf('__') !== 0) {
+          await ghWriteTrigger('dashboard-public');
+          status.textContent = '✓ Anfrage gestellt — Mac startet beim nächsten Check (max. 5 Min).';
+          status.className = 'pt-trigger-status ok';
+          setTimeout(() => { btn.disabled = false; status.textContent = ''; status.className = 'pt-trigger-status'; }, 12000);
+          return;
+        }
+        throw new Error('Weder Cowork noch Schreib-Token verfügbar.');
+      } catch (e) {
+        status.textContent = '✗ ' + (e && e.message ? e.message : String(e));
+        status.className = 'pt-trigger-status err';
+        btn.disabled = false;
+      }
+    });
+  }
+
+  function uniqueCampaigns(data) {
+    // Historical data: campaigns that have appeared in data.campaigns
+    const seen = new Map();
+    const camps = (data.campaigns || []).slice().sort((a, b) => a.date.localeCompare(b.date));
+    camps.forEach(c => {
+      if (!c.campaign) return;
+      seen.set(c.campaign, { name: c.campaign, group: c.group || '', lastDate: c.date, source: 'historical' });
+    });
+    return Array.from(seen.values());
+  }
+
+  function uniqueCampaignsAll() {
+    const all = new Map();
+    uniqueCampaigns(payload).forEach(c => all.set(c.name, c));
+    // Dashboard-added campaigns
+    (pendingSpend.campaigns || []).forEach(c => {
+      if (!c.name) return;
+      if (!all.has(c.name)) all.set(c.name, { name: c.name, group: c.group || 'Sonstiges', source: 'dashboard', addedAt: c.added_at });
+    });
+    // Sort: known/recent first
+    return Array.from(all.values()).sort((a, b) => {
+      const ad = a.lastDate || a.addedAt || '';
+      const bd = b.lastDate || b.addedAt || '';
+      return bd.localeCompare(ad);
+    });
+  }
+
+  function knownGroupOptions() {
+    const set = new Set();
+    (payload.groups || []).forEach(g => g.group && set.add(g.group));
+    (payload.campaigns || []).forEach(c => c.group && set.add(c.group));
+    (pendingSpend.campaigns || []).forEach(c => c.group && set.add(c.group));
+    if (!set.size) ['Schieferherzen', 'Weingläser', 'Sonstiges'].forEach(g => set.add(g));
+    if (!set.has('Sonstiges')) set.add('Sonstiges');
+    return Array.from(set).sort();
+  }
+
+  function renderEntryForm() {
+    const camps = uniqueCampaignsAll();
+    const wrap = document.getElementById('pt-entry-camps');
+    const campsHtml = camps.length
+      ? camps.map(c =>
+          '<div class="pt-entry-row">' +
+            '<label>' + groupPill(c.group) + ' <span style="margin-left:4px;">' + c.name + '</span>' +
+              (c.source === 'dashboard' ? '<span class="pt-entry-row-meta">(neu)</span>' : '') +
+            '</label>' +
+            '<input type="number" step="0.01" min="0" placeholder="0.00" data-camp="' + c.name.replace(/"/g, '&quot;') + '" data-group="' + (c.group || '').replace(/"/g, '&quot;') + '">' +
+          '</div>'
+        ).join('')
+      : '<div class="pt-entry-hint">Noch keine Kampagnen erfasst — füge unten die erste hinzu.</div>';
+    const groupOpts = knownGroupOptions().map(g => '<option value="' + g + '">' + g + '</option>').join('');
+    const addHtml =
+      '<div class="pt-entry-addcamp" id="pt-entry-addcamp">' +
+        '<span class="pt-entry-addcamp-toggle" id="pt-newcamp-toggle">+ Neue Kampagne</span>' +
+        '<div class="pt-entry-addcamp-form">' +
+          '<input type="text" id="pt-newcamp-name" placeholder="Kampagnen-Name (z.B. ABO Skalierung Schieferherzen)">' +
+          '<select id="pt-newcamp-group">' + groupOpts + '</select>' +
+          '<button type="button" class="pt-btn pt-btn-primary" id="pt-newcamp-add">Hinzufügen</button>' +
+        '</div>' +
+      '</div>';
+    wrap.innerHTML = campsHtml + addHtml;
+    // Wire up the add-form
+    document.getElementById('pt-newcamp-toggle').addEventListener('click', () => {
+      document.getElementById('pt-entry-addcamp').classList.toggle('open');
+      setTimeout(() => { document.getElementById('pt-newcamp-name').focus(); }, 0);
+    });
+    document.getElementById('pt-newcamp-add').addEventListener('click', handleAddCampaign);
+    document.getElementById('pt-newcamp-name').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); handleAddCampaign(); }
+    });
+    prefillEntryForm();
+  }
+
+  function handleAddCampaign() {
+    const nameInp = document.getElementById('pt-newcamp-name');
+    const groupSel = document.getElementById('pt-newcamp-group');
+    const name = (nameInp.value || '').trim();
+    const group = groupSel.value || 'Sonstiges';
+    const statusEl = document.getElementById('pt-entry-status');
+    if (!name) {
+      statusEl.textContent = '✗ Name fehlt.'; statusEl.className = 'pt-entry-status err'; return;
+    }
+    const existing = uniqueCampaignsAll().find(c => c.name === name);
+    if (existing) {
+      statusEl.textContent = '✗ Kampagne existiert schon (Gruppe: ' + existing.group + ').'; statusEl.className = 'pt-entry-status err'; return;
+    }
+    pendingSpend.campaigns = pendingSpend.campaigns || [];
+    pendingSpend.campaigns.push({ name, group, added_at: new Date().toISOString() });
+    nameInp.value = '';
+    document.getElementById('pt-entry-addcamp').classList.remove('open');
+    statusEl.textContent = 'ℹ "' + name + '" hinzugefügt. Wird beim nächsten Speichern dauerhaft übernommen.';
+    statusEl.className = 'pt-entry-status';
+    renderEntryForm();
+  }
+
+  function prefillEntryForm() {
+    const date = document.getElementById('pt-entry-date').value;
+    // Prefer dashboard-form entry; fall back to historical (chat-entered)
+    const dashEntry = pendingSpend.entries[date];
+    const histEntry = !dashEntry && spendByDateMap[date] && spendByDateMap[date].source === 'historical' ? spendByDateMap[date] : null;
+    const entry = dashEntry || histEntry;
+    document.querySelectorAll('#pt-entry-camps input[type="number"]').forEach(inp => {
+      const name = inp.dataset.camp;
+      const found = entry && entry.campaigns ? entry.campaigns.find(x => x.name === name) : null;
+      inp.value = found ? found.spend : '';
+    });
+    // Hint when prefilling from historical data
+    const statusEl = document.getElementById('pt-entry-status');
+    if (histEntry) {
+      statusEl.textContent = 'ℹ Werte aus früherer Chat-Eingabe geladen. Beim Speichern werden sie überschrieben.';
+      statusEl.className = 'pt-entry-status';
+    } else if (statusEl.textContent.indexOf('ℹ') === 0) {
+      statusEl.textContent = '';
+    }
+    renderSavedList();
+  }
+
+  function renderSavedList() {
+    const wrap = document.getElementById('pt-entry-saved');
+    const selectedDate = document.getElementById('pt-entry-date').value;
+    const list = Object.entries(spendByDateMap).sort((a, b) => b[0].localeCompare(a[0]));
+    if (!list.length) {
+      wrap.innerHTML = '<div class="pt-entry-saved-empty">Noch nichts eingetragen.</div>';
+      return;
+    }
+    const dashCount = list.filter(([,e]) => e.source === 'dashboard').length;
+    const histCount = list.length - dashCount;
+    const breakdown = [];
+    if (dashCount) breakdown.push(dashCount + ' via Dashboard');
+    if (histCount) breakdown.push(histCount + ' via Chat');
+    wrap.innerHTML =
+      '<div class="pt-entry-saved-title">Bereits eingetragen (' + list.length + ' Tag' + (list.length === 1 ? '' : 'e') +
+        (breakdown.length ? ': ' + breakdown.join(', ') : '') + ') – klick zum Bearbeiten</div>' +
+      '<div class="pt-entry-saved-grid">' +
+      list.map(([date, e]) => {
+        const isActive = date === selectedDate;
+        const srcMark = e.source === 'historical' ? '<span style="font-size:8px; opacity:0.65; margin-left:3px;">●</span>' : '';
+        const tt = e.source === 'historical' ? 'Aus Chat-Eingabe (historisch)' : 'Im Dashboard eingetragen';
+        return '<button type="button" class="pt-entry-saved-cell' + (isActive ? ' active' : '') + '" data-date="' + date + '" title="' + tt + '">' +
+          '<span class="pt-entry-saved-cell-date">' + fmtDate(date) + '.' + srcMark + '</span>' +
+          '<span class="pt-entry-saved-cell-amount">' + eur(e.total) + '</span>' +
+        '</button>';
+      }).join('') +
+      '</div>';
+    wrap.querySelectorAll('.pt-entry-saved-cell').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const newDate = btn.dataset.date;
+        if (formPicker && formPicker.setDate) {
+          formPicker.setDate(newDate, false); // false = don't trigger onChange
+        }
+        document.getElementById('pt-entry-date').value = newDate;
+        prefillEntryForm();
+      });
+    });
+  }
+
+  async function handleEntrySave() {
+    const date = document.getElementById('pt-entry-date').value;
+    const statusEl = document.getElementById('pt-entry-status');
+    const statusMini = document.getElementById('pt-entry-status-mini');
+    const btn = document.getElementById('pt-entry-save');
+    if (!date) { statusEl.textContent = 'Datum fehlt.'; statusEl.className = 'pt-entry-status err'; return; }
+    const inputs = Array.from(document.querySelectorAll('#pt-entry-camps input[type="number"]'));
+    const camps = [];
+    inputs.forEach(inp => {
+      const v = inp.value.trim();
+      if (v === '') return;
+      const num = parseFloat(v.replace(',', '.'));
+      if (isNaN(num)) return;
+      camps.push({ name: inp.dataset.camp, group: inp.dataset.group, spend: Math.round(num * 100) / 100 });
+    });
+    if (!camps.length) { statusEl.textContent = 'Keine Werte eingegeben.'; statusEl.className = 'pt-entry-status err'; return; }
+    if (!ghCfg || !ghCfg.writeToken || ghCfg.writeToken.indexOf('__') === 0) {
+      statusEl.textContent = 'Schreib-Token fehlt (Deploy-Konfig).'; statusEl.className = 'pt-entry-status err'; return;
+    }
+    btn.disabled = true;
+    statusEl.textContent = 'Speichere…'; statusEl.className = 'pt-entry-status';
+    try {
+      // Capture unsaved user-added campaigns BEFORE reloading from GH
+      const localExtras = (pendingSpend.campaigns || []).slice();
+      // Refresh current SHA first (in case another device wrote)
+      await ghLoadSpend();
+      // Re-merge user-added campaigns
+      pendingSpend.campaigns = pendingSpend.campaigns || [];
+      const existingNames = new Set(pendingSpend.campaigns.map(c => c.name));
+      localExtras.forEach(c => {
+        if (!existingNames.has(c.name)) { pendingSpend.campaigns.push(c); existingNames.add(c.name); }
+      });
+      // Ensure every campaign we're saving spend for is in the campaigns list too
+      camps.forEach(c => {
+        if (!existingNames.has(c.name)) {
+          pendingSpend.campaigns.push({ name: c.name, group: c.group || 'Sonstiges', added_at: new Date().toISOString() });
+          existingNames.add(c.name);
+        }
+      });
+      pendingSpend.entries[date] = { saved_at: new Date().toISOString(), source: 'dashboard', campaigns: camps };
+      const total = camps.reduce((s, c) => s + c.spend, 0);
+      await ghSaveSpend('Ad Spend ' + date + ' via Dashboard (' + total.toFixed(2) + ' €)');
+      statusEl.textContent = '✓ Gespeichert (' + eur(total) + ')'; statusEl.className = 'pt-entry-status ok';
+      statusMini.textContent = '✓ ' + date; statusMini.className = 'pt-entry-status ok';
+      spendByDateMap = buildSpendByDate();
+      renderSavedList();
+      redrawPickers();
+      setTimeout(() => { statusMini.textContent = ''; }, 6000);
+    } catch (e) {
+      statusEl.textContent = '✗ Fehler: ' + e.message; statusEl.className = 'pt-entry-status err';
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  // ----- Generic GitHub file helpers (shared by ad-spend save + MHTML upload) -----
+  async function ghReadJsonFile(path) {
+    const url = 'https://api.github.com/repos/' + ghCfg.writeOwner + '/' + ghCfg.writeRepo + '/contents/' + path + '?ref=main&t=' + Date.now();
+    const r = await fetch(url, { headers: ghHeaders(), cache: 'no-store' });
+    if (r.status === 404) return { content: null, sha: null };
+    if (!r.ok) throw new Error('GET ' + path + ': ' + r.status);
+    const j = await r.json();
+    const decoded = atob((j.content || '').replace(/\n/g, ''));
+    return { content: JSON.parse(decoded), sha: j.sha };
+  }
+
+  async function ghWriteJsonFile(path, obj, commitMsg, currentSha) {
+    const url = 'https://api.github.com/repos/' + ghCfg.writeOwner + '/' + ghCfg.writeRepo + '/contents/' + path;
+    const json = JSON.stringify(obj, null, 2);
+    const bytes = new TextEncoder().encode(json);
+    let bin = '';
+    for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    const body = { message: commitMsg, content: btoa(bin), branch: 'main' };
+    if (currentSha) body.sha = currentSha;
+    const r = await fetch(url, { method: 'PUT', headers: { ...ghHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    if (!r.ok) {
+      let msg = 'PUT ' + path + ': ' + r.status;
+      try { const j = await r.json(); if (j.message) msg += ' — ' + j.message; } catch (e) {}
+      throw new Error(msg);
+    }
+  }
+
+  // ----- MHTML upload (Print-Labs orders) -----
+  let mhtmlParsed = null; // { orders: [...], filename, file_total }
+
+  function decodeQuotedPrintable(str) {
+    // Soft line breaks: =\r\n or =\n at end of lines
+    return str.replace(/=\r?\n/g, '').replace(/=([0-9A-Fa-f]{2})/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
+  }
+
+  function parsePrintLabsDate(str) {
+    // "May 28, 2026, 1:21 p.m." or "May 28, 2026, 12:00 p.m." or "Sep 5, 2025, midnight"
+    const months = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 };
+    let m = str.match(/^(\w{3})[a-z]*\.?\s+(\d+),\s+(\d{4}),\s+(\d+):(\d+)\s*([ap])\.?m\.?$/i);
+    if (!m) {
+      // Handle "midnight" / "noon"
+      m = str.match(/^(\w{3})[a-z]*\.?\s+(\d+),\s+(\d{4}),\s+(midnight|noon)$/i);
+      if (m) {
+        const mon = months[m[1].substring(0,3)];
+        if (mon == null) return null;
+        const h = m[4].toLowerCase() === 'noon' ? 12 : 0;
+        return new Date(parseInt(m[3]), mon, parseInt(m[2]), h, 0);
+      }
+      return null;
+    }
+    const mon = months[m[1].substring(0,3)];
+    if (mon == null) return null;
+    let h = parseInt(m[4]);
+    const min = parseInt(m[5]);
+    const ampm = m[6].toLowerCase();
+    if (ampm === 'p' && h !== 12) h += 12;
+    if (ampm === 'a' && h === 12) h = 0;
+    return new Date(parseInt(m[3]), mon, parseInt(m[2]), h, min);
+  }
+
+  function parseMhtmlFile(text) {
+    // Find boundary
+    const bm = text.match(/boundary="?([^"\r\n;]+)"?/i);
+    if (!bm) throw new Error('Kein MIME-Boundary gefunden — ist die Datei wirklich eine MHTML?');
+    const boundary = '--' + bm[1];
+    const parts = text.split(boundary);
+    // Find HTML part
+    let htmlBody = null;
+    for (const part of parts) {
+      const ctMatch = part.match(/Content-Type:\s*text\/html/i);
+      if (!ctMatch) continue;
+      const sepCrlf = part.indexOf('\r\n\r\n');
+      const sepLf = part.indexOf('\n\n');
+      let bodyStart;
+      if (sepCrlf >= 0 && (sepLf < 0 || sepCrlf < sepLf)) bodyStart = sepCrlf + 4;
+      else if (sepLf >= 0) bodyStart = sepLf + 2;
+      else continue;
+      let body = part.substring(bodyStart);
+      if (/Content-Transfer-Encoding:\s*quoted-printable/i.test(part)) {
+        body = decodeQuotedPrintable(body);
+      }
+      htmlBody = body;
+      break;
+    }
+    if (!htmlBody) throw new Error('Kein HTML-Teil in der MHTML — vermutlich falsche Seite gespeichert.');
+
+    // Parse with DOMParser
+    const doc = new DOMParser().parseFromString(htmlBody, 'text/html');
+    // The orders table is in <tbody><tr>...</tr></tbody>
+    const rows = doc.querySelectorAll('tbody tr');
+    const orders = [];
+    rows.forEach(row => {
+      const cells = row.querySelectorAll('td');
+      if (cells.length < 8) return;
+      const linkEl = cells[0].querySelector('a');
+      const plId = (linkEl ? linkEl.textContent : cells[0].textContent).trim();
+      const shopId = cells[1].textContent.trim();
+      if (!/^ORDPL-/.test(plId) || !/^\d{8,16}$/.test(shopId)) return;
+      const status = cells[3].textContent.trim();
+      const created = cells[4].textContent.trim().replace(/\s+/g, ' ');
+      const shipment = cells[5].textContent.trim().replace(/\s+/g, ' ');
+      const costStr = cells[6].textContent.trim().replace(/[^\d.,-]/g, '').replace(',', '.');
+      const cost = parseFloat(costStr);
+      const platform = cells[7].textContent.trim().replace(/\s+/g, ' ');
+      if (isNaN(cost)) return;
+      const dt = parsePrintLabsDate(created);
+      orders.push({
+        printlabs_id: plId,
+        shopify_order_id: shopId,
+        status,
+        created_raw: created,
+        created_iso: dt ? dt.toISOString() : null,
+        shipment,
+        total_cost_net: cost,
+        platform,
+      });
+    });
+    return orders;
+  }
+
+  function setMhtmlStatus(text, kind) {
+    const el = document.getElementById('pt-mhtml-status');
+    el.textContent = text || '';
+    el.className = 'pt-entry-status' + (kind ? ' ' + kind : '');
+  }
+
+  function renderMhtmlPreview(orders, filename) {
+    const wrap = document.getElementById('pt-mhtml-preview');
+    if (!orders || !orders.length) {
+      wrap.style.display = 'none';
+      return;
+    }
+    const total = orders.reduce((s, o) => s + o.total_cost_net, 0);
+    const dates = orders.map(o => o.created_iso || o.created_raw).filter(Boolean).sort();
+    const first = dates[0] ? dates[0].substring(0, 10) : '–';
+    const last = dates[dates.length - 1] ? dates[dates.length - 1].substring(0, 10) : '–';
+    wrap.style.display = 'block';
+    wrap.innerHTML =
+      '<div class="pt-mhtml-preview-row"><span>Datei</span><span><strong>' + (filename || '–') + '</strong></span></div>' +
+      '<div class="pt-mhtml-preview-row"><span>Bestellungen erkannt</span><span><strong>' + orders.length + '</strong></span></div>' +
+      '<div class="pt-mhtml-preview-row"><span>Zeitraum</span><span>' + first + ' – ' + last + '</span></div>' +
+      '<div class="pt-mhtml-preview-row"><span>Print-Labs Kosten netto Σ</span><span><strong>' + eur(total) + '</strong></span></div>';
+  }
+
+  async function loadAndDisplayExistingPlCount() {
+    if (!ghCfg || !ghCfg.writeToken || ghCfg.writeToken.indexOf('__') === 0) return;
+    try {
+      const r = await ghReadJsonFile('data/printlabs_user.json');
+      const n = r.content && r.content.orders ? Object.keys(r.content.orders).length : 0;
+      const el = document.getElementById('pt-mhtml-existing');
+      if (n > 0) el.textContent = n + ' gespeichert';
+      else el.textContent = '';
+    } catch (e) { /* soft fail */ }
+  }
+
+  async function handleMhtmlFile(file) {
+    setMhtmlStatus('Lese Datei…', '');
+    document.getElementById('pt-mhtml-save').disabled = true;
+    try {
+      const text = await file.text();
+      const orders = parseMhtmlFile(text);
+      if (!orders.length) {
+        setMhtmlStatus('✗ Keine Bestellungen in der Datei gefunden. Wurde die richtige Seite gespeichert?', 'err');
+        renderMhtmlPreview(null);
+        mhtmlParsed = null;
+        return;
+      }
+      mhtmlParsed = { orders, filename: file.name, file_total: orders.reduce((s, o) => s + o.total_cost_net, 0) };
+      renderMhtmlPreview(orders, file.name);
+      setMhtmlStatus('✓ ' + orders.length + ' Bestellungen geparst. Klick "Hochladen + speichern" um zu übernehmen.', 'ok');
+      document.getElementById('pt-mhtml-save').disabled = false;
+    } catch (e) {
+      setMhtmlStatus('✗ Parser-Fehler: ' + e.message, 'err');
+      renderMhtmlPreview(null);
+      mhtmlParsed = null;
+    }
+  }
+
+  async function handleMhtmlSave() {
+    if (!mhtmlParsed) { setMhtmlStatus('Keine Datei geparst.', 'err'); return; }
+    if (!ghCfg || !ghCfg.writeToken || ghCfg.writeToken.indexOf('__') === 0) {
+      setMhtmlStatus('✗ Schreib-Token fehlt (Deploy-Konfig).', 'err'); return;
+    }
+    const btn = document.getElementById('pt-mhtml-save');
+    btn.disabled = true;
+    setMhtmlStatus('Speichere zu GitHub…', '');
+    try {
+      const cur = await ghReadJsonFile('data/printlabs_user.json');
+      const current = cur.content && cur.content.orders ? cur.content : { schema_version: 1, orders: {}, uploads: [] };
+      if (!current.orders) current.orders = {};
+      if (!current.uploads) current.uploads = [];
+      const now = new Date().toISOString();
+      let added = 0, updated = 0, unchanged = 0;
+      mhtmlParsed.orders.forEach(o => {
+        const ex = current.orders[o.shopify_order_id];
+        if (!ex) { added++; }
+        else if (ex.total_cost_net !== o.total_cost_net || ex.status !== o.status) { updated++; }
+        else { unchanged++; }
+        current.orders[o.shopify_order_id] = Object.assign({}, ex, o, {
+          first_seen: ex && ex.first_seen ? ex.first_seen : now,
+          last_seen: now,
+          source: 'mhtml_upload',
+        });
+      });
+      current.uploads.push({
+        at: now, filename: mhtmlParsed.filename,
+        orders_in_file: mhtmlParsed.orders.length,
+        added, updated, unchanged,
+      });
+      // Keep only last 30 upload log entries
+      if (current.uploads.length > 30) current.uploads = current.uploads.slice(-30);
+
+      await ghWriteJsonFile('data/printlabs_user.json', current,
+        'Print-Labs MHTML: ' + mhtmlParsed.orders.length + ' Bestellungen (+' + added + ' neu, ' + updated + ' aktualisiert)', cur.sha);
+
+      setMhtmlStatus('✓ Gespeichert: ' + added + ' neu, ' + updated + ' aktualisiert, ' + unchanged + ' unverändert. Workflow läuft jetzt.', 'ok');
+      document.getElementById('pt-mhtml-status-mini').textContent = '✓ ' + added + '+' + updated;
+      document.getElementById('pt-mhtml-status-mini').className = 'pt-entry-status ok';
+      setTimeout(() => { document.getElementById('pt-mhtml-status-mini').textContent = ''; }, 8000);
+      loadAndDisplayExistingPlCount();
+      // Reset form
+      document.getElementById('pt-mhtml-file').value = '';
+      mhtmlParsed = null;
+      renderMhtmlPreview(null);
+    } catch (e) {
+      setMhtmlStatus('✗ Fehler beim Speichern: ' + e.message, 'err');
+      btn.disabled = false;
+    }
+  }
+
+  function initMhtmlUpload() {
+    const head = document.getElementById('pt-mhtml-head');
+    const wrap = document.getElementById('pt-mhtml');
+    const drop = document.getElementById('pt-mhtml-drop');
+    const fileInp = document.getElementById('pt-mhtml-file');
+
+    head.addEventListener('click', () => {
+      wrap.classList.toggle('open');
+      if (wrap.classList.contains('open')) loadAndDisplayExistingPlCount();
+    });
+    fileInp.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) handleMhtmlFile(e.target.files[0]);
+    });
+    // Drag & drop on the label area
+    ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, (e) => { e.preventDefault(); e.stopPropagation(); drop.classList.add('dragover'); }));
+    ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, (e) => { e.preventDefault(); e.stopPropagation(); drop.classList.remove('dragover'); }));
+    drop.addEventListener('drop', (e) => {
+      const files = e.dataTransfer && e.dataTransfer.files;
+      if (files && files[0]) handleMhtmlFile(files[0]);
+    });
+    document.getElementById('pt-mhtml-save').addEventListener('click', handleMhtmlSave);
+    document.getElementById('pt-mhtml-cancel').addEventListener('click', () => wrap.classList.remove('open'));
+
+    // Show existing count on page load (best effort)
+    loadAndDisplayExistingPlCount();
+  }
+
+  function initEntryForm() {
+    try { ghCfg = JSON.parse(document.getElementById('pt-cfg').textContent); } catch (e) { ghCfg = null; }
+    const head = document.getElementById('pt-entry-head');
+    const wrap = document.getElementById('pt-entry');
+    const dateInp = document.getElementById('pt-entry-date');
+    // Nur Vergangenheit: heute ist tabu, default = gestern.
+    const yest = addDays(new Date(), -1);
+    const yestIso = isoDate(yest);
+    formPicker = flatpickr(dateInp, {
+      dateFormat: 'Y-m-d',
+      altInput: true,
+      altFormat: 'd.m.Y',
+      altInputClass: 'pt-entry-date-alt',
+      locale: deLocale,
+      maxDate: yestIso,
+      defaultDate: yestIso,
+      onDayCreate: makeOnDayCreate(),
+      onChange: function () { prefillEntryForm(); },
+    });
+    head.addEventListener('click', async () => {
+      const opening = !wrap.classList.contains('open');
+      wrap.classList.toggle('open');
+      if (!opening) return;
+      // 1) Render form structure + show historical data immediately
+      renderEntryForm();
+      spendByDateMap = buildSpendByDate();
+      renderSavedList();
+      prefillEntryForm();
+      redrawPickers();
+      // 2) Fetch dashboard entries if write-token is available
+      if (ghCfg && ghCfg.writeToken && ghCfg.writeToken.indexOf('__') !== 0) {
+        await ghLoadSpend();
+        spendByDateMap = buildSpendByDate();
+        renderSavedList();
+        prefillEntryForm();
+        redrawPickers();
+      } else {
+        document.getElementById('pt-entry-status').textContent = '⚠ Kein Schreib-Token konfiguriert (nur im Cowork-Artefakt).';
+        document.getElementById('pt-entry-status').className = 'pt-entry-status err';
+      }
+    });
+    document.getElementById('pt-entry-save').addEventListener('click', handleEntrySave);
+    document.getElementById('pt-entry-cancel').addEventListener('click', () => wrap.classList.remove('open'));
+  }
+
+  function init() {
+    const dataEl = document.getElementById('pt-data');
+    try {
+      payload = JSON.parse(dataEl.textContent);
+    } catch (e) {
+      document.querySelector('.pt-wrap').innerHTML = '<div class="pt-warn">Konnte Daten nicht laden: ' + e.message + '</div>';
+      return;
+    }
+
+    loadState();
+
+    // Default custom range = last 14 days (or whole history if shorter); allow future dates up to today
+    const days = (payload.days || []).slice().sort((a, b) => a.date.localeCompare(b.date));
+    const todayIso = isoDate(new Date());
+    let minIso = null, maxIso = todayIso;
+    if (days.length) {
+      const last = days[days.length - 1].date;
+      const first = days[0].date;
+      minIso = first;
+      maxIso = last > todayIso ? last : todayIso;
+      if (!customTo) customTo = new Date(last);
+      if (!customFrom) customFrom = new Date(Math.max(new Date(first), addDays(new Date(last), -13)));
+    } else {
+      customTo = new Date();
+      customFrom = addDays(customTo, -6);
+    }
+    if (customFrom && customTo) {
+      document.getElementById('pt-range-input').value = fmtRangeInput(customFrom, customTo);
+    }
+
+    // Build the spend-by-date map from historical data so the top range picker
+    // shows the per-day spend annotations even before the entry form is opened.
+    spendByDateMap = buildSpendByDate();
+
+    buildRangePicker(minIso, maxIso);
+
+    document.querySelectorAll('.pt-range-btn[data-range]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const wasCustom = currentPreset === 'custom';
+        currentPreset = btn.dataset.range;
+        if (currentPreset === 'custom') {
+          // Show the input, then open the picker immediately
+          document.getElementById('pt-range-input').classList.add('show');
+          if (rangePicker) {
+            setTimeout(() => rangePicker.open(), 0);
+          }
+          // Only render once a range has been chosen (handled in onClose); meanwhile reflect button state
+          document.querySelectorAll('.pt-range-btn[data-range]').forEach(b => b.classList.toggle('active', b.dataset.range === 'custom'));
+        } else {
+          update();
+        }
+      });
+    });
+    document.getElementById('order-toggle').addEventListener('click', () => {
+      const w = document.getElementById('order-wrap');
+      const isVisible = w.style.display !== 'none';
+      w.style.display = isVisible ? 'none' : 'block';
+    });
+
+    initEntryForm();
+    initMhtmlUpload();
+
+    // Wire up the manual nightly-run trigger button.
+    // ghCfg is populated by initEntryForm (it reads #pt-cfg). Read it here too as a safety
+    // net so the trigger button still works on the public dashboard even if the entry-form
+    // hasn't been opened yet.
+    try {
+      if (!ghCfg) {
+        const cfgEl = document.getElementById('pt-cfg');
+        if (cfgEl) ghCfg = JSON.parse(cfgEl.textContent);
+      }
+    } catch (e) { /* ignore */ }
+    initTriggerButton();
+
+    // Tap-to-toggle tooltips on touch devices (no :hover support)
+    document.querySelectorAll('.pt-card-hover').forEach(card => {
+      card.addEventListener('click', (e) => {
+        // Ignore clicks originating inside the tooltip itself
+        if (e.target.closest('.pt-tip')) return;
+        document.querySelectorAll('.pt-card-hover.pt-tip-open').forEach(c => { if (c !== card) c.classList.remove('pt-tip-open'); });
+        card.classList.toggle('pt-tip-open');
+      });
+    });
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.pt-card-hover')) {
+        document.querySelectorAll('.pt-card-hover.pt-tip-open').forEach(c => c.classList.remove('pt-tip-open'));
+      }
+    });
+
+    update();
+  }
+
+  init();
+})();
+</script>
