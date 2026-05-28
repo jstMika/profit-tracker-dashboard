@@ -1,13 +1,13 @@
 {
-  "pulled_at": "2026-05-28T23:51:24.012111+00:00",
-  "date": "2026-05-26",
+  "pulled_at": "2026-05-28T23:51:26.632772+00:00",
+  "date": "2026-05-17",
   "shop": "4b841b",
   "order_count": 1,
   "orders": [
     {
-      "id": 12673731330396,
-      "name": "#1334",
-      "created_at": "2026-05-26T18:51:03+02:00",
+      "id": 12542030643548,
+      "name": "#1319",
+      "created_at": "2026-05-17T20:32:16+02:00",
       "financial_status": "paid",
       "fulfillment_status": "fulfilled",
       "currency": "EUR",
@@ -18,7 +18,7 @@
       "total_shipping": "0.00",
       "line_items": [
         {
-          "id": 36916565147996,
+          "id": 36615406322012,
           "product_id": 15573215543644,
           "variant_id": 57560817664348,
           "title": "Wo alles begann - Personalisiertes Schieferherz (15x15)",
@@ -27,7 +27,7 @@
           "price": "44.95"
         },
         {
-          "id": 36916565180764,
+          "id": 36615406354780,
           "product_id": 15388836921692,
           "variant_id": 56476062253404,
           "title": "Schiefer Aufsteller",
