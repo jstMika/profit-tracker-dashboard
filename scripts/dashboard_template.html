@@ -165,9 +165,9 @@
   <p class="pt-sub" id="pt-sub">Shopify-Umsatz, Print-Labs-Kosten und Meta-Ad-Spend — täglich aktualisiert.</p>
 
   <div class="pt-trigger" id="pt-trigger">
-    <button class="pt-trigger-btn" id="pt-trigger-btn" type="button">▶ Nightly Run jetzt starten</button>
+    <button class="pt-trigger-btn" id="pt-trigger-btn" type="button">↻ Dashboard jetzt neu bauen</button>
     <span class="pt-trigger-status" id="pt-trigger-status"></span>
-    <span class="pt-trigger-hint" id="pt-trigger-hint">Holt Shopify-Bestellungen, Print-Labs-Kosten und Ad-Spend für gestern und aktualisiert das Dashboard.</span>
+    <span class="pt-trigger-hint" id="pt-trigger-hint">Triggert den GitHub-Actions-Workflow: holt frische Shopify-Bestellungen + baut das Dashboard neu (~30 Sek). Print-Labs-Kosten kommen aus deinem letzten MHTML-Upload.</span>
   </div>
 
   <div class="pt-range" id="pt-range">
@@ -802,32 +802,21 @@
     const btn = document.getElementById('pt-trigger-btn');
     const status = document.getElementById('pt-trigger-status');
     if (!btn || !status) return;
-    const inCowork = !!(window.cowork && typeof window.cowork.runScheduledTask === 'function');
-    if (inCowork) {
-      btn.title = 'Startet den Nightly Run sofort (Cowork)';
-    } else {
-      btn.title = 'Schreibt eine Trigger-Datei ins GitHub-Repo. Der Mac startet beim nächsten Check (max. 5 Min).';
-    }
+    btn.title = 'Triggert den GitHub-Actions-Workflow für einen frischen Rebuild (~30 Sek).';
     btn.addEventListener('click', async () => {
+      if (!ghCfg || !ghCfg.writeToken || ghCfg.writeToken.indexOf('__') === 0) {
+        status.textContent = '✗ Kein Schreib-Token in dieser Ansicht.';
+        status.className = 'pt-trigger-status err';
+        return;
+      }
       btn.disabled = true;
-      status.textContent = 'Starte…';
+      status.textContent = 'Trigger wird gesendet…';
       status.className = 'pt-trigger-status';
       try {
-        if (inCowork) {
-          await window.cowork.runScheduledTask('profit-tracker-nightly');
-          status.textContent = '✓ Nightly Run gestartet — läuft in Cowork.';
-          status.className = 'pt-trigger-status ok';
-          setTimeout(() => { btn.disabled = false; status.textContent = ''; status.className = 'pt-trigger-status'; }, 8000);
-          return;
-        }
-        if (ghCfg && ghCfg.writeToken && ghCfg.writeToken.indexOf('__') !== 0) {
-          await ghWriteTrigger('dashboard-public');
-          status.textContent = '✓ Anfrage gestellt — Mac startet beim nächsten Check (max. 5 Min).';
-          status.className = 'pt-trigger-status ok';
-          setTimeout(() => { btn.disabled = false; status.textContent = ''; status.className = 'pt-trigger-status'; }, 12000);
-          return;
-        }
-        throw new Error('Weder Cowork noch Schreib-Token verfügbar.');
+        await ghWriteTrigger('dashboard');
+        status.textContent = '✓ Workflow gestartet. In ~30 Sek ist das Dashboard neu gebaut — Seite einfach neu laden.';
+        status.className = 'pt-trigger-status ok';
+        setTimeout(() => { btn.disabled = false; status.textContent = ''; status.className = 'pt-trigger-status'; }, 30000);
       } catch (e) {
         status.textContent = '✗ ' + (e && e.message ? e.message : String(e));
         status.className = 'pt-trigger-status err';
