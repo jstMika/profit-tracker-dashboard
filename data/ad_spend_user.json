@@ -1,5 +1,69 @@
 {
   "entries": {
+    "2026-05-23": {
+      "saved_at": "2026-05-28T00:00:00.000Z",
+      "source": "migration_restore",
+      "campaigns": [
+        {
+          "name": "ABO Testing Schieferherzen",
+          "group": "Schieferherzen",
+          "spend": 55.31
+        },
+        {
+          "name": "ABO Testing Weingläser",
+          "group": "Weingläser",
+          "spend": 9.99
+        }
+      ]
+    },
+    "2026-05-24": {
+      "saved_at": "2026-05-28T00:00:00.000Z",
+      "source": "migration_restore",
+      "campaigns": [
+        {
+          "name": "ABO Testing Schieferherzen",
+          "group": "Schieferherzen",
+          "spend": 66.45
+        },
+        {
+          "name": "ABO Testing Weingläser",
+          "group": "Weingläser",
+          "spend": 30.12
+        }
+      ]
+    },
+    "2026-05-25": {
+      "saved_at": "2026-05-28T00:00:00.000Z",
+      "source": "migration_restore",
+      "campaigns": [
+        {
+          "name": "ABO Testing Schieferherzen",
+          "group": "Schieferherzen",
+          "spend": 49.61
+        },
+        {
+          "name": "ABO Testing Weingläser",
+          "group": "Weingläser",
+          "spend": 36.26
+        }
+      ]
+    },
+    "2026-05-26": {
+      "saved_at": "2026-05-28T00:00:00.000Z",
+      "source": "migration_restore",
+      "campaigns": [
+        {
+          "name": "ABO Testing Schieferherzen",
+          "group": "Schieferherzen",
+          "spend": 26.37
+        },
+        {
+          "name": "ABO Testing Weingläser",
+          "group": "Weingläser",
+          "spend": 39.61
+        }
+      ]
+    },
     "2026-05-27": {
       "saved_at": "2026-05-27T23:17:09.868Z",
       "source": "dashboard",
