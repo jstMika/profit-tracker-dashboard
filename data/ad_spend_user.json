@@ -213,6 +213,17 @@
           "spend": 42.45
         }
       ]
+    },
+    "2026-05-22": {
+      "saved_at": "2026-05-29T00:32:08.372Z",
+      "source": "dashboard",
+      "campaigns": [
+        {
+          "name": "ABO Testing Schieferherzen",
+          "group": "Schieferherzen",
+          "spend": 35.82
+        }
+      ]
     }
   },
   "campaigns": [
