@@ -10,8 +10,8 @@
           "spend": 55.31
         },
         {
-          "name": "ABO Testing Weingläser",
-          "group": "Weingläser",
+          "name": "ABO Testing WeinglÃ¤ser",
+          "group": "WeinglÃ¤ser",
           "spend": 9.99
         }
       ]
@@ -26,8 +26,8 @@
           "spend": 66.45
         },
         {
-          "name": "ABO Testing Weingläser",
-          "group": "Weingläser",
+          "name": "ABO Testing WeinglÃ¤ser",
+          "group": "WeinglÃ¤ser",
           "spend": 30.12
         }
       ]
@@ -42,8 +42,8 @@
           "spend": 49.61
         },
         {
-          "name": "ABO Testing Weingläser",
-          "group": "Weingläser",
+          "name": "ABO Testing WeinglÃ¤ser",
+          "group": "WeinglÃ¤ser",
           "spend": 36.26
         }
       ]
@@ -58,8 +58,8 @@
           "spend": 26.37
         },
         {
-          "name": "ABO Testing Weingläser",
-          "group": "Weingläser",
+          "name": "ABO Testing WeinglÃ¤ser",
+          "group": "WeinglÃ¤ser",
           "spend": 39.61
         }
       ]
@@ -74,9 +74,25 @@
           "spend": 32.3
         },
         {
+          "name": "ABO Testing WeinglÃ¤ser",
+          "group": "WeinglÃ¤ser",
+          "spend": 47.99
+        }
+      ]
+    },
+    "2026-05-28": {
+      "saved_at": "2026-05-29T00:12:49.243Z",
+      "source": "dashboard",
+      "campaigns": [
+        {
+          "name": "ABO Testing Schieferherzen",
+          "group": "Schieferherzen",
+          "spend": 35.8
+        },
+        {
           "name": "ABO Testing Weingläser",
           "group": "Weingläser",
-          "spend": 47.99
+          "spend": 41.19
         }
       ]
     }
@@ -88,9 +104,14 @@
       "added_at": "2026-05-27T23:17:09.868Z"
     },
     {
+      "name": "ABO Testing WeinglÃ¤ser",
+      "group": "WeinglÃ¤ser",
+      "added_at": "2026-05-27T23:17:09.868Z"
+    },
+    {
       "name": "ABO Testing Weingläser",
       "group": "Weingläser",
-      "added_at": "2026-05-27T23:17:09.868Z"
+      "added_at": "2026-05-29T00:12:49.243Z"
     }
   ]
 }
