@@ -1,0 +1,65 @@
+{
+  "pulled_at": "2026-05-29T22:30:59.764205+00:00",
+  "date": "2026-05-29",
+  "shop": "4b841b",
+  "order_count": 2,
+  "orders": [
+    {
+      "id": 12683844649308,
+      "name": "#1341",
+      "created_at": "2026-05-29T13:59:46+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "44.95",
+      "total_price": "49.90",
+      "total_discounts": "0.00",
+      "total_tax": "0.00",
+      "total_shipping": "4.95",
+      "line_items": [
+        {
+          "id": 36935415398748,
+          "product_id": 15597877330268,
+          "variant_id": 57712007872860,
+          "title": "Auf UNS! Foto - personalisiertes Weinglas",
+          "name": "Auf UNS! Foto - personalisiertes Weinglas - 2er Set / Transparent / 450ml",
+          "quantity": 1,
+          "price": "44.95"
+        }
+      ]
+    },
+    {
+      "id": 12683727405404,
+      "name": "#1340",
+      "created_at": "2026-05-29T13:08:56+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "51.90",
+      "total_price": "51.90",
+      "total_discounts": "0.00",
+      "total_tax": "0.00",
+      "total_shipping": "0.00",
+      "line_items": [
+        {
+          "id": 36935193100636,
+          "product_id": 15388836921692,
+          "variant_id": 56476062253404,
+          "title": "Schiefer Aufsteller",
+          "name": "Schiefer Aufsteller",
+          "quantity": 1,
+          "price": "6.95"
+        },
+        {
+          "id": 36935193133404,
+          "product_id": 15573215543644,
+          "variant_id": 57560817664348,
+          "title": "Wo alles begann - Personalisiertes Schieferherz (15x15)",
+          "name": "Wo alles begann - Personalisiertes Schieferherz (15x15) - Schieferherz 15x15 cm / Transparent / 15x15",
+          "quantity": 1,
+          "price": "44.95"
+        }
+      ]
+    }
+  ]
+}
