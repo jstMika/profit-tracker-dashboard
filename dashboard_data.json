@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-29T00:31:38.986482+00:00",
+  "generated_at": "2026-05-29T00:32:27.832440+00:00",
   "days": [
     {
       "date": "2026-05-14",
@@ -83,10 +83,10 @@
       "orders": 2,
       "revenue": 109.8,
       "cogs": 44.74,
-      "spend": 0.0,
-      "profit": 65.06,
-      "margin": 0.5925,
-      "roas": 0,
+      "spend": 42.45,
+      "profit": 22.61,
+      "margin": 0.2059,
+      "roas": 2.5866,
       "be_roas": 1.6877
     },
     {
@@ -94,10 +94,10 @@
       "orders": 1,
       "revenue": 105.93,
       "cogs": 37.0,
-      "spend": 0.0,
-      "profit": 68.93,
-      "margin": 0.6507,
-      "roas": 0,
+      "spend": 35.82,
+      "profit": 33.11,
+      "margin": 0.3126,
+      "roas": 2.9573,
       "be_roas": 1.5368
     },
     {
@@ -317,10 +317,10 @@
       "orders": 2,
       "revenue": 109.8,
       "cogs": 44.74,
-      "spend": 0.0,
-      "profit": 65.06,
-      "margin": 0.5925,
-      "roas": 0
+      "spend": 42.45,
+      "profit": 22.61,
+      "margin": 0.2059,
+      "roas": 2.5866
     },
     {
       "date": "2026-05-22",
@@ -328,10 +328,10 @@
       "orders": 1,
       "revenue": 105.93,
       "cogs": 37.0,
-      "spend": 0.0,
-      "profit": 68.93,
-      "margin": 0.6507,
-      "roas": 0
+      "spend": 35.82,
+      "profit": 33.11,
+      "margin": 0.3126,
+      "roas": 2.9573
     },
     {
       "date": "2026-05-23",
@@ -568,6 +568,22 @@
       "campaign": "ABO Testing Schieferherzen",
       "group": "Schieferherzen",
       "spend": 39.78,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-05-21",
+      "campaign": "ABO Testing Schieferherzen",
+      "group": "Schieferherzen",
+      "spend": 42.45,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-05-22",
+      "campaign": "ABO Testing Schieferherzen",
+      "group": "Schieferherzen",
+      "spend": 35.82,
       "purchases": null,
       "roas": null
     },
