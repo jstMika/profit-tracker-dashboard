@@ -45,15 +45,17 @@ jobs:
       - name: Install StatiCrypt
         run: npm install -g staticrypt
 
-      - name: Pull Shopify orders (last 14 days)
+      - name: Pull Shopify orders (heute + 14 Tage zurück, Europe/Berlin)
         env:
           SHOPIFY_SHOP: ${{ vars.SHOPIFY_SHOP }}
           SHOPIFY_TOKEN: ${{ secrets.SHOPIFY_TOKEN }}
         run: |
           set -e
           mkdir -p data
-          for offset in $(seq 1 14); do
-            d=$(date -u -d "$offset days ago" +%Y-%m-%d)
+          # Datum in Europe/Berlin berechnen (nicht UTC!), und offset 0 = heute mit reinnehmen,
+          # damit der "heutige" Tag schon Daten hat sobald die ersten Bestellungen reinkommen.
+          for offset in $(seq 0 14); do
+            d=$(TZ=Europe/Berlin date -d "$offset days ago" +%Y-%m-%d)
             echo "::group::Pull $d"
             python3 scripts/pull_shopify.py --date "$d" --out-dir data/ || echo "(skip $d)"
             echo "::endgroup::"
