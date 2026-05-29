@@ -111,6 +111,18 @@
   .pt-mhtml-preview-row { display: flex; justify-content: space-between; padding: 2px 0; }
   .pt-mhtml-preview strong { color: #1a1a1a; }
   .pt-mhtml-existing-count { display: inline-block; margin-left: 6px; padding: 2px 7px; border-radius: 10px; background: #e1f5ee; color: #0f6e56; font-size: 11px; font-weight: 600; }
+  .pt-mhtml-list-toggle { font-size: 12px; color: #1a7a3e; cursor: pointer; user-select: none; padding: 6px 0 0; display: inline-block; }
+  .pt-mhtml-list-toggle:hover { text-decoration: underline; }
+  .pt-mhtml-list { display: none; margin-top: 10px; max-height: 350px; overflow-y: auto; border: 0.5px solid rgba(0,0,0,0.08); border-radius: 8px; background: #fff; }
+  .pt-mhtml-list.show { display: block; }
+  .pt-mhtml-list table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .pt-mhtml-list th { position: sticky; top: 0; background: #f9f8f3; text-align: left; padding: 6px 8px; font-weight: 500; color: #666; border-bottom: 0.5px solid rgba(0,0,0,0.08); text-transform: uppercase; letter-spacing: 0.03em; font-size: 10px; }
+  .pt-mhtml-list td { padding: 5px 8px; border-bottom: 0.5px solid rgba(0,0,0,0.04); font-variant-numeric: tabular-nums; }
+  .pt-mhtml-list tr:last-child td { border-bottom: 0; }
+  .pt-mhtml-list .num { text-align: right; }
+  .pt-mhtml-list .pl-id { color: #888; font-size: 10px; }
+  .pt-mhtml-list .shop-id { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 10px; }
+  .pt-mhtml-summary { background: #f0f7f3; border: 0.5px solid #cfe3d6; border-radius: 6px; padding: 8px 10px; margin-top: 8px; font-size: 12px; color: #1a5a32; display: flex; gap: 14px; flex-wrap: wrap; }
 
   .pt-section { margin: 1.5rem 0; }
   .pt-section-h { font-size: 13px; font-weight: 600; margin: 0 0 0.75rem; color: #444; text-transform: uppercase; letter-spacing: 0.04em; }
@@ -231,6 +243,8 @@
         <button class="pt-btn pt-btn-ghost" id="pt-mhtml-cancel">Schließen</button>
         <span class="pt-entry-status" id="pt-mhtml-status"></span>
       </div>
+      <span class="pt-mhtml-list-toggle" id="pt-mhtml-list-toggle">▸ Importierte Bestellungen anzeigen</span>
+      <div class="pt-mhtml-list" id="pt-mhtml-list"></div>
     </div>
   </div>
 
@@ -731,8 +745,7 @@
       const j = await r.json();
       pendingSpendSha = j.sha;
       try {
-        const decoded = atob((j.content || '').replace(/\n/g, ''));
-        const obj = JSON.parse(decoded);
+        const obj = JSON.parse(b64ToUtf8(j.content));
         pendingSpend = obj && obj.entries ? obj : { entries: {} };
       } catch (e) {
         pendingSpend = { entries: {} };
@@ -1023,7 +1036,7 @@
       pendingSpend.entries[date] = { saved_at: new Date().toISOString(), source: 'dashboard', campaigns: camps };
       const total = camps.reduce((s, c) => s + c.spend, 0);
       await ghSaveSpend('Ad Spend ' + date + ' via Dashboard (' + total.toFixed(2) + ' €)');
-      statusEl.textContent = '✓ Gespeichert (' + eur(total) + ')'; statusEl.className = 'pt-entry-status ok';
+      statusEl.textContent = '✓ Gespeichert (' + eur(total) + '). Workflow baut in ~30 Sek neu — dann F5 für aktuelle Kacheln.'; statusEl.className = 'pt-entry-status ok';
       statusMini.textContent = '✓ ' + date; statusMini.className = 'pt-entry-status ok';
       spendByDateMap = buildSpendByDate();
       renderSavedList();
@@ -1037,14 +1050,21 @@
   }
 
   // ----- Generic GitHub file helpers (shared by ad-spend save + MHTML upload) -----
+  function b64ToUtf8(b64) {
+    // Proper UTF-8 decode: atob → bytes → TextDecoder (avoids the double-UTF-8 mojibake bug)
+    const binary = atob((b64 || '').replace(/\n/g, ''));
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new TextDecoder('utf-8').decode(bytes);
+  }
+
   async function ghReadJsonFile(path) {
     const url = 'https://api.github.com/repos/' + ghCfg.writeOwner + '/' + ghCfg.writeRepo + '/contents/' + path + '?ref=main&t=' + Date.now();
     const r = await fetch(url, { headers: ghHeaders(), cache: 'no-store' });
     if (r.status === 404) return { content: null, sha: null };
     if (!r.ok) throw new Error('GET ' + path + ': ' + r.status);
     const j = await r.json();
-    const decoded = atob((j.content || '').replace(/\n/g, ''));
-    return { content: JSON.parse(decoded), sha: j.sha };
+    return { content: JSON.parse(b64ToUtf8(j.content)), sha: j.sha };
   }
 
   async function ghWriteJsonFile(path, obj, commitMsg, currentSha) {
@@ -1162,6 +1182,9 @@
     el.className = 'pt-entry-status' + (kind ? ' ' + kind : '');
   }
 
+  // Track the currently-saved Print-Labs orders for diffing on upload preview
+  let savedPlOrders = null; // { schema_version, orders: {id: order}, uploads: [] }
+
   function renderMhtmlPreview(orders, filename) {
     const wrap = document.getElementById('pt-mhtml-preview');
     if (!orders || !orders.length) {
@@ -1172,22 +1195,91 @@
     const dates = orders.map(o => o.created_iso || o.created_raw).filter(Boolean).sort();
     const first = dates[0] ? dates[0].substring(0, 10) : '–';
     const last = dates[dates.length - 1] ? dates[dates.length - 1].substring(0, 10) : '–';
+
+    // Diff against currently-saved orders
+    let nNew = 0, nChanged = 0, nUnchanged = 0;
+    const existing = savedPlOrders && savedPlOrders.orders ? savedPlOrders.orders : {};
+    orders.forEach(o => {
+      const ex = existing[o.shopify_order_id];
+      if (!ex) nNew++;
+      else if (Math.abs((ex.total_cost_net || 0) - o.total_cost_net) > 0.001 || ex.status !== o.status) nChanged++;
+      else nUnchanged++;
+    });
+
     wrap.style.display = 'block';
     wrap.innerHTML =
       '<div class="pt-mhtml-preview-row"><span>Datei</span><span><strong>' + (filename || '–') + '</strong></span></div>' +
       '<div class="pt-mhtml-preview-row"><span>Bestellungen erkannt</span><span><strong>' + orders.length + '</strong></span></div>' +
       '<div class="pt-mhtml-preview-row"><span>Zeitraum</span><span>' + first + ' – ' + last + '</span></div>' +
-      '<div class="pt-mhtml-preview-row"><span>Print-Labs Kosten netto Σ</span><span><strong>' + eur(total) + '</strong></span></div>';
+      '<div class="pt-mhtml-preview-row"><span>Print-Labs Kosten netto Σ</span><span><strong>' + eur(total) + '</strong></span></div>' +
+      '<div class="pt-mhtml-summary">' +
+        '<span><strong style="color:#1a7a3e;">' + nNew + '</strong> neu</span>' +
+        '<span><strong style="color:#b45309;">' + nChanged + '</strong> Cost geändert</span>' +
+        '<span><strong style="color:#666;">' + nUnchanged + '</strong> bereits importiert</span>' +
+      '</div>';
+  }
+
+  function ust() {
+    return (payload && payload.ust_factor) ? payload.ust_factor : 1.19;
+  }
+
+  function renderPlList() {
+    const wrap = document.getElementById('pt-mhtml-list');
+    const toggle = document.getElementById('pt-mhtml-list-toggle');
+    const orders = (savedPlOrders && savedPlOrders.orders) ? Object.values(savedPlOrders.orders) : [];
+    if (!orders.length) {
+      wrap.innerHTML = '<div style="padding:10px 12px; color:#888; font-size:12px;">Noch keine Print-Labs-Bestellungen importiert. Lade oben eine MHTML hoch.</div>';
+      toggle.textContent = '▸ Importierte Bestellungen anzeigen (0)';
+      return;
+    }
+    // Sort newest first by created_iso (fallback created_raw / first_seen)
+    orders.sort((a, b) => {
+      const ad = a.created_iso || a.first_seen || '';
+      const bd = b.created_iso || b.first_seen || '';
+      return bd.localeCompare(ad);
+    });
+    toggle.textContent = (wrap.classList.contains('show') ? '▾' : '▸') + ' Importierte Bestellungen ' + (wrap.classList.contains('show') ? 'verbergen' : 'anzeigen') + ' (' + orders.length + ')';
+    const u = ust();
+    const fmtDt = (iso, raw) => {
+      if (!iso) return raw || '–';
+      const d = new Date(iso);
+      return d.toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' });
+    };
+    wrap.innerHTML =
+      '<table>' +
+        '<thead><tr>' +
+          '<th>Print-Labs Datum</th>' +
+          '<th>Shopify-ID</th>' +
+          '<th>Print-Labs-ID</th>' +
+          '<th class="num">COGS netto</th>' +
+          '<th class="num">+ USt</th>' +
+          '<th>Status</th>' +
+        '</tr></thead><tbody>' +
+        orders.map(o => {
+          const net = o.total_cost_net || 0;
+          const gross = Math.round(net * u * 100) / 100;
+          return '<tr>' +
+            '<td>' + fmtDt(o.created_iso, o.created_raw) + '</td>' +
+            '<td class="shop-id">' + (o.shopify_order_id || '–') + '</td>' +
+            '<td class="pl-id">' + (o.printlabs_id || '–') + '</td>' +
+            '<td class="num">' + eur(net) + '</td>' +
+            '<td class="num">' + eur(gross) + '</td>' +
+            '<td>' + (o.status || '–') + '</td>' +
+          '</tr>';
+        }).join('') +
+      '</tbody></table>';
   }
 
   async function loadAndDisplayExistingPlCount() {
     if (!ghCfg || !ghCfg.writeToken || ghCfg.writeToken.indexOf('__') === 0) return;
     try {
       const r = await ghReadJsonFile('data/printlabs_user.json');
-      const n = r.content && r.content.orders ? Object.keys(r.content.orders).length : 0;
+      savedPlOrders = r.content && r.content.orders ? r.content : { orders: {}, uploads: [] };
+      const n = savedPlOrders.orders ? Object.keys(savedPlOrders.orders).length : 0;
       const el = document.getElementById('pt-mhtml-existing');
       if (n > 0) el.textContent = n + ' gespeichert';
       else el.textContent = '';
+      renderPlList();
     } catch (e) { /* soft fail */ }
   }
 
@@ -1251,15 +1343,18 @@
       await ghWriteJsonFile('data/printlabs_user.json', current,
         'Print-Labs MHTML: ' + mhtmlParsed.orders.length + ' Bestellungen (+' + added + ' neu, ' + updated + ' aktualisiert)', cur.sha);
 
-      setMhtmlStatus('✓ Gespeichert: ' + added + ' neu, ' + updated + ' aktualisiert, ' + unchanged + ' unverändert. Workflow läuft jetzt.', 'ok');
+      setMhtmlStatus('✓ Gespeichert: ' + added + ' neu, ' + updated + ' Cost geändert, ' + unchanged + ' bereits da. Workflow baut in ~30 Sek das Dashboard neu — dann F5 zum Neuladen.', 'ok');
       document.getElementById('pt-mhtml-status-mini').textContent = '✓ ' + added + '+' + updated;
       document.getElementById('pt-mhtml-status-mini').className = 'pt-entry-status ok';
       setTimeout(() => { document.getElementById('pt-mhtml-status-mini').textContent = ''; }, 8000);
+      savedPlOrders = current; // update local copy so the list refreshes correctly
       loadAndDisplayExistingPlCount();
-      // Reset form
+      // Reset form (keep the list section open for visual confirmation)
       document.getElementById('pt-mhtml-file').value = '';
       mhtmlParsed = null;
       renderMhtmlPreview(null);
+      document.getElementById('pt-mhtml-list').classList.add('show');
+      renderPlList();
     } catch (e) {
       setMhtmlStatus('✗ Fehler beim Speichern: ' + e.message, 'err');
       btn.disabled = false;
@@ -1288,6 +1383,11 @@
     });
     document.getElementById('pt-mhtml-save').addEventListener('click', handleMhtmlSave);
     document.getElementById('pt-mhtml-cancel').addEventListener('click', () => wrap.classList.remove('open'));
+    document.getElementById('pt-mhtml-list-toggle').addEventListener('click', () => {
+      const list = document.getElementById('pt-mhtml-list');
+      list.classList.toggle('show');
+      renderPlList(); // refresh + update toggle text
+    });
 
     // Show existing count on page load (best effort)
     loadAndDisplayExistingPlCount();
