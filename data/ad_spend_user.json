@@ -111,6 +111,22 @@
           "spend": 5.93
         }
       ]
+    },
+    "2026-05-15": {
+      "saved_at": "2026-05-29T00:28:50.028Z",
+      "source": "dashboard",
+      "campaigns": [
+        {
+          "name": "ABO Testing Schieferherzen",
+          "group": "Schieferherzen",
+          "spend": 14.56
+        },
+        {
+          "name": "ABO Testing Weingläser",
+          "group": "Weingläser",
+          "spend": 6.47
+        }
+      ]
     }
   },
   "campaigns": [
