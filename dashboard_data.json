@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-30T10:29:30.390527+00:00",
+  "generated_at": "2026-05-30T22:52:37.183933+00:00",
   "days": [
     {
       "date": "2026-05-14",
@@ -179,14 +179,14 @@
     },
     {
       "date": "2026-05-30",
-      "orders": 1,
-      "revenue": 49.9,
-      "cogs": 0.0,
+      "orders": 3,
+      "revenue": 147.6,
+      "cogs": 63.33,
       "spend": 0.0,
-      "profit": 49.9,
-      "margin": 1.0,
+      "profit": 84.27,
+      "margin": 0.5709,
       "roas": 0,
-      "be_roas": 1.0
+      "be_roas": 1.7515
     }
   ],
   "groups": [
@@ -512,12 +512,12 @@
     {
       "date": "2026-05-30",
       "group": "Weingläser",
-      "orders": 1,
-      "revenue": 49.9,
-      "cogs": 0.0,
+      "orders": 3,
+      "revenue": 147.6,
+      "cogs": 63.33,
       "spend": 0.0,
-      "profit": 49.9,
-      "margin": 1.0,
+      "profit": 84.27,
+      "margin": 0.5709,
       "roas": 0
     }
   ],
@@ -1059,22 +1059,41 @@
       "date": "2026-05-30",
       "shopify_name": "#1342",
       "shopify_id": "12685523485020",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001564598",
       "group": "Weingläser",
       "items": 1,
       "total": 49.9,
       "shipping": 4.95,
       "discount": 0.0,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0
-    }
-  ],
-  "missing_costs": [
+      "cogs_net": 18.24,
+      "cogs_gross": 21.71
+    },
     {
       "date": "2026-05-30",
-      "shopify_name": "#1342",
-      "shopify_id": "12685523485020",
-      "reason": "no_printlabs_match"
+      "shopify_name": "#1343",
+      "shopify_id": "12687223521628",
+      "printlabs_id": "ORDPL-1001565558",
+      "group": "Weingläser",
+      "items": 3,
+      "total": 56.85,
+      "shipping": 0.0,
+      "discount": 0.0,
+      "cogs_net": 21.27,
+      "cogs_gross": 25.31
+    },
+    {
+      "date": "2026-05-30",
+      "shopify_name": "#1344",
+      "shopify_id": "12687334146396",
+      "printlabs_id": "ORDPL-1001565648",
+      "group": "Weingläser",
+      "items": 2,
+      "total": 40.85,
+      "shipping": 4.95,
+      "discount": 0.0,
+      "cogs_net": 13.71,
+      "cogs_gross": 16.31
     }
-  ]
+  ],
+  "missing_costs": []
 }
