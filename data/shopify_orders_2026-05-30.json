@@ -1,7 +1,32 @@
 {
-  "pulled_at": "2026-05-29T22:30:59.239732+00:00",
+  "pulled_at": "2026-05-30T10:29:25.012096+00:00",
   "date": "2026-05-30",
   "shop": "4b841b",
-  "order_count": 0,
-  "orders": []
+  "order_count": 1,
+  "orders": [
+    {
+      "id": 12685523485020,
+      "name": "#1342",
+      "created_at": "2026-05-30T08:06:08+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "44.95",
+      "total_price": "49.90",
+      "total_discounts": "0.00",
+      "total_tax": "0.00",
+      "total_shipping": "4.95",
+      "line_items": [
+        {
+          "id": 36938506895708,
+          "product_id": 15497934963036,
+          "variant_id": 57096277852508,
+          "title": "Beste Freundin - personalisiertes Weinglas",
+          "name": "Beste Freundin - personalisiertes Weinglas - 2er Set / Transparent / 450ml",
+          "quantity": 1,
+          "price": "44.95"
+        }
+      ]
+    }
+  ]
 }
