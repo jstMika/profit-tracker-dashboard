@@ -1,7 +1,50 @@
 {
-  "pulled_at": "2026-05-30T22:53:28.635493+00:00",
+  "pulled_at": "2026-05-31T11:07:03.312308+00:00",
   "date": "2026-05-31",
   "shop": "4b841b",
-  "order_count": 0,
-  "orders": []
+  "order_count": 1,
+  "orders": [
+    {
+      "id": 12687847031132,
+      "name": "#1345",
+      "created_at": "2026-05-31T09:25:29+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "58.85",
+      "total_price": "58.85",
+      "total_discounts": "0.00",
+      "total_tax": "0.00",
+      "total_shipping": "0.00",
+      "line_items": [
+        {
+          "id": 36942867038556,
+          "product_id": 15573215543644,
+          "variant_id": 57560817664348,
+          "title": "Wo alles begann - Personalisiertes Schieferherz (15x15)",
+          "name": "Wo alles begann - Personalisiertes Schieferherz (15x15) - Schieferherz 15x15 cm / Transparent / 15x15",
+          "quantity": 1,
+          "price": "44.95"
+        },
+        {
+          "id": 36942867071324,
+          "product_id": 15388839412060,
+          "variant_id": 56476067791196,
+          "title": "Satin Geschenkbeutel",
+          "name": "Satin Geschenkbeutel",
+          "quantity": 1,
+          "price": "6.95"
+        },
+        {
+          "id": 36942867104092,
+          "product_id": 15388836921692,
+          "variant_id": 56476062253404,
+          "title": "Schiefer Aufsteller",
+          "name": "Schiefer Aufsteller",
+          "quantity": 1,
+          "price": "6.95"
+        }
+      ]
+    }
+  ]
 }

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-30T22:53:32.915818+00:00",
+  "generated_at": "2026-05-31T11:07:08.040293+00:00",
   "days": [
     {
       "date": "2026-05-14",
@@ -187,6 +187,17 @@
       "margin": 0.1152,
       "roas": 2.1945,
       "be_roas": 1.7515
+    },
+    {
+      "date": "2026-05-31",
+      "orders": 1,
+      "revenue": 58.85,
+      "cogs": 0.0,
+      "spend": 0.0,
+      "profit": 58.85,
+      "margin": 1.0,
+      "roas": 0,
+      "be_roas": 1.0
     }
   ],
   "groups": [
@@ -530,6 +541,17 @@
       "profit": 56.2,
       "margin": 0.3808,
       "roas": 5.2583
+    },
+    {
+      "date": "2026-05-31",
+      "group": "Schieferherzen",
+      "orders": 1,
+      "revenue": 58.85,
+      "cogs": 0.0,
+      "spend": 0.0,
+      "profit": 58.85,
+      "margin": 1.0,
+      "roas": 0
     }
   ],
   "campaigns": [
@@ -1120,7 +1142,27 @@
       "discount": 0.0,
       "cogs_net": 13.71,
       "cogs_gross": 16.31
+    },
+    {
+      "date": "2026-05-31",
+      "shopify_name": "#1345",
+      "shopify_id": "12687847031132",
+      "printlabs_id": null,
+      "group": "Schieferherzen",
+      "items": 3,
+      "total": 58.85,
+      "shipping": 0.0,
+      "discount": 0.0,
+      "cogs_net": 0.0,
+      "cogs_gross": 0.0
     }
   ],
-  "missing_costs": []
+  "missing_costs": [
+    {
+      "date": "2026-05-31",
+      "shopify_name": "#1345",
+      "shopify_id": "12687847031132",
+      "reason": "no_printlabs_match"
+    }
+  ]
 }
