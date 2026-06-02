@@ -91,6 +91,20 @@
   .pt-entry-addcamp-form input[type="text"] { flex: 1; min-width: 160px; }
   .pt-entry-addcamp-form .pt-btn { padding: 5px 10px; font-size: 12px; }
   .pt-entry-row-meta { font-size: 9px; color: #999; margin-left: 4px; font-weight: 400; text-transform: none; letter-spacing: 0; }
+  /* Campaign row with reorder/delete controls */
+  .pt-entry-camp-row { display: flex; align-items: center; gap: 4px; margin-bottom: 6px; padding: 2px 0; }
+  .pt-camp-label-area { flex: 1; display: flex; align-items: center; gap: 6px; font-size: 13px; color: #444; min-width: 0; overflow: hidden; }
+  .pt-camp-label-area > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pt-camp-input { width: 95px !important; flex: 0 0 auto; }
+  .pt-camp-btn { font: inherit; font-size: 11px; padding: 4px 7px; line-height: 1; background: transparent; border: 0.5px solid transparent; border-radius: 4px; cursor: pointer; color: #888; min-width: 26px; transition: all 0.12s; }
+  .pt-camp-btn:hover { background: #f0eee5; border-color: rgba(0,0,0,0.12); color: #333; }
+  .pt-camp-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .pt-camp-btn:disabled:hover { background: transparent; border-color: transparent; color: #888; }
+  .pt-camp-btn.delete:hover { background: #fef2f2; border-color: #fecaca; color: #b42318; }
+  @media (max-width: 500px) {
+    .pt-camp-input { width: 80px !important; }
+    .pt-camp-btn { font-size: 10px; padding: 3px 5px; min-width: 22px; }
+  }
   .pt-entry-saved { margin-bottom: 14px; font-size: 12px; color: #666; }
   .pt-entry-saved-title { font-size: 12px; font-weight: 600; margin-bottom: 6px; color: #444; }
   .pt-entry-saved-empty { font-size: 12px; color: #888; margin-bottom: 14px; padding: 8px 10px; background: #faf9f3; border-radius: 6px; }
@@ -850,19 +864,17 @@
   }
 
   function uniqueCampaignsAll() {
+    // 1) pendingSpend.campaigns wins for ORDER (user can reorder via UI)
     const all = new Map();
-    uniqueCampaigns(payload).forEach(c => all.set(c.name, c));
-    // Dashboard-added campaigns
     (pendingSpend.campaigns || []).forEach(c => {
       if (!c.name) return;
-      if (!all.has(c.name)) all.set(c.name, { name: c.name, group: c.group || 'Sonstiges', source: 'dashboard', addedAt: c.added_at });
+      all.set(c.name, { name: c.name, group: c.group || 'Sonstiges', source: 'dashboard', addedAt: c.added_at });
     });
-    // Sort: known/recent first
-    return Array.from(all.values()).sort((a, b) => {
-      const ad = a.lastDate || a.addedAt || '';
-      const bd = b.lastDate || b.addedAt || '';
-      return bd.localeCompare(ad);
+    // 2) Historical campaigns not yet in the list — append at the end
+    uniqueCampaigns(payload).forEach(c => {
+      if (!all.has(c.name)) all.set(c.name, c);
     });
+    return Array.from(all.values());
   }
 
   function knownGroupOptions() {
@@ -875,16 +887,34 @@
     return Array.from(set).sort();
   }
 
+  function captureCurrentSpendValues() {
+    const map = {};
+    document.querySelectorAll('#pt-entry-camps input[type="number"]').forEach(inp => {
+      if (inp.value) map[inp.dataset.camp] = inp.value;
+    });
+    return map;
+  }
+  function restoreSpendValues(map) {
+    document.querySelectorAll('#pt-entry-camps input[type="number"]').forEach(inp => {
+      if (map[inp.dataset.camp] != null) inp.value = map[inp.dataset.camp];
+    });
+  }
+
   function renderEntryForm() {
     const camps = uniqueCampaignsAll();
     const wrap = document.getElementById('pt-entry-camps');
+    const escAttr = (s) => String(s == null ? '' : s).replace(/"/g, '&quot;');
     const campsHtml = camps.length
-      ? camps.map(c =>
-          '<div class="pt-entry-row">' +
-            '<label>' + groupPill(c.group) + ' <span style="margin-left:4px;">' + c.name + '</span>' +
-              (c.source === 'dashboard' ? '<span class="pt-entry-row-meta">(neu)</span>' : '') +
-            '</label>' +
-            '<input type="number" step="0.01" min="0" placeholder="0.00" data-camp="' + c.name.replace(/"/g, '&quot;') + '" data-group="' + (c.group || '').replace(/"/g, '&quot;') + '">' +
+      ? camps.map((c, i) =>
+          '<div class="pt-entry-camp-row" data-camp-row="' + escAttr(c.name) + '">' +
+            '<button type="button" class="pt-camp-btn" data-action="up" title="nach oben"' + (i === 0 ? ' disabled' : '') + '>▲</button>' +
+            '<button type="button" class="pt-camp-btn" data-action="down" title="nach unten"' + (i === camps.length - 1 ? ' disabled' : '') + '>▼</button>' +
+            '<div class="pt-camp-label-area">' +
+              groupPill(c.group) + '<span>' + c.name + '</span>' +
+              (c.source === 'dashboard' && !c.lastDate ? '<span class="pt-entry-row-meta">(neu)</span>' : '') +
+            '</div>' +
+            '<input class="pt-camp-input" type="number" step="0.01" min="0" placeholder="0.00" data-camp="' + escAttr(c.name) + '" data-group="' + escAttr(c.group || '') + '">' +
+            '<button type="button" class="pt-camp-btn delete" data-action="delete" title="Kampagne löschen">✕</button>' +
           '</div>'
         ).join('')
       : '<div class="pt-entry-hint">Noch keine Kampagnen erfasst — füge unten die erste hinzu.</div>';
@@ -908,7 +938,97 @@
     document.getElementById('pt-newcamp-name').addEventListener('keydown', (e) => {
       if (e.key === 'Enter') { e.preventDefault(); handleAddCampaign(); }
     });
+    // Event delegation für ▲ ▼ ✕ Buttons
+    wrap.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+      const row = btn.closest('[data-camp-row]');
+      if (!row) return;
+      const name = row.dataset.campRow;
+      const action = btn.dataset.action;
+      if (action === 'up') handleMoveCampaign(name, -1);
+      else if (action === 'down') handleMoveCampaign(name, +1);
+      else if (action === 'delete') handleDeleteCampaign(name);
+    });
     prefillEntryForm();
+  }
+
+  let campaignOpInProgress = false;
+  async function handleDeleteCampaign(name) {
+    if (campaignOpInProgress) return;
+    if (!ghCfg || !ghCfg.writeToken || ghCfg.writeToken.indexOf('__') === 0) {
+      document.getElementById('pt-entry-status').textContent = '✗ Schreib-Token fehlt.';
+      document.getElementById('pt-entry-status').className = 'pt-entry-status err';
+      return;
+    }
+    if (!confirm('Kampagne "' + name + '" wirklich löschen?\n\nAlle historischen Spend-Einträge für diese Kampagne werden ebenfalls entfernt.')) return;
+    campaignOpInProgress = true;
+    const typed = captureCurrentSpendValues();
+    const statusEl = document.getElementById('pt-entry-status');
+    statusEl.textContent = 'Lösche…'; statusEl.className = 'pt-entry-status';
+    try {
+      await ghLoadSpend(); // refresh
+      pendingSpend.campaigns = (pendingSpend.campaigns || []).filter(c => c.name !== name);
+      Object.values(pendingSpend.entries || {}).forEach(e => {
+        e.campaigns = (e.campaigns || []).filter(c => c.name !== name);
+      });
+      await ghSaveSpend('Kampagne "' + name + '" gelöscht');
+      spendByDateMap = buildSpendByDate();
+      renderEntryForm();
+      restoreSpendValues(typed); // typed values for surviving campaigns stay
+      renderSavedList();
+      redrawPickers();
+      statusEl.textContent = '✓ "' + name + '" gelöscht. F5 nach ~30 Sek für aktualisierte Kacheln.';
+      statusEl.className = 'pt-entry-status ok';
+    } catch (e) {
+      statusEl.textContent = '✗ Löschen fehlgeschlagen: ' + e.message;
+      statusEl.className = 'pt-entry-status err';
+    } finally {
+      campaignOpInProgress = false;
+    }
+  }
+
+  async function handleMoveCampaign(name, direction) {
+    if (campaignOpInProgress) return;
+    if (!ghCfg || !ghCfg.writeToken || ghCfg.writeToken.indexOf('__') === 0) return;
+    campaignOpInProgress = true;
+    const typed = captureCurrentSpendValues();
+    const statusEl = document.getElementById('pt-entry-status');
+    try {
+      await ghLoadSpend();
+      if (!pendingSpend.campaigns) pendingSpend.campaigns = [];
+      // Wenn die Kampagne nur historisch existiert: erst in pendingSpend.campaigns einsortieren
+      let idx = pendingSpend.campaigns.findIndex(c => c.name === name);
+      if (idx < 0) {
+        const cur = uniqueCampaignsAll().find(c => c.name === name);
+        if (!cur) return;
+        // Insert all historical campaigns into pendingSpend.campaigns (preserve current visual order)
+        uniqueCampaignsAll().forEach(c => {
+          if (!pendingSpend.campaigns.some(x => x.name === c.name)) {
+            pendingSpend.campaigns.push({ name: c.name, group: c.group || 'Sonstiges', added_at: new Date().toISOString() });
+          }
+        });
+        idx = pendingSpend.campaigns.findIndex(c => c.name === name);
+      }
+      const newIdx = idx + direction;
+      if (newIdx < 0 || newIdx >= pendingSpend.campaigns.length) {
+        campaignOpInProgress = false; return;
+      }
+      const tmp = pendingSpend.campaigns[idx];
+      pendingSpend.campaigns[idx] = pendingSpend.campaigns[newIdx];
+      pendingSpend.campaigns[newIdx] = tmp;
+      await ghSaveSpend('Kampagnen-Reihenfolge geändert (' + name + ' ' + (direction < 0 ? '↑' : '↓') + ')');
+      renderEntryForm();
+      restoreSpendValues(typed);
+      statusEl.textContent = '✓ Reihenfolge gespeichert.';
+      statusEl.className = 'pt-entry-status ok';
+      setTimeout(() => { if (statusEl.textContent.indexOf('✓ Reihenfolge') === 0) { statusEl.textContent = ''; } }, 3000);
+    } catch (e) {
+      statusEl.textContent = '✗ Verschieben fehlgeschlagen: ' + e.message;
+      statusEl.className = 'pt-entry-status err';
+    } finally {
+      campaignOpInProgress = false;
+    }
   }
 
   function handleAddCampaign() {
@@ -924,6 +1044,7 @@
     if (existing) {
       statusEl.textContent = '✗ Kampagne existiert schon (Gruppe: ' + existing.group + ').'; statusEl.className = 'pt-entry-status err'; return;
     }
+    const typed = captureCurrentSpendValues();
     pendingSpend.campaigns = pendingSpend.campaigns || [];
     pendingSpend.campaigns.push({ name, group, added_at: new Date().toISOString() });
     nameInp.value = '';
@@ -931,6 +1052,7 @@
     statusEl.textContent = 'ℹ "' + name + '" hinzugefügt. Wird beim nächsten Speichern dauerhaft übernommen.';
     statusEl.className = 'pt-entry-status';
     renderEntryForm();
+    restoreSpendValues(typed);
   }
 
   function prefillEntryForm() {
