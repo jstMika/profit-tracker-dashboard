@@ -292,13 +292,13 @@
   },
   "campaigns": [
     {
-      "name": "ABO Testing Schieferherzen",
-      "group": "Schieferherzen",
+      "name": "ABO Testing Weingläser",
+      "group": "Weingläser",
       "added_at": "2026-05-27T23:17:09.868Z"
     },
     {
-      "name": "ABO Testing Weingläser",
-      "group": "Weingläser",
+      "name": "ABO Testing Schieferherzen",
+      "group": "Schieferherzen",
       "added_at": "2026-05-27T23:17:09.868Z"
     }
   ]
