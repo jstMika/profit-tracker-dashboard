@@ -35,7 +35,7 @@
   .pt-fp-marked { font-weight: 600; }
 
   /* KPIs */
-  .pt-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+  .pt-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
   .pt-card { background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: 10px; padding: 0.85rem 1rem; position: relative; }
   .pt-card-label { font-size: 11px; color: #777; margin: 0 0 4px; text-transform: uppercase; letter-spacing: 0.04em; display: flex; align-items: center; gap: 4px; }
   .pt-card-value { font-size: 22px; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
@@ -168,7 +168,7 @@
   .pt-trigger-status.err { color: #b42318; }
   .pt-trigger-hint { font-size: 11px; color: #888; margin-top: 4px; flex-basis: 100%; }
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1100px) {
     .pt-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
   @media (max-width: 700px) {
@@ -213,6 +213,7 @@
     <div class="pt-card"><p class="pt-card-label">Gewinn</p><p class="pt-card-value" id="kpi-profit">–</p><p class="pt-card-delta" id="kpi-profit-delta"></p><p class="pt-card-sub" id="kpi-profit-sub"></p></div>
     <div class="pt-card pt-card-hover" id="card-revenue" tabindex="0"><p class="pt-card-label">Umsatz <span class="pt-info">i</span></p><p class="pt-card-value" id="kpi-revenue">–</p><p class="pt-card-delta" id="kpi-revenue-delta"></p><p class="pt-card-sub" id="kpi-revenue-sub"></p><div class="pt-tip" id="tip-revenue"></div></div>
     <div class="pt-card pt-card-hover" id="card-spend" tabindex="0"><p class="pt-card-label">Ad Spend <span class="pt-info">i</span></p><p class="pt-card-value" id="kpi-spend">–</p><p class="pt-card-delta" id="kpi-spend-delta"></p><p class="pt-card-sub" id="kpi-spend-sub"></p><div class="pt-tip" id="tip-spend"></div></div>
+    <div class="pt-card pt-card-hover" id="card-cogs" tabindex="0"><p class="pt-card-label">COGS <span class="pt-info">i</span></p><p class="pt-card-value" id="kpi-cogs">–</p><p class="pt-card-delta" id="kpi-cogs-delta"></p><p class="pt-card-sub" id="kpi-cogs-sub"></p><div class="pt-tip" id="tip-cogs"></div></div>
     <div class="pt-card"><p class="pt-card-label">Marge</p><p class="pt-card-value" id="kpi-margin">–</p><p class="pt-card-delta" id="kpi-margin-delta"></p><p class="pt-card-sub" id="kpi-margin-sub"></p></div>
     <div class="pt-card"><p class="pt-card-label">ROAS</p><p class="pt-card-value" id="kpi-roas">–</p><p class="pt-card-delta" id="kpi-roas-delta"></p><p class="pt-card-sub" id="kpi-roas-sub"></p></div>
   </div>
@@ -459,14 +460,18 @@
     const pe = document.getElementById('kpi-profit');
     pe.textContent = eur(agg.profit); pe.className = 'pt-card-value ' + profitClass;
     document.getElementById('kpi-profit-delta').innerHTML = prev ? deltaHtml(agg.profit, prev.profit) : '';
-    document.getElementById('kpi-profit-sub').textContent = agg.orders + ' Bestellungen' + (rangeDays.length ? ' · ' + rangeDays.length + ' Tag(e)' : '');
+    document.getElementById('kpi-profit-sub').textContent = rangeDays.length + ' Tag' + (rangeDays.length === 1 ? '' : 'e') + ' im Zeitraum';
 
     document.getElementById('kpi-revenue').textContent = eur(agg.revenue);
     document.getElementById('kpi-revenue-delta').innerHTML = prev ? deltaHtml(agg.revenue, prev.revenue) : '';
-    document.getElementById('kpi-revenue-sub').textContent = 'COGS ' + eur(agg.cogs);
+    document.getElementById('kpi-revenue-sub').textContent = agg.orders + ' Bestellung' + (agg.orders === 1 ? '' : 'en');
 
     document.getElementById('kpi-spend').textContent = eur(agg.spend);
     document.getElementById('kpi-spend-delta').innerHTML = prev ? deltaHtml(agg.spend, prev.spend) : '';
+
+    document.getElementById('kpi-cogs').textContent = eur(agg.cogs);
+    document.getElementById('kpi-cogs-delta').innerHTML = prev ? deltaHtml(agg.cogs, prev.cogs) : '';
+    document.getElementById('kpi-cogs-sub').textContent = agg.revenue > 0 ? 'Kostenquote ' + pct(agg.cogs / agg.revenue) : 'Kosten brutto';
 
     document.getElementById('kpi-margin').textContent = pct(agg.margin);
     document.getElementById('kpi-margin-delta').innerHTML = prev ? deltaHtml(agg.margin, prev.margin) : '';
@@ -581,6 +586,20 @@
           return '<div class="pt-tip-row"><span class="pt-tip-name">' + esc(c.campaign) + '</span><span class="pt-tip-val">' + eur(c.spend) + ' <span style="color:#888;">(' + share + ')</span></span></div>';
         }).join('') +
         '<div class="pt-tip-row total"><span class="pt-tip-name">Gesamt</span><span class="pt-tip-val">' + eur(agg.spend) + '</span></div>';
+    }
+
+    const tipCogs = document.getElementById('tip-cogs');
+    if (!grpAgg.length || agg.cogs === 0) {
+      tipCogs.innerHTML = '<div class="pt-tip-empty">Keine COGS im Zeitraum</div>';
+    } else {
+      const cogsSorted = grpAgg.slice().sort((a, b) => b.cogs - a.cogs);
+      tipCogs.innerHTML =
+        '<div style="font-weight:600; margin-bottom:4px; color:#fff;">COGS (brutto, inkl. USt) nach Produktgruppe</div>' +
+        cogsSorted.map(g => {
+          const share = agg.cogs ? (g.cogs / agg.cogs * 100).toFixed(0) + ' %' : '–';
+          return '<div class="pt-tip-row"><span class="pt-tip-name">' + esc(g.group) + '</span><span class="pt-tip-val">' + eur(g.cogs) + ' <span style="color:#888;">(' + share + ')</span></span></div>';
+        }).join('') +
+        '<div class="pt-tip-row total"><span class="pt-tip-name">Gesamt</span><span class="pt-tip-val">' + eur(agg.cogs) + '</span></div>';
     }
 
     // Spend sub line
