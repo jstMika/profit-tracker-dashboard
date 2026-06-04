@@ -80,6 +80,25 @@ def build(root: Path) -> dict:
     # Normalize keys to strings (in case JSON loads them as numbers somewhere)
     pl_by_id = {str(k): v for k, v in pl_orders.items()}
 
+    # ----- Load Shopify variant costs (for "Sonstiges" products not in Print-Labs) -----
+    vc = load_json(data_dir / "variant_costs.json", default={"costs": {}})
+    variant_costs = vc.get("costs") or {}  # variant_id (str) → {cost_net, ...}
+
+    def shopify_cogs_net(line_items):
+        """Sum of (cost_per_item * quantity) across all line_items. Returns (cogs_net, n_missing)."""
+        total = 0.0
+        missing = 0
+        for li in line_items or []:
+            vid = str(li.get("variant_id") or "")
+            qty = int(li.get("quantity") or 0)
+            info = variant_costs.get(vid) or {}
+            cost = info.get("cost_net")
+            if cost is None:
+                missing += 1
+                continue
+            total += float(cost) * qty
+        return total, missing
+
     # ----- Load ad spend -----
     ad = load_json(data_dir / "ad_spend_user.json", default={"entries": {}, "campaigns": []})
     ad_entries = ad.get("entries") or {}
@@ -129,10 +148,27 @@ def build(root: Path) -> dict:
             cogs_net = to_float(pl_match.get("total_cost_net"))
             cogs_gross = round(cogs_net * ust, 2)
             printlabs_id = pl_match.get("printlabs_id")
+            cogs_source = "printlabs"
+        elif group == default_group:
+            # Sonstiges: nimm die Kosten aus den Shopify-Produkt-Daten (variant unitCost)
+            cogs_net, n_missing = shopify_cogs_net(line_items)
+            cogs_gross = round(cogs_net * ust, 2)
+            printlabs_id = None
+            cogs_source = "shopify_variant"
+            if n_missing > 0 or cogs_net == 0:
+                # Es fehlen Variant-Kosten oder das Produkt hat 0 als Cost in Shopify
+                missing_costs.append({
+                    "date": date_iso,
+                    "shopify_name": o.get("name", ""),
+                    "shopify_id": oid,
+                    "reason": "no_shopify_cost" if cogs_net == 0 else f"partial_shopify_cost_{n_missing}_missing",
+                })
         else:
+            # Print-Labs-Gruppe (Schieferherzen / Weingläser) aber kein Match — noch nicht produziert
             cogs_net = 0.0
             cogs_gross = 0.0
             printlabs_id = None
+            cogs_source = "missing"
             missing_costs.append({
                 "date": date_iso,
                 "shopify_name": o.get("name", ""),
@@ -152,6 +188,7 @@ def build(root: Path) -> dict:
             "discount": round(discount, 2),
             "cogs_net": round(cogs_net, 2),
             "cogs_gross": round(cogs_gross, 2),
+            "cogs_source": cogs_source,
         })
 
         a = day_agg.setdefault(date_iso, {"orders": 0, "revenue": 0.0, "cogs": 0.0})

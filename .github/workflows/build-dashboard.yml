@@ -61,6 +61,15 @@ jobs:
             echo "::endgroup::"
           done
 
+      - name: Refresh Shopify-Variant-Kosten (für 'Sonstiges'-Produkte)
+        env:
+          SHOPIFY_SHOP: ${{ vars.SHOPIFY_SHOP }}
+          SHOPIFY_TOKEN: ${{ secrets.SHOPIFY_TOKEN }}
+        run: |
+          # Soft-fail damit fehlende API-Permission (read_products/read_inventory)
+          # den Build nicht killt — die Sonstiges-COGS bleiben dann halt 0.
+          python3 scripts/pull_variant_costs.py --root . || echo "::warning::pull_variant_costs failed — Sonstiges-Produkte haben dann ggf. 0€ COGS."
+
       - name: Build dashboard_data.json
         run: python3 scripts/build_dashboard_data.py --root .
 
