@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-04T22:10:03.960710+00:00",
+  "generated_at": "2026-06-04T22:10:43.125539+00:00",
   "days": [
     {
       "date": "2026-05-14",
@@ -237,10 +237,10 @@
       "orders": 9,
       "revenue": 483.48,
       "cogs": 22.94,
-      "spend": 0.0,
-      "profit": 460.54,
-      "margin": 0.9526,
-      "roas": 0,
+      "spend": 275.21,
+      "profit": 185.33,
+      "margin": 0.3833,
+      "roas": 1.7568,
       "be_roas": 1.0498
     }
   ],
@@ -687,14 +687,25 @@
     },
     {
       "date": "2026-06-04",
+      "group": "Schieferherzen",
+      "orders": 0,
+      "revenue": 0.0,
+      "cogs": 0.0,
+      "spend": 96.7,
+      "profit": -96.7,
+      "margin": 0,
+      "roas": 0.0
+    },
+    {
+      "date": "2026-06-04",
       "group": "Weingläser",
       "orders": 9,
       "revenue": 483.48,
       "cogs": 22.94,
-      "spend": 0.0,
-      "profit": 460.54,
-      "margin": 0.9526,
-      "roas": 0
+      "spend": 178.51,
+      "profit": 282.03,
+      "margin": 0.5833,
+      "roas": 2.7084
     }
   ],
   "campaigns": [
@@ -1039,6 +1050,38 @@
       "campaign": "CBO SKALIERUNG Weingläser",
       "group": "Weingläser",
       "spend": 85.89,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-06-04",
+      "campaign": "ABO Testing Schieferherzen",
+      "group": "Schieferherzen",
+      "spend": 36.43,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-06-04",
+      "campaign": "ABO Testing Weingläser",
+      "group": "Weingläser",
+      "spend": 73.05,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-06-04",
+      "campaign": "CBO SKALIERUNG Schieferherzen",
+      "group": "Schieferherzen",
+      "spend": 60.27,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-06-04",
+      "campaign": "CBO SKALIERUNG Weingläser",
+      "group": "Weingläser",
+      "spend": 105.46,
       "purchases": null,
       "roas": null
     }
