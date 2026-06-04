@@ -344,14 +344,14 @@
   },
   "campaigns": [
     {
-      "name": "ABO Testing Weingläser",
-      "group": "Weingläser",
-      "added_at": "2026-05-27T23:17:09.868Z"
-    },
-    {
       "name": "CBO SKALIERUNG Weingläser",
       "group": "Weingläser",
       "added_at": "2026-06-02T22:44:05.736Z"
+    },
+    {
+      "name": "ABO Testing Weingläser",
+      "group": "Weingläser",
+      "added_at": "2026-05-27T23:17:09.868Z"
     },
     {
       "name": "ABO Testing Schieferherzen",
