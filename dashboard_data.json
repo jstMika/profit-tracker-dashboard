@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-04T14:16:01.083469+00:00",
+  "generated_at": "2026-06-04T19:30:19.948525+00:00",
   "days": [
     {
       "date": "2026-05-14",
@@ -225,23 +225,23 @@
       "date": "2026-06-03",
       "orders": 13,
       "revenue": 727.73,
-      "cogs": 267.11,
+      "cogs": 280.27,
       "spend": 276.15,
-      "profit": 184.47,
-      "margin": 0.2535,
+      "profit": 171.31,
+      "margin": 0.2354,
       "roas": 2.6353,
-      "be_roas": 1.5799
+      "be_roas": 1.6264
     },
     {
       "date": "2026-06-04",
-      "orders": 7,
-      "revenue": 369.71,
+      "orders": 8,
+      "revenue": 432.58,
       "cogs": 22.94,
       "spend": 0.0,
-      "profit": 346.77,
-      "margin": 0.938,
+      "profit": 409.64,
+      "margin": 0.947,
       "roas": 0,
-      "be_roas": 1.0662
+      "be_roas": 1.056
     }
   ],
   "groups": [
@@ -668,10 +668,10 @@
       "group": "Sonstiges",
       "orders": 1,
       "revenue": 54.95,
-      "cogs": 0.0,
+      "cogs": 13.16,
       "spend": 0.0,
-      "profit": 54.95,
-      "margin": 1.0,
+      "profit": 41.79,
+      "margin": 0.7605,
       "roas": 0
     },
     {
@@ -688,12 +688,12 @@
     {
       "date": "2026-06-04",
       "group": "Weingläser",
-      "orders": 7,
-      "revenue": 369.71,
+      "orders": 8,
+      "revenue": 432.58,
       "cogs": 22.94,
       "spend": 0.0,
-      "profit": 346.77,
-      "margin": 0.938,
+      "profit": 409.64,
+      "margin": 0.947,
       "roas": 0
     }
   ],
@@ -1055,7 +1055,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 15.83,
-      "cogs_gross": 18.84
+      "cogs_gross": 18.84,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-19",
@@ -1068,7 +1069,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 15.23,
-      "cogs_gross": 18.12
+      "cogs_gross": 18.12,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-20",
@@ -1081,7 +1083,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 18.8,
-      "cogs_gross": 22.37
+      "cogs_gross": 22.37,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-20",
@@ -1094,7 +1097,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 17.59,
-      "cogs_gross": 20.93
+      "cogs_gross": 20.93,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-20",
@@ -1107,7 +1111,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 17.59,
-      "cogs_gross": 20.93
+      "cogs_gross": 20.93,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-21",
@@ -1120,7 +1125,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 18.8,
-      "cogs_gross": 22.37
+      "cogs_gross": 22.37,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-21",
@@ -1133,7 +1139,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 18.8,
-      "cogs_gross": 22.37
+      "cogs_gross": 22.37,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-22",
@@ -1146,7 +1153,8 @@
       "shipping": 0.0,
       "discount": 11.77,
       "cogs_net": 31.09,
-      "cogs_gross": 37.0
+      "cogs_gross": 37.0,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-23",
@@ -1159,7 +1167,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 15.23,
-      "cogs_gross": 18.12
+      "cogs_gross": 18.12,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-23",
@@ -1172,7 +1181,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 15.83,
-      "cogs_gross": 18.84
+      "cogs_gross": 18.84,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-23",
@@ -1185,7 +1195,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 13.71,
-      "cogs_gross": 16.31
+      "cogs_gross": 16.31,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-23",
@@ -1198,7 +1209,8 @@
       "shipping": 4.95,
       "discount": 5.49,
       "cogs_net": 21.27,
-      "cogs_gross": 25.31
+      "cogs_gross": 25.31,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-25",
@@ -1211,7 +1223,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 20.56,
-      "cogs_gross": 24.47
+      "cogs_gross": 24.47,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-25",
@@ -1224,7 +1237,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 13.71,
-      "cogs_gross": 16.31
+      "cogs_gross": 16.31,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-25",
@@ -1237,7 +1251,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 24.09,
-      "cogs_gross": 28.67
+      "cogs_gross": 28.67,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-26",
@@ -1250,7 +1265,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 15.83,
-      "cogs_gross": 18.84
+      "cogs_gross": 18.84,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-27",
@@ -1263,7 +1279,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 31.37,
-      "cogs_gross": 37.33
+      "cogs_gross": 37.33,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-28",
@@ -1276,7 +1293,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 20.56,
-      "cogs_gross": 24.47
+      "cogs_gross": 24.47,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-28",
@@ -1289,7 +1307,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 27.11,
-      "cogs_gross": 32.26
+      "cogs_gross": 32.26,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-28",
@@ -1302,7 +1321,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 18.8,
-      "cogs_gross": 22.37
+      "cogs_gross": 22.37,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-28",
@@ -1315,7 +1335,8 @@
       "shipping": 4.95,
       "discount": 4.49,
       "cogs_net": 18.24,
-      "cogs_gross": 21.71
+      "cogs_gross": 21.71,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-29",
@@ -1328,7 +1349,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 15.83,
-      "cogs_gross": 18.84
+      "cogs_gross": 18.84,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-29",
@@ -1341,7 +1363,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 18.24,
-      "cogs_gross": 21.71
+      "cogs_gross": 21.71,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-30",
@@ -1354,7 +1377,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 18.24,
-      "cogs_gross": 21.71
+      "cogs_gross": 21.71,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-30",
@@ -1367,7 +1391,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 21.27,
-      "cogs_gross": 25.31
+      "cogs_gross": 25.31,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-30",
@@ -1380,7 +1405,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 13.71,
-      "cogs_gross": 16.31
+      "cogs_gross": 16.31,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-31",
@@ -1393,7 +1419,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 17.59,
-      "cogs_gross": 20.93
+      "cogs_gross": 20.93,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-31",
@@ -1406,7 +1433,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 18.24,
-      "cogs_gross": 21.71
+      "cogs_gross": 21.71,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-31",
@@ -1419,7 +1447,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 13.71,
-      "cogs_gross": 16.31
+      "cogs_gross": 16.31,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-31",
@@ -1432,7 +1461,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 12.2,
-      "cogs_gross": 14.52
+      "cogs_gross": 14.52,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-05-31",
@@ -1445,7 +1475,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 17.59,
-      "cogs_gross": 20.93
+      "cogs_gross": 20.93,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-01",
@@ -1458,7 +1489,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 17.59,
-      "cogs_gross": 20.93
+      "cogs_gross": 20.93,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-01",
@@ -1471,7 +1503,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 15.83,
-      "cogs_gross": 18.84
+      "cogs_gross": 18.84,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-01",
@@ -1484,7 +1517,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 15.83,
-      "cogs_gross": 18.84
+      "cogs_gross": 18.84,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-01",
@@ -1497,7 +1531,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 12.2,
-      "cogs_gross": 14.52
+      "cogs_gross": 14.52,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-01",
@@ -1510,7 +1545,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 30.19,
-      "cogs_gross": 35.93
+      "cogs_gross": 35.93,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-01",
@@ -1523,7 +1559,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 18.24,
-      "cogs_gross": 21.71
+      "cogs_gross": 21.71,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-01",
@@ -1536,7 +1573,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 30.19,
-      "cogs_gross": 35.93
+      "cogs_gross": 35.93,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-01",
@@ -1549,7 +1587,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 15.35,
-      "cogs_gross": 18.27
+      "cogs_gross": 18.27,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-01",
@@ -1562,7 +1601,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 17.59,
-      "cogs_gross": 20.93
+      "cogs_gross": 20.93,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-01",
@@ -1575,7 +1615,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 18.8,
-      "cogs_gross": 22.37
+      "cogs_gross": 22.37,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-01",
@@ -1588,7 +1629,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 18.24,
-      "cogs_gross": 21.71
+      "cogs_gross": 21.71,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-02",
@@ -1601,7 +1643,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 28.62,
-      "cogs_gross": 34.06
+      "cogs_gross": 34.06,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-02",
@@ -1614,7 +1657,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 15.35,
-      "cogs_gross": 18.27
+      "cogs_gross": 18.27,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-02",
@@ -1627,7 +1671,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 15.83,
-      "cogs_gross": 18.84
+      "cogs_gross": 18.84,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-02",
@@ -1640,7 +1685,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 13.71,
-      "cogs_gross": 16.31
+      "cogs_gross": 16.31,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-02",
@@ -1653,7 +1699,8 @@
       "shipping": 4.95,
       "discount": 5.19,
       "cogs_net": 15.83,
-      "cogs_gross": 18.84
+      "cogs_gross": 18.84,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-02",
@@ -1666,7 +1713,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 19.75,
-      "cogs_gross": 23.5
+      "cogs_gross": 23.5,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-02",
@@ -1679,7 +1727,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 15.83,
-      "cogs_gross": 18.84
+      "cogs_gross": 18.84,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-02",
@@ -1692,7 +1741,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 20.56,
-      "cogs_gross": 24.47
+      "cogs_gross": 24.47,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-02",
@@ -1705,7 +1755,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 15.83,
-      "cogs_gross": 18.84
+      "cogs_gross": 18.84,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-02",
@@ -1718,7 +1769,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 15.35,
-      "cogs_gross": 18.27
+      "cogs_gross": 18.27,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-02",
@@ -1731,7 +1783,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 18.24,
-      "cogs_gross": 21.71
+      "cogs_gross": 21.71,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-02",
@@ -1744,7 +1797,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 18.24,
-      "cogs_gross": 21.71
+      "cogs_gross": 21.71,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-03",
@@ -1757,7 +1811,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 13.71,
-      "cogs_gross": 16.31
+      "cogs_gross": 16.31,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-03",
@@ -1770,7 +1825,8 @@
       "shipping": 4.95,
       "discount": 4.49,
       "cogs_net": 18.24,
-      "cogs_gross": 21.71
+      "cogs_gross": 21.71,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-03",
@@ -1783,7 +1839,8 @@
       "shipping": 0.0,
       "discount": 10.18,
       "cogs_net": 34.39,
-      "cogs_gross": 40.92
+      "cogs_gross": 40.92,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-03",
@@ -1796,7 +1853,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 17.59,
-      "cogs_gross": 20.93
+      "cogs_gross": 20.93,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-03",
@@ -1809,7 +1867,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 21.27,
-      "cogs_gross": 25.31
+      "cogs_gross": 25.31,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-03",
@@ -1822,7 +1881,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 21.4,
-      "cogs_gross": 25.47
+      "cogs_gross": 25.47,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-03",
@@ -1835,7 +1895,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 28.62,
-      "cogs_gross": 34.06
+      "cogs_gross": 34.06,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-03",
@@ -1848,7 +1909,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 15.23,
-      "cogs_gross": 18.12
+      "cogs_gross": 18.12,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-03",
@@ -1861,7 +1923,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 20.56,
-      "cogs_gross": 24.47
+      "cogs_gross": 24.47,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-03",
@@ -1874,7 +1937,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 13.71,
-      "cogs_gross": 16.31
+      "cogs_gross": 16.31,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-03",
@@ -1887,7 +1951,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 19.75,
-      "cogs_gross": 23.5
+      "cogs_gross": 23.5,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-03",
@@ -1900,7 +1965,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 0.0,
-      "cogs_gross": 0.0
+      "cogs_gross": 0.0,
+      "cogs_source": "missing"
     },
     {
       "date": "2026-06-03",
@@ -1912,8 +1978,9 @@
       "total": 54.95,
       "shipping": 0.0,
       "discount": 0.0,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0
+      "cogs_net": 11.06,
+      "cogs_gross": 13.16,
+      "cogs_source": "shopify_variant"
     },
     {
       "date": "2026-06-04",
@@ -1926,7 +1993,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 19.28,
-      "cogs_gross": 22.94
+      "cogs_gross": 22.94,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-04",
@@ -1939,7 +2007,8 @@
       "shipping": 0.0,
       "discount": 6.49,
       "cogs_net": 0.0,
-      "cogs_gross": 0.0
+      "cogs_gross": 0.0,
+      "cogs_source": "missing"
     },
     {
       "date": "2026-06-04",
@@ -1952,7 +2021,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 0.0,
-      "cogs_gross": 0.0
+      "cogs_gross": 0.0,
+      "cogs_source": "missing"
     },
     {
       "date": "2026-06-04",
@@ -1965,7 +2035,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 0.0,
-      "cogs_gross": 0.0
+      "cogs_gross": 0.0,
+      "cogs_source": "missing"
     },
     {
       "date": "2026-06-04",
@@ -1978,7 +2049,8 @@
       "shipping": 4.95,
       "discount": 0.0,
       "cogs_net": 0.0,
-      "cogs_gross": 0.0
+      "cogs_gross": 0.0,
+      "cogs_source": "missing"
     },
     {
       "date": "2026-06-04",
@@ -1991,7 +2063,8 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 0.0,
-      "cogs_gross": 0.0
+      "cogs_gross": 0.0,
+      "cogs_source": "missing"
     },
     {
       "date": "2026-06-04",
@@ -2004,7 +2077,22 @@
       "shipping": 0.0,
       "discount": 0.0,
       "cogs_net": 0.0,
-      "cogs_gross": 0.0
+      "cogs_gross": 0.0,
+      "cogs_source": "missing"
+    },
+    {
+      "date": "2026-06-04",
+      "shopify_name": "#1393",
+      "shopify_id": "12701063643484",
+      "printlabs_id": null,
+      "group": "Weingläser",
+      "items": 3,
+      "total": 62.87,
+      "shipping": 0.0,
+      "discount": 6.98,
+      "cogs_net": 0.0,
+      "cogs_gross": 0.0,
+      "cogs_source": "missing"
     }
   ],
   "missing_costs": [
@@ -2012,12 +2100,6 @@
       "date": "2026-06-03",
       "shopify_name": "#1384",
       "shopify_id": "12697436848476",
-      "reason": "no_printlabs_match"
-    },
-    {
-      "date": "2026-06-03",
-      "shopify_name": "#1385",
-      "shopify_id": "12697453134172",
       "reason": "no_printlabs_match"
     },
     {
@@ -2054,6 +2136,12 @@
       "date": "2026-06-04",
       "shopify_name": "#1392",
       "shopify_id": "12700260794716",
+      "reason": "no_printlabs_match"
+    },
+    {
+      "date": "2026-06-04",
+      "shopify_name": "#1393",
+      "shopify_id": "12701063643484",
       "reason": "no_printlabs_match"
     }
   ]
