@@ -337,16 +337,19 @@
   function rangeFor(preset, today, customFrom, customTo) {
     today = today || new Date();
     const t = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const y = addDays(t, -1); // gestern — Ende der "rolling"-Presets, weil heute noch unvollständig sein kann
     switch (preset) {
       case 'today':      return { from: t, to: t };
-      case 'yesterday':  { const y = addDays(t, -1); return { from: y, to: y }; }
-      case '7d':         return { from: addDays(t, -6), to: t };
-      case '30d':        return { from: addDays(t, -29), to: t };
-      case 'thisMonth':  return { from: startOfMonth(t), to: t };
+      case 'yesterday':  return { from: y, to: y };
+      // Rolling Zeiträume enden auf GESTERN (nicht heute), damit Spend + Umsatz immer vollständig sind
+      case '7d':         return { from: addDays(y, -6), to: y };       // 7 Tage bis gestern
+      case '30d':        return { from: addDays(y, -29), to: y };      // 30 Tage bis gestern
+      case 'thisMonth':  return { from: startOfMonth(t), to: y };
+        // Wenn heute der 1. ist, ist y in vorigem Monat → from > to → inRange filtert alles raus = leer.
       case 'lastMonth':  { const lm = addDays(startOfMonth(t), -1); return { from: startOfMonth(lm), to: endOfMonth(lm) }; }
       case 'all':        return { from: null, to: null };
       case 'custom':     return { from: customFrom, to: customTo };
-      default:           return { from: addDays(t, -6), to: t };
+      default:           return { from: addDays(y, -6), to: y };
     }
   }
 
