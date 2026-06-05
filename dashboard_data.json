@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-05T22:09:24.931846+00:00",
+  "generated_at": "2026-06-05T22:10:15.734623+00:00",
   "days": [
     {
       "date": "2026-05-14",
@@ -247,12 +247,12 @@
       "date": "2026-06-05",
       "orders": 12,
       "revenue": 521.27,
-      "cogs": 0.0,
+      "cogs": 211.94,
       "spend": 271.1,
-      "profit": 250.17,
-      "margin": 0.4799,
+      "profit": 38.23,
+      "margin": 0.0733,
       "roas": 1.9228,
-      "be_roas": 1.0
+      "be_roas": 1.6852
     }
   ],
   "groups": [
@@ -723,10 +723,10 @@
       "group": "Schieferherzen",
       "orders": 2,
       "revenue": 103.8,
-      "cogs": 0.0,
+      "cogs": 37.68,
       "spend": 80.19,
-      "profit": 23.61,
-      "margin": 0.2275,
+      "profit": -14.07,
+      "margin": -0.1355,
       "roas": 1.2944
     },
     {
@@ -734,10 +734,10 @@
       "group": "Weingläser",
       "orders": 10,
       "revenue": 417.47,
-      "cogs": 0.0,
+      "cogs": 174.26,
       "spend": 190.91,
-      "profit": 226.56,
-      "margin": 0.5427,
+      "profit": 52.3,
+      "margin": 0.1253,
       "roas": 2.1867
     }
   ],
@@ -2220,169 +2220,169 @@
       "date": "2026-06-05",
       "shopify_name": "#1395",
       "shopify_id": "12703726141788",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001575048",
       "group": "Weingläser",
       "items": 3,
       "total": 42.62,
       "shipping": 4.95,
       "discount": 4.18,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0,
-      "cogs_source": "missing"
+      "cogs_net": 15.35,
+      "cogs_gross": 18.27,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-05",
       "shopify_name": "#1396",
       "shopify_id": "12704344605020",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001575170",
       "group": "Schieferherzen",
       "items": 2,
       "total": 51.9,
       "shipping": 0.0,
       "discount": 0.0,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0,
-      "cogs_source": "missing"
+      "cogs_net": 15.83,
+      "cogs_gross": 18.84,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-05",
       "shopify_name": "#1397",
       "shopify_id": "12704789922140",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001575334",
       "group": "Weingläser",
       "items": 1,
       "total": 34.9,
       "shipping": 4.95,
       "discount": 0.0,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0,
-      "cogs_source": "missing"
+      "cogs_net": 12.2,
+      "cogs_gross": 14.52,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-05",
       "shopify_name": "#1398",
       "shopify_id": "12705412546908",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001575611",
       "group": "Weingläser",
       "items": 2,
       "total": 40.85,
       "shipping": 4.95,
       "discount": 0.0,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0,
-      "cogs_source": "missing"
+      "cogs_net": 13.71,
+      "cogs_gross": 16.31,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-05",
       "shopify_name": "#1399",
       "shopify_id": "12705709982044",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001575751",
       "group": "Schieferherzen",
       "items": 2,
       "total": 51.9,
       "shipping": 0.0,
       "discount": 0.0,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0,
-      "cogs_source": "missing"
+      "cogs_net": 15.83,
+      "cogs_gross": 18.84,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-05",
       "shopify_name": "#1400",
       "shopify_id": "12706527084892",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001576279",
       "group": "Weingläser",
       "items": 3,
       "total": 56.85,
       "shipping": 0.0,
       "discount": 0.0,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0,
-      "cogs_source": "missing"
+      "cogs_net": 21.27,
+      "cogs_gross": 25.31,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-05",
       "shopify_name": "#1401",
       "shopify_id": "12706601271644",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001576312",
       "group": "Weingläser",
       "items": 1,
       "total": 49.9,
       "shipping": 4.95,
       "discount": 0.0,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0,
-      "cogs_source": "missing"
+      "cogs_net": 18.24,
+      "cogs_gross": 21.71,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-05",
       "shopify_name": "#1402",
       "shopify_id": "12706667594076",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001576346",
       "group": "Weingläser",
       "items": 1,
       "total": 34.9,
       "shipping": 4.95,
       "discount": 0.0,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0,
-      "cogs_source": "missing"
+      "cogs_net": 12.2,
+      "cogs_gross": 14.52,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-05",
       "shopify_name": "#1403",
       "shopify_id": "12707380527452",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001576640",
       "group": "Weingläser",
       "items": 2,
       "total": 40.85,
       "shipping": 4.95,
       "discount": 0.0,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0,
-      "cogs_source": "missing"
+      "cogs_net": 13.71,
+      "cogs_gross": 16.31,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-05",
       "shopify_name": "#1404",
       "shopify_id": "12707608297820",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001576754",
       "group": "Weingläser",
       "items": 1,
       "total": 34.9,
       "shipping": 4.95,
       "discount": 0.0,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0,
-      "cogs_source": "missing"
+      "cogs_net": 12.2,
+      "cogs_gross": 14.52,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-05",
       "shopify_name": "#1405",
       "shopify_id": "12708112597340",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001576998",
       "group": "Weingläser",
       "items": 1,
       "total": 34.9,
       "shipping": 4.95,
       "discount": 0.0,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0,
-      "cogs_source": "missing"
+      "cogs_net": 12.2,
+      "cogs_gross": 14.52,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-06-05",
       "shopify_name": "#1406",
       "shopify_id": "12708349149532",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001577096",
       "group": "Weingläser",
       "items": 3,
       "total": 46.8,
       "shipping": 4.95,
       "discount": 0.0,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0,
-      "cogs_source": "missing"
+      "cogs_net": 15.35,
+      "cogs_gross": 18.27,
+      "cogs_source": "printlabs"
     }
   ],
   "missing_costs": [
@@ -2390,78 +2390,6 @@
       "date": "2026-06-03",
       "shopify_name": "#1384",
       "shopify_id": "12697436848476",
-      "reason": "no_printlabs_match"
-    },
-    {
-      "date": "2026-06-05",
-      "shopify_name": "#1395",
-      "shopify_id": "12703726141788",
-      "reason": "no_printlabs_match"
-    },
-    {
-      "date": "2026-06-05",
-      "shopify_name": "#1396",
-      "shopify_id": "12704344605020",
-      "reason": "no_printlabs_match"
-    },
-    {
-      "date": "2026-06-05",
-      "shopify_name": "#1397",
-      "shopify_id": "12704789922140",
-      "reason": "no_printlabs_match"
-    },
-    {
-      "date": "2026-06-05",
-      "shopify_name": "#1398",
-      "shopify_id": "12705412546908",
-      "reason": "no_printlabs_match"
-    },
-    {
-      "date": "2026-06-05",
-      "shopify_name": "#1399",
-      "shopify_id": "12705709982044",
-      "reason": "no_printlabs_match"
-    },
-    {
-      "date": "2026-06-05",
-      "shopify_name": "#1400",
-      "shopify_id": "12706527084892",
-      "reason": "no_printlabs_match"
-    },
-    {
-      "date": "2026-06-05",
-      "shopify_name": "#1401",
-      "shopify_id": "12706601271644",
-      "reason": "no_printlabs_match"
-    },
-    {
-      "date": "2026-06-05",
-      "shopify_name": "#1402",
-      "shopify_id": "12706667594076",
-      "reason": "no_printlabs_match"
-    },
-    {
-      "date": "2026-06-05",
-      "shopify_name": "#1403",
-      "shopify_id": "12707380527452",
-      "reason": "no_printlabs_match"
-    },
-    {
-      "date": "2026-06-05",
-      "shopify_name": "#1404",
-      "shopify_id": "12707608297820",
-      "reason": "no_printlabs_match"
-    },
-    {
-      "date": "2026-06-05",
-      "shopify_name": "#1405",
-      "shopify_id": "12708112597340",
-      "reason": "no_printlabs_match"
-    },
-    {
-      "date": "2026-06-05",
-      "shopify_name": "#1406",
-      "shopify_id": "12708349149532",
       "reason": "no_printlabs_match"
     }
   ]
