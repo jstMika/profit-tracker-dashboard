@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-05T22:10:15.734623+00:00",
+  "generated_at": "2026-06-06T10:58:55.896723+00:00",
   "days": [
     {
       "date": "2026-05-14",
@@ -253,6 +253,17 @@
       "margin": 0.0733,
       "roas": 1.9228,
       "be_roas": 1.6852
+    },
+    {
+      "date": "2026-06-06",
+      "orders": 1,
+      "revenue": 54.41,
+      "cogs": 0.0,
+      "spend": 0.0,
+      "profit": 54.41,
+      "margin": 1.0,
+      "roas": 0,
+      "be_roas": 1.0
     }
   ],
   "groups": [
@@ -739,6 +750,17 @@
       "profit": 52.3,
       "margin": 0.1253,
       "roas": 2.1867
+    },
+    {
+      "date": "2026-06-06",
+      "group": "Weingläser",
+      "orders": 1,
+      "revenue": 54.41,
+      "cogs": 0.0,
+      "spend": 0.0,
+      "profit": 54.41,
+      "margin": 1.0,
+      "roas": 0
     }
   ],
   "campaigns": [
@@ -2383,6 +2405,20 @@
       "cogs_net": 15.35,
       "cogs_gross": 18.27,
       "cogs_source": "printlabs"
+    },
+    {
+      "date": "2026-06-06",
+      "shopify_name": "#1407",
+      "shopify_id": "12710314279260",
+      "printlabs_id": null,
+      "group": "Weingläser",
+      "items": 1,
+      "total": 54.41,
+      "shipping": 4.95,
+      "discount": 5.49,
+      "cogs_net": 0.0,
+      "cogs_gross": 0.0,
+      "cogs_source": "missing"
     }
   ],
   "missing_costs": [
@@ -2390,6 +2426,12 @@
       "date": "2026-06-03",
       "shopify_name": "#1384",
       "shopify_id": "12697436848476",
+      "reason": "no_printlabs_match"
+    },
+    {
+      "date": "2026-06-06",
+      "shopify_name": "#1407",
+      "shopify_id": "12710314279260",
       "reason": "no_printlabs_match"
     }
   ]
