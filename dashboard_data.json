@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-07T22:12:57.375300+00:00",
+  "generated_at": "2026-06-08T16:57:53.403761+00:00",
   "days": [
     {
       "date": "2026-05-14",
@@ -275,6 +275,17 @@
       "margin": 0.0222,
       "roas": 1.8701,
       "be_roas": 1.7955
+    },
+    {
+      "date": "2026-06-08",
+      "orders": 3,
+      "revenue": 160.6,
+      "cogs": 0.0,
+      "spend": 0.0,
+      "profit": 160.6,
+      "margin": 1.0,
+      "roas": 0,
+      "be_roas": 1.0
     }
   ],
   "groups": [
@@ -805,6 +816,17 @@
       "profit": 111.59,
       "margin": 0.1892,
       "roas": 2.7194
+    },
+    {
+      "date": "2026-06-08",
+      "group": "Weingläser",
+      "orders": 3,
+      "revenue": 160.6,
+      "cogs": 0.0,
+      "spend": 0.0,
+      "profit": 160.6,
+      "margin": 1.0,
+      "roas": 0
     }
   ],
   "campaigns": [
@@ -2765,6 +2787,48 @@
       "cogs_net": 13.71,
       "cogs_gross": 16.31,
       "cogs_source": "printlabs"
+    },
+    {
+      "date": "2026-06-08",
+      "shopify_name": "#1425",
+      "shopify_id": "12715502240092",
+      "printlabs_id": null,
+      "group": "Weingläser",
+      "items": 3,
+      "total": 64.85,
+      "shipping": 0.0,
+      "discount": 0.0,
+      "cogs_net": 0.0,
+      "cogs_gross": 0.0,
+      "cogs_source": "missing"
+    },
+    {
+      "date": "2026-06-08",
+      "shopify_name": "#1426",
+      "shopify_id": "12716635521372",
+      "printlabs_id": null,
+      "group": "Weingläser",
+      "items": 2,
+      "total": 40.85,
+      "shipping": 4.95,
+      "discount": 0.0,
+      "cogs_net": 0.0,
+      "cogs_gross": 0.0,
+      "cogs_source": "missing"
+    },
+    {
+      "date": "2026-06-08",
+      "shopify_name": "#1427",
+      "shopify_id": "12717527925084",
+      "printlabs_id": null,
+      "group": "Weingläser",
+      "items": 2,
+      "total": 54.9,
+      "shipping": 0.0,
+      "discount": 0.0,
+      "cogs_net": 0.0,
+      "cogs_gross": 0.0,
+      "cogs_source": "missing"
     }
   ],
   "missing_costs": [
@@ -2772,6 +2836,24 @@
       "date": "2026-06-03",
       "shopify_name": "#1384",
       "shopify_id": "12697436848476",
+      "reason": "no_printlabs_match"
+    },
+    {
+      "date": "2026-06-08",
+      "shopify_name": "#1425",
+      "shopify_id": "12715502240092",
+      "reason": "no_printlabs_match"
+    },
+    {
+      "date": "2026-06-08",
+      "shopify_name": "#1426",
+      "shopify_id": "12716635521372",
+      "reason": "no_printlabs_match"
+    },
+    {
+      "date": "2026-06-08",
+      "shopify_name": "#1427",
+      "shopify_id": "12717527925084",
       "reason": "no_printlabs_match"
     }
   ]
