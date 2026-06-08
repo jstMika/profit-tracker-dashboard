@@ -1,9 +1,132 @@
 {
-  "pulled_at": "2026-06-08T16:57:42.442860+00:00",
+  "pulled_at": "2026-06-08T22:22:17.573921+00:00",
   "date": "2026-06-08",
   "shop": "4b841b",
-  "order_count": 3,
+  "order_count": 7,
   "orders": [
+    {
+      "id": 12718185906524,
+      "name": "#1431",
+      "created_at": "2026-06-08T23:24:38+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "0.00",
+      "total_price": "0.00",
+      "total_discounts": "34.90",
+      "total_tax": "0.00",
+      "total_shipping": "4.95",
+      "line_items": [
+        {
+          "id": 37009362288988,
+          "product_id": 15597876707676,
+          "variant_id": 57712005349724,
+          "title": "Auf UNS! - personalisiertes Weinglas",
+          "name": "Auf UNS! - personalisiertes Weinglas - 1 Weinglas / Transparent / 450ml",
+          "quantity": 1,
+          "price": "29.95"
+        }
+      ]
+    },
+    {
+      "id": 12718130364764,
+      "name": "#1430",
+      "created_at": "2026-06-08T22:52:41+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "54.90",
+      "total_price": "54.90",
+      "total_discounts": "0.00",
+      "total_tax": "0.00",
+      "total_shipping": "0.00",
+      "line_items": [
+        {
+          "id": 37009263231324,
+          "product_id": 15497934963036,
+          "variant_id": 57096277852508,
+          "title": "Beste Freundin - personalisiertes Weinglas",
+          "name": "Beste Freundin - personalisiertes Weinglas - 2er Set / Transparent / 450ml",
+          "quantity": 1,
+          "price": "44.95"
+        },
+        {
+          "id": 37009263264092,
+          "product_id": 15504688775516,
+          "variant_id": 57146009518428,
+          "title": "Wildlederuntersetzer 2er Set",
+          "name": "Wildlederuntersetzer 2er Set",
+          "quantity": 1,
+          "price": "9.95"
+        }
+      ]
+    },
+    {
+      "id": 12717852557660,
+      "name": "#1429",
+      "created_at": "2026-06-08T20:56:17+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "40.46",
+      "total_price": "45.41",
+      "total_discounts": "4.49",
+      "total_tax": "0.00",
+      "total_shipping": "4.95",
+      "line_items": [
+        {
+          "id": 37008742711644,
+          "product_id": 15497934963036,
+          "variant_id": 57096277852508,
+          "title": "Beste Freundin - personalisiertes Weinglas",
+          "name": "Beste Freundin - personalisiertes Weinglas - 2er Set / Transparent / 450ml",
+          "quantity": 1,
+          "price": "44.95"
+        }
+      ]
+    },
+    {
+      "id": 12717770867036,
+      "name": "#1428",
+      "created_at": "2026-06-08T20:18:27+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "56.85",
+      "total_price": "56.85",
+      "total_discounts": "0.00",
+      "total_tax": "0.00",
+      "total_shipping": "0.00",
+      "line_items": [
+        {
+          "id": 37008582836572,
+          "product_id": 15497934963036,
+          "variant_id": 57096277852508,
+          "title": "Beste Freundin - personalisiertes Weinglas",
+          "name": "Beste Freundin - personalisiertes Weinglas - 2er Set / Transparent / 450ml",
+          "quantity": 1,
+          "price": "44.95"
+        },
+        {
+          "id": 37008582869340,
+          "product_id": 15486477631836,
+          "variant_id": 56990732616028,
+          "title": "Wildlederuntersetzer",
+          "name": "Wildlederuntersetzer",
+          "quantity": 1,
+          "price": "5.95"
+        },
+        {
+          "id": 37008582902108,
+          "product_id": 15486555783516,
+          "variant_id": 56991054168412,
+          "title": "Weinglas - Geschenkbox",
+          "name": "Weinglas - Geschenkbox",
+          "quantity": 1,
+          "price": "5.95"
+        }
+      ]
+    },
     {
       "id": 12717527925084,
       "name": "#1427",
