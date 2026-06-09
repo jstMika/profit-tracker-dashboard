@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-09T22:00:06.752779+00:00",
+  "generated_at": "2026-06-09T22:11:30.702204+00:00",
   "days": [
     {
       "date": "2026-05-14",
@@ -292,10 +292,10 @@
       "orders": 5,
       "revenue": 247.4,
       "cogs": 101.23,
-      "spend": 0.0,
-      "profit": 146.17,
-      "margin": 0.5908,
-      "roas": 0,
+      "spend": 206.0,
+      "profit": -59.83,
+      "margin": -0.2418,
+      "roas": 1.201,
       "be_roas": 1.6925
     }
   ],
@@ -856,10 +856,10 @@
       "orders": 2,
       "revenue": 110.75,
       "cogs": 39.77,
-      "spend": 0.0,
-      "profit": 70.98,
-      "margin": 0.6409,
-      "roas": 0
+      "spend": 27.19,
+      "profit": 43.79,
+      "margin": 0.3954,
+      "roas": 4.0732
     },
     {
       "date": "2026-06-09",
@@ -867,10 +867,10 @@
       "orders": 3,
       "revenue": 136.65,
       "cogs": 61.46,
-      "spend": 0.0,
-      "profit": 75.19,
-      "margin": 0.5502,
-      "roas": 0
+      "spend": 178.81,
+      "profit": -103.62,
+      "margin": -0.7583,
+      "roas": 0.7642
     }
   ],
   "campaigns": [
@@ -1375,6 +1375,30 @@
       "campaign": "CBO SKALIERUNG Weingläser",
       "group": "Weingläser",
       "spend": 101.53,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-06-09",
+      "campaign": "ABO Testing Schieferherzen",
+      "group": "Schieferherzen",
+      "spend": 27.19,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-06-09",
+      "campaign": "ABO Testing Weingläser",
+      "group": "Weingläser",
+      "spend": 63.13,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-06-09",
+      "campaign": "CBO SKALIERUNG Weingläser",
+      "group": "Weingläser",
+      "spend": 115.68,
       "purchases": null,
       "roas": null
     }
