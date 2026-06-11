@@ -512,6 +512,27 @@
           "spend": 107.77
         }
       ]
+    },
+    "2026-06-11": {
+      "saved_at": "2026-06-11T22:03:45.051Z",
+      "source": "dashboard",
+      "campaigns": [
+        {
+          "name": "ABO Testing Schieferherzen",
+          "group": "Schieferherzen",
+          "spend": 39.15
+        },
+        {
+          "name": "ABO Testing Weingläser",
+          "group": "Weingläser",
+          "spend": 70.37
+        },
+        {
+          "name": "CBO SKALIERUNG Weingläser",
+          "group": "Weingläser",
+          "spend": 97.68
+        }
+      ]
     }
   },
   "campaigns": [
