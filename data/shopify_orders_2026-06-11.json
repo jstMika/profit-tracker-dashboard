@@ -1,7 +1,137 @@
 {
-  "pulled_at": "2026-06-10T22:16:09.957309+00:00",
+  "pulled_at": "2026-06-11T17:45:56.911378+00:00",
   "date": "2026-06-11",
   "shop": "4b841b",
-  "order_count": 0,
-  "orders": []
+  "order_count": 5,
+  "orders": [
+    {
+      "id": 12726536012124,
+      "name": "#1448",
+      "created_at": "2026-06-11T19:41:53+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "50.90",
+      "total_price": "50.90",
+      "total_discounts": "0.00",
+      "total_tax": "0.00",
+      "total_shipping": "0.00",
+      "line_items": [
+        {
+          "id": 37024793362780,
+          "product_id": 15486477631836,
+          "variant_id": 56990732616028,
+          "title": "Wildlederuntersetzer",
+          "name": "Wildlederuntersetzer",
+          "quantity": 1,
+          "price": "5.95"
+        },
+        {
+          "id": 37024793395548,
+          "product_id": 15597876707676,
+          "variant_id": 57712005382492,
+          "title": "Auf UNS! - personalisiertes Weinglas",
+          "name": "Auf UNS! - personalisiertes Weinglas - 2er Set / Transparent / 450ml",
+          "quantity": 1,
+          "price": "44.95"
+        }
+      ]
+    },
+    {
+      "id": 12725329723740,
+      "name": "#1447",
+      "created_at": "2026-06-11T17:30:25+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "44.95",
+      "total_price": "49.90",
+      "total_discounts": "0.00",
+      "total_tax": "0.00",
+      "total_shipping": "4.95",
+      "line_items": [
+        {
+          "id": 37022034461020,
+          "product_id": 15597876707676,
+          "variant_id": 57712005382492,
+          "title": "Auf UNS! - personalisiertes Weinglas",
+          "name": "Auf UNS! - personalisiertes Weinglas - 2er Set / Transparent / 450ml",
+          "quantity": 1,
+          "price": "44.95"
+        }
+      ]
+    },
+    {
+      "id": 12724888371548,
+      "name": "#1446",
+      "created_at": "2026-06-11T15:41:41+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "44.95",
+      "total_price": "49.90",
+      "total_discounts": "0.00",
+      "total_tax": "0.00",
+      "total_shipping": "4.95",
+      "line_items": [
+        {
+          "id": 37021373202780,
+          "product_id": 15597877330268,
+          "variant_id": 57712007872860,
+          "title": "Auf UNS! Foto - personalisiertes Weinglas",
+          "name": "Auf UNS! Foto - personalisiertes Weinglas - 2er Set / Transparent / 450ml",
+          "quantity": 1,
+          "price": "44.95"
+        }
+      ]
+    },
+    {
+      "id": 12724710277468,
+      "name": "#1445",
+      "created_at": "2026-06-11T14:42:43+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "44.95",
+      "total_price": "49.90",
+      "total_discounts": "0.00",
+      "total_tax": "0.00",
+      "total_shipping": "4.95",
+      "line_items": [
+        {
+          "id": 37021078978908,
+          "product_id": 15597876707676,
+          "variant_id": 57712005382492,
+          "title": "Auf UNS! - personalisiertes Weinglas",
+          "name": "Auf UNS! - personalisiertes Weinglas - 2er Set / Transparent / 450ml",
+          "quantity": 1,
+          "price": "44.95"
+        }
+      ]
+    },
+    {
+      "id": 12724074512732,
+      "name": "#1444",
+      "created_at": "2026-06-11T09:24:51+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "44.95",
+      "total_price": "49.90",
+      "total_discounts": "0.00",
+      "total_tax": "0.00",
+      "total_shipping": "4.95",
+      "line_items": [
+        {
+          "id": 37019834122588,
+          "product_id": 15497934963036,
+          "variant_id": 57096277852508,
+          "title": "Beste Freundin - personalisiertes Weinglas",
+          "name": "Beste Freundin - personalisiertes Weinglas - 2er Set / Transparent / 450ml",
+          "quantity": 1,
+          "price": "44.95"
+        }
+      ]
+    }
+  ]
 }
