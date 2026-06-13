@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-12T22:56:42.334938+00:00",
+  "generated_at": "2026-06-13T11:28:42.996064+00:00",
   "days": [
     {
       "date": "2026-05-14",
@@ -330,6 +330,17 @@
       "margin": 0.2392,
       "roas": 3.1751,
       "be_roas": 1.8046
+    },
+    {
+      "date": "2026-06-13",
+      "orders": 3,
+      "revenue": 140.16,
+      "cogs": 0.0,
+      "spend": 0.0,
+      "profit": 140.16,
+      "margin": 1.0,
+      "roas": 0,
+      "be_roas": 1.0
     }
   ],
   "groups": [
@@ -981,6 +992,17 @@
       "profit": 106.39,
       "margin": 0.2364,
       "roas": 3.1638
+    },
+    {
+      "date": "2026-06-13",
+      "group": "Weingläser",
+      "orders": 3,
+      "revenue": 140.16,
+      "cogs": 0.0,
+      "spend": 0.0,
+      "profit": 140.16,
+      "margin": 1.0,
+      "roas": 0
     }
   ],
   "campaigns": [
@@ -3559,7 +3581,68 @@
       "cogs_net": 12.2,
       "cogs_gross": 14.52,
       "cogs_source": "printlabs"
+    },
+    {
+      "date": "2026-06-13",
+      "shopify_name": "#1460",
+      "shopify_id": "12733630087516",
+      "printlabs_id": null,
+      "group": "Weingläser",
+      "items": 2,
+      "total": 50.9,
+      "shipping": 0.0,
+      "discount": 0.0,
+      "cogs_net": 0.0,
+      "cogs_gross": 0.0,
+      "cogs_source": "missing"
+    },
+    {
+      "date": "2026-06-13",
+      "shopify_name": "#1461",
+      "shopify_id": "12733653090652",
+      "printlabs_id": null,
+      "group": "Weingläser",
+      "items": 1,
+      "total": 34.9,
+      "shipping": 4.95,
+      "discount": 0.0,
+      "cogs_net": 0.0,
+      "cogs_gross": 0.0,
+      "cogs_source": "missing"
+    },
+    {
+      "date": "2026-06-13",
+      "shopify_name": "#1462",
+      "shopify_id": "12733950951772",
+      "printlabs_id": null,
+      "group": "Weingläser",
+      "items": 2,
+      "total": 54.36,
+      "shipping": 4.95,
+      "discount": 5.49,
+      "cogs_net": 0.0,
+      "cogs_gross": 0.0,
+      "cogs_source": "missing"
     }
   ],
-  "missing_costs": []
+  "missing_costs": [
+    {
+      "date": "2026-06-13",
+      "shopify_name": "#1460",
+      "shopify_id": "12733630087516",
+      "reason": "no_printlabs_match"
+    },
+    {
+      "date": "2026-06-13",
+      "shopify_name": "#1461",
+      "shopify_id": "12733653090652",
+      "reason": "no_printlabs_match"
+    },
+    {
+      "date": "2026-06-13",
+      "shopify_name": "#1462",
+      "shopify_id": "12733950951772",
+      "reason": "no_printlabs_match"
+    }
+  ]
 }
