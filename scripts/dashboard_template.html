@@ -514,8 +514,20 @@
     try { trendHidden = JSON.parse(localStorage.getItem(TREND_HIDDEN_KEY) || '{}') || {}; } catch (e) {}
 
     const fewPoints = rangeDays.length <= 30;
-    const pr = fewPoints ? 3 : 0;
-    const prHover = fewPoints ? 6 : 5;
+    const pr = fewPoints ? 1.5 : 0;
+    const prHover = fewPoints ? 3.5 : 3;
+
+    // Custom Tooltip-Positioner: immer am oberen Chart-Rand fixieren, X folgt dem Cursor
+    if (window.Chart && Chart.Tooltip && Chart.Tooltip.positioners && !Chart.Tooltip.positioners.topPinned) {
+      Chart.Tooltip.positioners.topPinned = function (items, eventPos) {
+        const ca = this.chart.chartArea;
+        if (!ca) return false;
+        // x = aktiver Datenpunkt (falls vorhanden), sonst Mausposition
+        const x = items && items.length && items[0].element ? items[0].element.x : (eventPos ? eventPos.x : ca.left);
+        return { x: x, y: ca.top + 6 };
+      };
+    }
+
     trendChart = new Chart(document.getElementById('trend-chart'), {
       type: 'line',
       data: {
@@ -524,7 +536,7 @@
           { label: 'Umsatz',   data: rangeDays.map(d => d.revenue), borderColor: '#185fa5', backgroundColor: 'rgba(24,95,165,0.06)', tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: 1.8, hidden: !!trendHidden['Umsatz'] },
           { label: 'COGS',     data: rangeDays.map(d => d.cogs),    borderColor: '#ba7517', backgroundColor: 'rgba(186,117,23,0.06)', tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: 1.5, borderDash: [4, 4], hidden: !!trendHidden['COGS'] },
           { label: 'Ad Spend', data: rangeDays.map(d => d.spend),   borderColor: '#a32d2d', backgroundColor: 'rgba(163,45,45,0.06)',  tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: 1.5, borderDash: [2, 3], hidden: !!trendHidden['Ad Spend'] },
-          { label: 'Gewinn',   data: rangeDays.map(d => d.profit),  borderColor: '#1a7a3e', backgroundColor: 'rgba(26,122,62,0.15)',  tension: 0.25, pointRadius: pr + 1, pointHoverRadius: prHover + 1, borderWidth: 2.8, fill: 'origin', hidden: !!trendHidden['Gewinn'] },
+          { label: 'Gewinn',   data: rangeDays.map(d => d.profit),  borderColor: '#1a7a3e', backgroundColor: 'rgba(26,122,62,0.15)',  tension: 0.25, pointRadius: pr, pointHoverRadius: prHover + 0.5, borderWidth: 2.8, fill: 'origin', hidden: !!trendHidden['Gewinn'] },
         ],
       },
       options: {
@@ -534,6 +546,7 @@
           legend: { display: false },
           tooltip: {
             mode: 'index', intersect: false,
+            position: 'topPinned', yAlign: 'top',
             backgroundColor: 'rgba(26,26,26,0.95)', borderColor: 'rgba(255,255,255,0.05)', borderWidth: 1,
             padding: 10, boxPadding: 4, titleColor: '#fff', bodyColor: '#fff', titleFont: { weight: 600, size: 12 }, bodyFont: { size: 12 },
             itemSort: (a, b) => b.parsed.y - a.parsed.y,
