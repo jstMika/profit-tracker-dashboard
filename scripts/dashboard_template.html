@@ -101,6 +101,18 @@
   .pt-camp-btn:disabled { opacity: 0.3; cursor: not-allowed; }
   .pt-camp-btn:disabled:hover { background: transparent; border-color: transparent; color: #888; }
   .pt-camp-btn.delete:hover { background: #fef2f2; border-color: #fecaca; color: #b42318; }
+  .pt-camp-btn.pause { color: #b45309; }
+  .pt-camp-btn.pause:hover { background: #fef3c7; border-color: #fcd34d; color: #92400e; }
+  .pt-camp-btn.activate { color: #1a7a3e; font-weight: 600; }
+  .pt-camp-btn.activate:hover { background: #ecfdf5; border-color: #86efac; color: #14622f; }
+  .pt-entry-camp-row.deactivated { opacity: 0.55; }
+  .pt-entry-camp-row.deactivated .pt-camp-label-area { text-decoration: line-through; text-decoration-thickness: 0.5px; text-decoration-color: #999; }
+  .pt-entry-camp-row.deactivated .pt-camp-input { background: #f5f4ed; color: #888; cursor: not-allowed; }
+  .pt-deact-section { margin-top: 14px; padding-top: 10px; border-top: 0.5px dashed rgba(0,0,0,0.12); }
+  .pt-deact-toggle { font-size: 12px; color: #888; cursor: pointer; user-select: none; padding: 4px 0; display: inline-block; }
+  .pt-deact-toggle:hover { color: #444; text-decoration: underline; }
+  .pt-deact-list { display: none; margin-top: 6px; }
+  .pt-deact-list.show { display: block; }
   @media (max-width: 500px) {
     .pt-camp-input { width: 80px !important; }
     .pt-camp-btn { font-size: 10px; padding: 3px 5px; min-width: 22px; }
@@ -927,11 +939,13 @@
     const all = new Map();
     (pendingSpend.campaigns || []).forEach(c => {
       if (!c.name) return;
-      all.set(c.name, { name: c.name, group: c.group || 'Sonstiges', source: 'dashboard', addedAt: c.added_at });
+      // active default = true wenn das Feld fehlt (Backwards-Compat für alte Einträge)
+      const isActive = c.active === undefined ? true : !!c.active;
+      all.set(c.name, { name: c.name, group: c.group || 'Sonstiges', source: 'dashboard', addedAt: c.added_at, active: isActive });
     });
-    // 2) Historical campaigns not yet in the list — append at the end
+    // 2) Historical campaigns not yet in the list — append (active by default)
     uniqueCampaigns(payload).forEach(c => {
-      if (!all.has(c.name)) all.set(c.name, c);
+      if (!all.has(c.name)) all.set(c.name, Object.assign({ active: true }, c));
     });
     return Array.from(all.values());
   }
@@ -960,23 +974,51 @@
   }
 
   function renderEntryForm() {
-    const camps = uniqueCampaignsAll();
+    const all = uniqueCampaignsAll();
+    const active = all.filter(c => c.active);
+    const paused = all.filter(c => !c.active);
     const wrap = document.getElementById('pt-entry-camps');
     const escAttr = (s) => String(s == null ? '' : s).replace(/"/g, '&quot;');
-    const campsHtml = camps.length
-      ? camps.map((c, i) =>
-          '<div class="pt-entry-camp-row" data-camp-row="' + escAttr(c.name) + '">' +
-            '<button type="button" class="pt-camp-btn" data-action="up" title="nach oben"' + (i === 0 ? ' disabled' : '') + '>▲</button>' +
-            '<button type="button" class="pt-camp-btn" data-action="down" title="nach unten"' + (i === camps.length - 1 ? ' disabled' : '') + '>▼</button>' +
-            '<div class="pt-camp-label-area">' +
-              groupPill(c.group) + '<span>' + c.name + '</span>' +
-              (c.source === 'dashboard' && !c.lastDate ? '<span class="pt-entry-row-meta">(neu)</span>' : '') +
+
+    const renderRow = (c, i, lastIdx, paused) => {
+      const cls = paused ? 'pt-entry-camp-row deactivated' : 'pt-entry-camp-row';
+      const moveBtns = paused
+        ? ''
+        : '<button type="button" class="pt-camp-btn" data-action="up" title="nach oben"' + (i === 0 ? ' disabled' : '') + '>▲</button>' +
+          '<button type="button" class="pt-camp-btn" data-action="down" title="nach unten"' + (i === lastIdx ? ' disabled' : '') + '>▼</button>';
+      const pauseOrActivate = paused
+        ? '<button type="button" class="pt-camp-btn activate" data-action="activate" title="Kampagne reaktivieren">▶</button>'
+        : '<button type="button" class="pt-camp-btn pause" data-action="pause" title="Kampagne pausieren (Historie bleibt erhalten)">⏸</button>';
+      const inputAttrs = paused ? ' disabled' : '';
+      return '<div class="' + cls + '" data-camp-row="' + escAttr(c.name) + '">' +
+        moveBtns +
+        '<div class="pt-camp-label-area">' +
+          groupPill(c.group) + '<span>' + c.name + '</span>' +
+          (c.source === 'dashboard' && !c.lastDate && !paused ? '<span class="pt-entry-row-meta">(neu)</span>' : '') +
+        '</div>' +
+        '<input class="pt-camp-input" type="number" step="0.01" min="0" placeholder="0.00" data-camp="' + escAttr(c.name) + '" data-group="' + escAttr(c.group || '') + '"' + inputAttrs + '>' +
+        pauseOrActivate +
+        '<button type="button" class="pt-camp-btn delete" data-action="delete" title="Kampagne komplett löschen">✕</button>' +
+      '</div>';
+    };
+
+    let campsHtml;
+    if (!all.length) {
+      campsHtml = '<div class="pt-entry-hint">Noch keine Kampagnen erfasst — füge unten die erste hinzu.</div>';
+    } else {
+      campsHtml = active.length
+        ? active.map((c, i) => renderRow(c, i, active.length - 1, false)).join('')
+        : '<div class="pt-entry-hint">Keine aktiven Kampagnen — alle pausiert oder noch keine angelegt.</div>';
+      if (paused.length) {
+        campsHtml +=
+          '<div class="pt-deact-section">' +
+            '<span class="pt-deact-toggle" id="pt-deact-toggle">▸ Pausierte Kampagnen (' + paused.length + ')</span>' +
+            '<div class="pt-deact-list" id="pt-deact-list">' +
+              paused.map((c, i) => renderRow(c, i, paused.length - 1, true)).join('') +
             '</div>' +
-            '<input class="pt-camp-input" type="number" step="0.01" min="0" placeholder="0.00" data-camp="' + escAttr(c.name) + '" data-group="' + escAttr(c.group || '') + '">' +
-            '<button type="button" class="pt-camp-btn delete" data-action="delete" title="Kampagne löschen">✕</button>' +
-          '</div>'
-        ).join('')
-      : '<div class="pt-entry-hint">Noch keine Kampagnen erfasst — füge unten die erste hinzu.</div>';
+          '</div>';
+      }
+    }
     const groupOpts = knownGroupOptions().map(g => '<option value="' + g + '">' + g + '</option>').join('');
     const addHtml =
       '<div class="pt-entry-addcamp" id="pt-entry-addcamp">' +
@@ -988,6 +1030,15 @@
         '</div>' +
       '</div>';
     wrap.innerHTML = campsHtml + addHtml;
+    // Toggle für Pausierte-Sektion
+    const deactToggle = document.getElementById('pt-deact-toggle');
+    if (deactToggle) {
+      deactToggle.addEventListener('click', () => {
+        const list = document.getElementById('pt-deact-list');
+        list.classList.toggle('show');
+        deactToggle.textContent = (list.classList.contains('show') ? '▾' : '▸') + ' Pausierte Kampagnen (' + paused.length + ')';
+      });
+    }
     // Wire up the add-form
     document.getElementById('pt-newcamp-toggle').addEventListener('click', () => {
       document.getElementById('pt-entry-addcamp').classList.toggle('open');
@@ -1008,6 +1059,8 @@
       if (action === 'up') handleMoveCampaign(name, -1);
       else if (action === 'down') handleMoveCampaign(name, +1);
       else if (action === 'delete') handleDeleteCampaign(name);
+      else if (action === 'pause') handleToggleActive(name, false);
+      else if (action === 'activate') handleToggleActive(name, true);
     });
     prefillEntryForm();
   }
@@ -1047,6 +1100,42 @@
     }
   }
 
+  async function handleToggleActive(name, makeActive) {
+    if (campaignOpInProgress) return;
+    if (!ghCfg || !ghCfg.writeToken || ghCfg.writeToken.indexOf('__') === 0) return;
+    campaignOpInProgress = true;
+    const typed = captureCurrentSpendValues();
+    const statusEl = document.getElementById('pt-entry-status');
+    statusEl.textContent = makeActive ? 'Reaktiviere…' : 'Pausiere…';
+    statusEl.className = 'pt-entry-status';
+    try {
+      await ghLoadSpend();
+      if (!pendingSpend.campaigns) pendingSpend.campaigns = [];
+      let idx = pendingSpend.campaigns.findIndex(c => c.name === name);
+      if (idx < 0) {
+        // Nur historisch bekannt — muss erst in die Liste rein
+        const cur = uniqueCampaignsAll().find(c => c.name === name);
+        if (!cur) { campaignOpInProgress = false; return; }
+        pendingSpend.campaigns.push({ name: cur.name, group: cur.group || 'Sonstiges', added_at: new Date().toISOString() });
+        idx = pendingSpend.campaigns.length - 1;
+      }
+      pendingSpend.campaigns[idx].active = !!makeActive;
+      await ghSaveSpend((makeActive ? 'Reaktiviert' : 'Pausiert') + ': Kampagne "' + name + '"');
+      renderEntryForm();
+      restoreSpendValues(typed);
+      statusEl.textContent = makeActive
+        ? '✓ "' + name + '" reaktiviert.'
+        : '✓ "' + name + '" pausiert — Historie bleibt erhalten.';
+      statusEl.className = 'pt-entry-status ok';
+      setTimeout(() => { if (statusEl.textContent.indexOf('✓ "' + name) === 0) statusEl.textContent = ''; }, 4000);
+    } catch (e) {
+      statusEl.textContent = '✗ ' + (makeActive ? 'Reaktivieren' : 'Pausieren') + ' fehlgeschlagen: ' + e.message;
+      statusEl.className = 'pt-entry-status err';
+    } finally {
+      campaignOpInProgress = false;
+    }
+  }
+
   async function handleMoveCampaign(name, direction) {
     if (campaignOpInProgress) return;
     if (!ghCfg || !ghCfg.writeToken || ghCfg.writeToken.indexOf('__') === 0) return;
@@ -1056,26 +1145,25 @@
     try {
       await ghLoadSpend();
       if (!pendingSpend.campaigns) pendingSpend.campaigns = [];
-      // Wenn die Kampagne nur historisch existiert: erst in pendingSpend.campaigns einsortieren
-      let idx = pendingSpend.campaigns.findIndex(c => c.name === name);
-      if (idx < 0) {
-        const cur = uniqueCampaignsAll().find(c => c.name === name);
-        if (!cur) return;
-        // Insert all historical campaigns into pendingSpend.campaigns (preserve current visual order)
+      // Sicherstellen dass historische Kampagnen drin sind (preserve current visual order)
+      if (!pendingSpend.campaigns.some(c => c.name === name)) {
         uniqueCampaignsAll().forEach(c => {
           if (!pendingSpend.campaigns.some(x => x.name === c.name)) {
             pendingSpend.campaigns.push({ name: c.name, group: c.group || 'Sonstiges', added_at: new Date().toISOString() });
           }
         });
-        idx = pendingSpend.campaigns.findIndex(c => c.name === name);
       }
-      const newIdx = idx + direction;
-      if (newIdx < 0 || newIdx >= pendingSpend.campaigns.length) {
-        campaignOpInProgress = false; return;
-      }
-      const tmp = pendingSpend.campaigns[idx];
-      pendingSpend.campaigns[idx] = pendingSpend.campaigns[newIdx];
-      pendingSpend.campaigns[newIdx] = tmp;
+      // Tausch nur unter AKTIVEN Kampagnen — pausierte bleiben an ihrer Position
+      const ps = pendingSpend.campaigns;
+      const activeIdxs = ps.map((c, i) => (c.active === false) ? -1 : i).filter(i => i >= 0);
+      const curIdx = ps.findIndex(c => c.name === name);
+      if (curIdx < 0) { campaignOpInProgress = false; return; }
+      const posInActive = activeIdxs.indexOf(curIdx);
+      if (posInActive < 0) { campaignOpInProgress = false; return; }
+      const newPosInActive = posInActive + direction;
+      if (newPosInActive < 0 || newPosInActive >= activeIdxs.length) { campaignOpInProgress = false; return; }
+      const swapIdx = activeIdxs[newPosInActive];
+      [ps[curIdx], ps[swapIdx]] = [ps[swapIdx], ps[curIdx]];
       await ghSaveSpend('Kampagnen-Reihenfolge geändert (' + name + ' ' + (direction < 0 ? '↑' : '↓') + ')');
       renderEntryForm();
       restoreSpendValues(typed);
@@ -1105,7 +1193,7 @@
     }
     const typed = captureCurrentSpendValues();
     pendingSpend.campaigns = pendingSpend.campaigns || [];
-    pendingSpend.campaigns.push({ name, group, added_at: new Date().toISOString() });
+    pendingSpend.campaigns.push({ name, group, added_at: new Date().toISOString(), active: true });
     nameInp.value = '';
     document.getElementById('pt-entry-addcamp').classList.remove('open');
     statusEl.textContent = 'ℹ "' + name + '" hinzugefügt. Wird beim nächsten Speichern dauerhaft übernommen.';
