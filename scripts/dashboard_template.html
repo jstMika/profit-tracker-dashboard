@@ -152,9 +152,15 @@
   .pt-pill-wine { background: #fbeaf0; color: #993556; }
   .pt-pill-slate { background: #e1f5ee; color: #0f6e56; }
   .pt-pill-other { background: #f1efe8; color: #5f5e5a; }
-  .pt-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 8px; font-size: 12px; color: #666; }
-  .pt-legend span { display: flex; align-items: center; gap: 5px; }
+  .pt-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; font-size: 12px; color: #666; }
+  .pt-legend span { display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 14px; background: #f5f4ed; cursor: pointer; user-select: none; transition: all 0.12s; border: 0.5px solid transparent; }
+  .pt-legend span:hover { background: #ebe9df; border-color: rgba(0,0,0,0.1); }
+  .pt-legend span.hidden { opacity: 0.4; }
+  .pt-legend span.hidden i { background: #ccc !important; }
+  .pt-legend span.hidden { text-decoration: line-through; text-decoration-thickness: 1px; }
   .pt-legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .pt-legend-hint { font-size: 11px; color: #aaa; margin-left: auto; align-self: center; }
+  @media (max-width: 600px) { .pt-legend-hint { display: none; } }
   .pt-detail-toggle { font-size: 12px; color: #1a7a3e; cursor: pointer; user-select: none; margin-left: 6px; }
   .pt-detail-toggle:hover { text-decoration: underline; }
 
@@ -265,11 +271,12 @@
 
   <div class="pt-section">
     <p class="pt-section-h">Trend</p>
-    <div class="pt-legend">
-      <span><i style="background:#185fa5"></i>Umsatz</span>
-      <span><i style="background:#ba7517"></i>COGS</span>
-      <span><i style="background:#a32d2d"></i>Ad Spend</span>
-      <span><i style="background:#3b6d11"></i>Gewinn</span>
+    <div class="pt-legend" id="trend-legend">
+      <span data-dataset="0" title="Klick zum Aus-/Einblenden"><i style="background:#185fa5"></i>Umsatz</span>
+      <span data-dataset="1" title="Klick zum Aus-/Einblenden"><i style="background:#ba7517"></i>COGS</span>
+      <span data-dataset="2" title="Klick zum Aus-/Einblenden"><i style="background:#a32d2d"></i>Ad Spend</span>
+      <span data-dataset="3" title="Klick zum Aus-/Einblenden"><i style="background:#3b6d11"></i>Gewinn</span>
+      <span class="pt-legend-hint">Klick auf Label zum Ein-/Ausblenden</span>
     </div>
     <div class="pt-chart-wrap"><canvas id="trend-chart" role="img"></canvas></div>
   </div>
@@ -489,25 +496,54 @@
 
     // Trend chart for range
     const trendLabels = rangeDays.map(d => fmtDate(d.date));
+    // Persisted hidden state for the trend legend
+    const TREND_HIDDEN_KEY = 'pt-trend-hidden-v1';
+    let trendHidden = {};
+    try { trendHidden = JSON.parse(localStorage.getItem(TREND_HIDDEN_KEY) || '{}') || {}; } catch (e) {}
+
+    const fewPoints = rangeDays.length <= 30;
+    const pr = fewPoints ? 3 : 0;
+    const prHover = fewPoints ? 6 : 5;
     trendChart = new Chart(document.getElementById('trend-chart'), {
       type: 'line',
       data: {
         labels: trendLabels,
         datasets: [
-          { label: 'Umsatz', data: rangeDays.map(d => d.revenue), borderColor: '#185fa5', backgroundColor: '#185fa5', tension: 0.2, pointRadius: rangeDays.length > 30 ? 0 : 3 },
-          { label: 'COGS', data: rangeDays.map(d => d.cogs), borderColor: '#ba7517', backgroundColor: '#ba7517', tension: 0.2, pointRadius: rangeDays.length > 30 ? 0 : 3, borderDash: [4, 4] },
-          { label: 'Ad Spend', data: rangeDays.map(d => d.spend), borderColor: '#a32d2d', backgroundColor: '#a32d2d', tension: 0.2, pointRadius: rangeDays.length > 30 ? 0 : 3, borderDash: [2, 3] },
-          { label: 'Gewinn', data: rangeDays.map(d => d.profit), borderColor: '#3b6d11', backgroundColor: '#3b6d11', tension: 0.2, pointRadius: rangeDays.length > 30 ? 0 : 4, borderWidth: 2.5 },
+          { label: 'Umsatz',   data: rangeDays.map(d => d.revenue), borderColor: '#185fa5', backgroundColor: 'rgba(24,95,165,0.06)', tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: 1.8, hidden: !!trendHidden['Umsatz'] },
+          { label: 'COGS',     data: rangeDays.map(d => d.cogs),    borderColor: '#ba7517', backgroundColor: 'rgba(186,117,23,0.06)', tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: 1.5, borderDash: [4, 4], hidden: !!trendHidden['COGS'] },
+          { label: 'Ad Spend', data: rangeDays.map(d => d.spend),   borderColor: '#a32d2d', backgroundColor: 'rgba(163,45,45,0.06)',  tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: 1.5, borderDash: [2, 3], hidden: !!trendHidden['Ad Spend'] },
+          { label: 'Gewinn',   data: rangeDays.map(d => d.profit),  borderColor: '#1a7a3e', backgroundColor: 'rgba(26,122,62,0.15)',  tension: 0.25, pointRadius: pr + 1, pointHoverRadius: prHover + 1, borderWidth: 2.8, fill: 'origin', hidden: !!trendHidden['Gewinn'] },
         ],
       },
       options: {
         responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => ctx.dataset.label + ': ' + eur(ctx.parsed.y) } } },
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            mode: 'index', intersect: false,
+            backgroundColor: 'rgba(26,26,26,0.95)', borderColor: 'rgba(255,255,255,0.05)', borderWidth: 1,
+            padding: 10, boxPadding: 4, titleColor: '#fff', bodyColor: '#fff', titleFont: { weight: 600, size: 12 }, bodyFont: { size: 12 },
+            itemSort: (a, b) => b.parsed.y - a.parsed.y,
+            callbacks: {
+              title: (items) => items.length ? items[0].label : '',
+              label: (ctx) => '  ' + ctx.dataset.label + ': ' + eur(ctx.parsed.y),
+            },
+          },
+        },
         scales: {
           x: { grid: { display: false }, ticks: { color: '#888', font: { size: 11 }, maxTicksLimit: 12 } },
           y: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { color: '#888', font: { size: 11 }, callback: (v) => eur(v) } },
         },
       },
+    });
+
+    // Initial legend disabled-state reflecting trendHidden
+    document.querySelectorAll('#trend-legend span[data-dataset]').forEach(el => {
+      const idx = parseInt(el.dataset.dataset, 10);
+      const ds = trendChart.data.datasets[idx];
+      if (ds && ds.hidden) el.classList.add('hidden');
+      else el.classList.remove('hidden');
     });
 
     // Group aggregation for range
@@ -1535,6 +1571,28 @@
     loadAndDisplayExistingPlCount();
   }
 
+  // ----- Trend-Legend Klick-Handler (Datasets aus-/einblenden, in localStorage persistent) -----
+  function initTrendLegend() {
+    const legend = document.getElementById('trend-legend');
+    if (!legend) return;
+    legend.addEventListener('click', (e) => {
+      const sp = e.target.closest('span[data-dataset]');
+      if (!sp || !trendChart) return;
+      const idx = parseInt(sp.dataset.dataset, 10);
+      const ds = trendChart.data.datasets[idx];
+      if (!ds) return;
+      ds.hidden = !ds.hidden;
+      sp.classList.toggle('hidden', ds.hidden);
+      // In localStorage merken
+      try {
+        const cur = JSON.parse(localStorage.getItem('pt-trend-hidden-v1') || '{}') || {};
+        cur[ds.label] = !!ds.hidden;
+        localStorage.setItem('pt-trend-hidden-v1', JSON.stringify(cur));
+      } catch (e) {}
+      trendChart.update();
+    });
+  }
+
   function initEntryForm() {
     try { ghCfg = JSON.parse(document.getElementById('pt-cfg').textContent); } catch (e) { ghCfg = null; }
     const head = document.getElementById('pt-entry-head');
@@ -1641,6 +1699,7 @@
 
     initEntryForm();
     initMhtmlUpload();
+    initTrendLegend();
 
     // Wire up the manual nightly-run trigger button.
     // ghCfg is populated by initEntryForm (it reads #pt-cfg). Read it here too as a safety
