@@ -1,10 +1,8 @@
 name: Build Dashboard
 
 on:
-  schedule:
-    # Daily at 04:00 UTC ≈ 06:00 Europe/Berlin (winter)/05:00 (summer).
-    # Pulls Shopify for the last 14 days each run; idempotent.
-    - cron: '0 4 * * *'
+  # Schedule wurde deaktiviert — Shopify wird nur auf Anforderung gepullt
+  # (Dashboard-Button via data/trigger.json oder workflow_dispatch).
   push:
     branches: [main]
     paths:
@@ -45,15 +43,36 @@ jobs:
       - name: Install StatiCrypt
         run: npm install -g staticrypt
 
+      - name: Decide if Shopify should be pulled
+        id: decide_pull
+        run: |
+          PULL="false"
+          REASON=""
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            PULL="true"
+            REASON="manueller workflow_dispatch"
+          elif [[ "${{ github.event_name }}" == "push" ]]; then
+            # Wurde data/trigger.json in diesem Commit angefasst? Dann hat jemand
+            # den 'Dashboard jetzt neu bauen'-Button geklickt → wir pullen.
+            CHANGED=$(git show --name-only --pretty=format: HEAD | grep -v '^$' || true)
+            if echo "$CHANGED" | grep -qx "data/trigger.json"; then
+              PULL="true"
+              REASON="data/trigger.json wurde geändert (Button geklickt)"
+            else
+              REASON="push ohne trigger.json (Ad-Spend/MHTML-Save) → kein Shopify-Pull, nur Rebuild"
+            fi
+          fi
+          echo "Decision: pull_shopify=$PULL — $REASON"
+          echo "pull_shopify=$PULL" >> "$GITHUB_OUTPUT"
+
       - name: Pull Shopify orders (heute + 14 Tage zurück, Europe/Berlin)
+        if: steps.decide_pull.outputs.pull_shopify == 'true'
         env:
           SHOPIFY_SHOP: ${{ vars.SHOPIFY_SHOP }}
           SHOPIFY_TOKEN: ${{ secrets.SHOPIFY_TOKEN }}
         run: |
           set -e
           mkdir -p data
-          # Datum in Europe/Berlin berechnen (nicht UTC!), und offset 0 = heute mit reinnehmen,
-          # damit der "heutige" Tag schon Daten hat sobald die ersten Bestellungen reinkommen.
           for offset in $(seq 0 14); do
             d=$(TZ=Europe/Berlin date -d "$offset days ago" +%Y-%m-%d)
             echo "::group::Pull $d"
@@ -62,12 +81,11 @@ jobs:
           done
 
       - name: Refresh Shopify-Variant-Kosten (für 'Sonstiges'-Produkte)
+        if: steps.decide_pull.outputs.pull_shopify == 'true'
         env:
           SHOPIFY_SHOP: ${{ vars.SHOPIFY_SHOP }}
           SHOPIFY_TOKEN: ${{ secrets.SHOPIFY_TOKEN }}
         run: |
-          # Soft-fail damit fehlende API-Permission (read_products/read_inventory)
-          # den Build nicht killt — die Sonstiges-COGS bleiben dann halt 0.
           python3 scripts/pull_variant_costs.py --root . || echo "::warning::pull_variant_costs failed — Sonstiges-Produkte haben dann ggf. 0€ COGS."
 
       - name: Build dashboard_data.json
