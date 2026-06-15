@@ -295,7 +295,7 @@
     <p class="pt-section-h">Bestellungen im Zeitraum <span class="pt-detail-toggle" id="order-toggle">[anzeigen]</span></p>
     <div id="order-wrap" style="display:none;">
       <table class="pt-table" id="order-table">
-        <thead><tr><th>Datum</th><th>#</th><th>Gruppe</th><th class="pt-num">Umsatz</th><th class="pt-num">COGS netto</th><th class="pt-num">COGS m.USt</th><th class="pt-num">Beitrag</th></tr></thead>
+        <thead><tr><th>Datum</th><th>#</th><th>Gruppe</th><th class="pt-num">Umsatz</th><th class="pt-num">COGS</th><th class="pt-num">Beitrag</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -594,7 +594,7 @@
     } else {
       const cogsSorted = grpAgg.slice().sort((a, b) => b.cogs - a.cogs);
       tipCogs.innerHTML =
-        '<div style="font-weight:600; margin-bottom:4px; color:#fff;">COGS (brutto, inkl. USt) nach Produktgruppe</div>' +
+        '<div style="font-weight:600; margin-bottom:4px; color:#fff;">COGS nach Produktgruppe</div>' +
         cogsSorted.map(g => {
           const share = agg.cogs ? (g.cogs / agg.cogs * 100).toFixed(0) + ' %' : '–';
           return '<div class="pt-tip-row"><span class="pt-tip-name">' + esc(g.group) + '</span><span class="pt-tip-val">' + eur(g.cogs) + ' <span style="color:#888;">(' + share + ')</span></span></div>';
@@ -614,12 +614,13 @@
     const ordsInRange = (data.orders || []).filter(o => inRange(o.date, from, to)).sort((a, b) => b.date.localeCompare(a.date) || b.shopify_name.localeCompare(a.shopify_name));
     const ordBody = document.querySelector('#order-table tbody');
     if (ordsInRange.length === 0) {
-      ordBody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#888;">Keine Bestellungen im Zeitraum</td></tr>';
+      ordBody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#888;">Keine Bestellungen im Zeitraum</td></tr>';
     } else {
       ordBody.innerHTML = ordsInRange.map(o => {
-        const contribution = (o.total || 0) - (o.cogs_gross || 0);
+        const cogs = o.cogs_gross != null ? o.cogs_gross : o.cogs_net;
+        const contribution = (o.total || 0) - (cogs || 0);
         const cls = contribution >= 0 ? 'pt-positive' : 'pt-negative';
-        return '<tr><td>' + fmtDate(o.date) + '</td><td>' + o.shopify_name + '</td><td>' + groupPill(o.group) + '</td><td class="pt-num">' + eur(o.total) + '</td><td class="pt-num">' + eur(o.cogs_net) + '</td><td class="pt-num">' + eur(o.cogs_gross) + '</td><td class="pt-num ' + cls + '">' + eur(contribution) + '</td></tr>';
+        return '<tr><td>' + fmtDate(o.date) + '</td><td>' + o.shopify_name + '</td><td>' + groupPill(o.group) + '</td><td class="pt-num">' + eur(o.total) + '</td><td class="pt-num">' + eur(cogs) + '</td><td class="pt-num ' + cls + '">' + eur(contribution) + '</td></tr>';
       }).join('');
     }
     document.getElementById('order-toggle').textContent = ordsInRange.length ? '[' + ordsInRange.length + ' anzeigen]' : '[keine]';
@@ -1395,19 +1396,16 @@
           '<th>Print-Labs Datum</th>' +
           '<th>Shopify-ID</th>' +
           '<th>Print-Labs-ID</th>' +
-          '<th class="num">COGS netto</th>' +
-          '<th class="num">+ USt</th>' +
+          '<th class="num">COGS</th>' +
           '<th>Status</th>' +
         '</tr></thead><tbody>' +
         orders.map(o => {
-          const net = o.total_cost_net || 0;
-          const gross = Math.round(net * u * 100) / 100;
+          const cost = o.total_cost_net || 0;
           return '<tr>' +
             '<td>' + fmtDt(o.created_iso, o.created_raw) + '</td>' +
             '<td class="shop-id">' + (o.shopify_order_id || '–') + '</td>' +
             '<td class="pl-id">' + (o.printlabs_id || '–') + '</td>' +
-            '<td class="num">' + eur(net) + '</td>' +
-            '<td class="num">' + eur(gross) + '</td>' +
+            '<td class="num">' + eur(cost) + '</td>' +
             '<td>' + (o.status || '–') + '</td>' +
           '</tr>';
         }).join('') +

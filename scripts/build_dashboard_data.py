@@ -145,14 +145,17 @@ def build(root: Path) -> dict:
 
         pl_match = pl_by_id.get(oid)
         if pl_match:
+            # Print-Labs liefert die Werte bereits brutto (inkl. USt) — kein *1.19 mehr
             cogs_net = to_float(pl_match.get("total_cost_net"))
-            cogs_gross = round(cogs_net * ust, 2)
+            cogs_gross = cogs_net
             printlabs_id = pl_match.get("printlabs_id")
             cogs_source = "printlabs"
         elif group == default_group:
-            # Sonstiges: nimm die Kosten aus den Shopify-Produkt-Daten (variant unitCost)
+            # Sonstiges: Shopify-Variant-Kosten — auch hier nehmen wir die Werte 1:1
+            # (Mika trägt die Kosten in Shopify brutto ein. Wenn das mal Netto sein sollte,
+            # *ust hier wieder einbauen.)
             cogs_net, n_missing = shopify_cogs_net(line_items)
-            cogs_gross = round(cogs_net * ust, 2)
+            cogs_gross = cogs_net
             printlabs_id = None
             cogs_source = "shopify_variant"
             if n_missing > 0 or cogs_net == 0:
