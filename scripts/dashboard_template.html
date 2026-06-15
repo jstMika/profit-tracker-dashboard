@@ -516,16 +516,26 @@
     const fewPoints = rangeDays.length <= 30;
     const pr = fewPoints ? 1.5 : 0;
     const prHover = fewPoints ? 3.5 : 3;
+    const LINE_WIDTH = 2;
 
-    // Custom Tooltip-Positioner: immer am oberen Chart-Rand fixieren, X folgt dem Cursor
-    if (window.Chart && Chart.Tooltip && Chart.Tooltip.positioners && !Chart.Tooltip.positioners.topPinned) {
-      Chart.Tooltip.positioners.topPinned = function (items, eventPos) {
-        const ca = this.chart.chartArea;
-        if (!ca) return false;
-        // x = aktiver Datenpunkt (falls vorhanden), sonst Mausposition
-        const x = items && items.length && items[0].element ? items[0].element.x : (eventPos ? eventPos.x : ca.left);
-        return { x: x, y: ca.top + 6 };
-      };
+    // Gewinn-Fill: Gradient grün über 0, rot unter 0 — wird zur Draw-Zeit ausgewertet,
+    // dann ist chartArea verfügbar.
+    function profitGradient(context) {
+      const { chart } = context;
+      const { ctx: c, chartArea, scales } = chart;
+      if (!chartArea || !scales || !scales.y) return 'rgba(26,122,62,0.15)';
+      const top = chartArea.top, bottom = chartArea.bottom;
+      const zeroY = scales.y.getPixelForValue(0);
+      const grad = c.createLinearGradient(0, top, 0, bottom);
+      // zeroPercent = wo liegt die Nulllinie relativ zur Chart-Höhe
+      if (zeroY <= top) return 'rgba(180,40,40,0.22)';   // ganzer Bereich unter 0 → rot
+      if (zeroY >= bottom) return 'rgba(26,122,62,0.16)'; // ganzer Bereich über 0 → grün
+      const pct = (zeroY - top) / (bottom - top);
+      grad.addColorStop(0,        'rgba(26,122,62,0.16)');
+      grad.addColorStop(pct,      'rgba(26,122,62,0.04)');
+      grad.addColorStop(pct,      'rgba(180,40,40,0.04)');
+      grad.addColorStop(1,        'rgba(180,40,40,0.22)');
+      return grad;
     }
 
     trendChart = new Chart(document.getElementById('trend-chart'), {
@@ -533,10 +543,10 @@
       data: {
         labels: trendLabels,
         datasets: [
-          { label: 'Umsatz',   data: rangeDays.map(d => d.revenue), borderColor: '#185fa5', backgroundColor: 'rgba(24,95,165,0.06)', tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: 1.8, hidden: !!trendHidden['Umsatz'] },
-          { label: 'COGS',     data: rangeDays.map(d => d.cogs),    borderColor: '#ba7517', backgroundColor: 'rgba(186,117,23,0.06)', tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: 1.5, borderDash: [4, 4], hidden: !!trendHidden['COGS'] },
-          { label: 'Ad Spend', data: rangeDays.map(d => d.spend),   borderColor: '#a32d2d', backgroundColor: 'rgba(163,45,45,0.06)',  tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: 1.5, borderDash: [2, 3], hidden: !!trendHidden['Ad Spend'] },
-          { label: 'Gewinn',   data: rangeDays.map(d => d.profit),  borderColor: '#1a7a3e', backgroundColor: 'rgba(26,122,62,0.15)',  tension: 0.25, pointRadius: pr, pointHoverRadius: prHover + 0.5, borderWidth: 2.8, fill: 'origin', hidden: !!trendHidden['Gewinn'] },
+          { label: 'Umsatz',   data: rangeDays.map(d => d.revenue), borderColor: '#185fa5', backgroundColor: 'rgba(24,95,165,0.06)', tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: LINE_WIDTH, hidden: !!trendHidden['Umsatz'] },
+          { label: 'COGS',     data: rangeDays.map(d => d.cogs),    borderColor: '#ba7517', backgroundColor: 'rgba(186,117,23,0.06)', tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: LINE_WIDTH, borderDash: [4, 4], hidden: !!trendHidden['COGS'] },
+          { label: 'Ad Spend', data: rangeDays.map(d => d.spend),   borderColor: '#a32d2d', backgroundColor: 'rgba(163,45,45,0.06)',  tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: LINE_WIDTH, borderDash: [2, 3], hidden: !!trendHidden['Ad Spend'] },
+          { label: 'Gewinn',   data: rangeDays.map(d => d.profit),  borderColor: '#1a7a3e', backgroundColor: profitGradient,        tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: LINE_WIDTH, fill: 'origin', hidden: !!trendHidden['Gewinn'] },
         ],
       },
       options: {
@@ -546,7 +556,8 @@
           legend: { display: false },
           tooltip: {
             mode: 'index', intersect: false,
-            position: 'topPinned', yAlign: 'top',
+            // Default position 'average' — Chart.js platziert den Tooltip automatisch links oder
+            // rechts vom Cursor und vermeidet so dass die Linien überdeckt werden.
             backgroundColor: 'rgba(26,26,26,0.95)', borderColor: 'rgba(255,255,255,0.05)', borderWidth: 1,
             padding: 10, boxPadding: 4, titleColor: '#fff', bodyColor: '#fff', titleFont: { weight: 600, size: 12 }, bodyFont: { size: 12 },
             itemSort: (a, b) => b.parsed.y - a.parsed.y,
@@ -558,7 +569,17 @@
         },
         scales: {
           x: { grid: { display: false }, ticks: { color: '#888', font: { size: 11 }, maxTicksLimit: 12 } },
-          y: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { color: '#888', font: { size: 11 }, callback: (v) => eur(v) } },
+          y: {
+            grid: {
+              color: (ctx) => (ctx.tick && ctx.tick.value === 0) ? 'rgba(0,0,0,0.45)' : 'rgba(0,0,0,0.05)',
+              lineWidth: (ctx) => (ctx.tick && ctx.tick.value === 0) ? 1.5 : 1,
+            },
+            ticks: {
+              color: (ctx) => (ctx.tick && ctx.tick.value === 0) ? '#1a1a1a' : '#888',
+              font: (ctx) => (ctx.tick && ctx.tick.value === 0) ? { size: 11, weight: 600 } : { size: 11 },
+              callback: (v) => eur(v),
+            },
+          },
         },
       },
     });
