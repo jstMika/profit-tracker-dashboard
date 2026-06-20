@@ -738,7 +738,16 @@
             titleFont: { weight: 600, size: 12 }, bodyFont: { size: 12 },
             itemSort: (a, b) => b.parsed.y - a.parsed.y,
             callbacks: {
-              title: (items) => items.length ? items[0].label : '',
+              title: (items) => {
+                if (!items.length) return '';
+                const day = rangeDays[items[0].dataIndex];
+                if (!day) return items[0].label;
+                const d = new Date(day.date + 'T00:00:00');
+                if (isNaN(d.getTime())) return items[0].label;
+                const wday = d.toLocaleDateString('de-DE', { weekday: 'short' });
+                const long = d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                return wday + ', ' + long;
+              },
               label: (ctx) => '  ' + ctx.dataset.label + ': ' + eur(ctx.parsed.y),
             },
           },
