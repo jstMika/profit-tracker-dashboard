@@ -295,6 +295,10 @@
   .pt-legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
   .pt-legend-hint { font-size: 11px; color: var(--text-fainter); margin-left: auto; align-self: center; }
   @media (max-width: 600px) { .pt-legend-hint { display: none; } }
+  .pt-chart-type { display: inline-flex; gap: 2px; align-self: center; }
+  .pt-chart-type button { font: inherit; font-size: 12px; line-height: 1; padding: 4px 8px; border-radius: 5px; border: 0.5px solid var(--border); background: var(--card-bg); color: var(--text-muted); cursor: pointer; transition: all 0.12s; }
+  .pt-chart-type button.active { background: var(--accent-green); color: #fff; border-color: var(--accent-green); }
+  .pt-chart-type button:not(.active):hover { background: var(--hover-bg); color: var(--text); }
   .pt-detail-toggle { font-size: 12px; color: #1a7a3e; cursor: pointer; user-select: none; margin-left: 6px; }
   .pt-detail-toggle:hover { text-decoration: underline; }
 
@@ -416,6 +420,10 @@
       <span data-dataset="2" title="Klick zum Aus-/Einblenden"><i style="background:#a32d2d"></i>Ad Spend</span>
       <span data-dataset="3" title="Klick zum Aus-/Einblenden"><i style="background:#3b6d11"></i>Gewinn</span>
       <span class="pt-legend-hint">Klick auf Label zum Ein-/Ausblenden</span>
+      <span class="pt-chart-type" id="chart-type-toggle">
+        <button type="button" data-type="line" title="Linien-Diagramm">📈 Linien</button>
+        <button type="button" data-type="bar" title="Säulen-Diagramm">📊 Säulen</button>
+      </span>
     </div>
     <div class="pt-chart-wrap"><canvas id="trend-chart" role="img"></canvas></div>
   </div>
@@ -660,6 +668,11 @@
     let trendHidden = {};
     try { trendHidden = JSON.parse(localStorage.getItem(TREND_HIDDEN_KEY) || '{}') || {}; } catch (e) {}
 
+    // Chart-Type: 'line' (Default) oder 'bar'
+    let chartType = 'line';
+    try { if (localStorage.getItem('pt-chart-type-v1') === 'bar') chartType = 'bar'; } catch (e) {}
+    const isBar = chartType === 'bar';
+
     const fewPoints = rangeDays.length <= 30;
     const pr = fewPoints ? 1.5 : 0;
     const prHover = fewPoints ? 3.5 : 3;
@@ -685,16 +698,31 @@
       return grad;
     }
 
+    let trendDatasets;
+    if (isBar) {
+      // Bar-Datasets: gruppierte Säulen pro Tag. Gewinn-Säulen rot wenn negativ.
+      const profitBarColors = rangeDays.map(d => (d.profit >= 0) ? 'rgba(26,122,62,0.85)' : 'rgba(180,40,40,0.85)');
+      const profitBorderColors = rangeDays.map(d => (d.profit >= 0) ? '#1a7a3e' : '#b42318');
+      trendDatasets = [
+        { label: 'Umsatz',   data: rangeDays.map(d => d.revenue), backgroundColor: 'rgba(24,95,165,0.85)',  borderColor: '#185fa5', borderWidth: 1, borderRadius: 3, hidden: !!trendHidden['Umsatz'] },
+        { label: 'COGS',     data: rangeDays.map(d => d.cogs),    backgroundColor: 'rgba(186,117,23,0.85)', borderColor: '#ba7517', borderWidth: 1, borderRadius: 3, hidden: !!trendHidden['COGS'] },
+        { label: 'Ad Spend', data: rangeDays.map(d => d.spend),   backgroundColor: 'rgba(163,45,45,0.85)',  borderColor: '#a32d2d', borderWidth: 1, borderRadius: 3, hidden: !!trendHidden['Ad Spend'] },
+        { label: 'Gewinn',   data: rangeDays.map(d => d.profit),  backgroundColor: profitBarColors,         borderColor: profitBorderColors, borderWidth: 1, borderRadius: 3, hidden: !!trendHidden['Gewinn'] },
+      ];
+    } else {
+      trendDatasets = [
+        { label: 'Umsatz',   data: rangeDays.map(d => d.revenue), borderColor: '#185fa5', backgroundColor: 'rgba(24,95,165,0.06)', tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: LINE_WIDTH, hidden: !!trendHidden['Umsatz'] },
+        { label: 'COGS',     data: rangeDays.map(d => d.cogs),    borderColor: '#ba7517', backgroundColor: 'rgba(186,117,23,0.06)', tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: LINE_WIDTH, borderDash: [4, 4], hidden: !!trendHidden['COGS'] },
+        { label: 'Ad Spend', data: rangeDays.map(d => d.spend),   borderColor: '#a32d2d', backgroundColor: 'rgba(163,45,45,0.06)',  tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: LINE_WIDTH, borderDash: [2, 3], hidden: !!trendHidden['Ad Spend'] },
+        { label: 'Gewinn',   data: rangeDays.map(d => d.profit),  borderColor: '#1a7a3e', backgroundColor: profitGradient,        tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: LINE_WIDTH, fill: 'origin', hidden: !!trendHidden['Gewinn'] },
+      ];
+    }
+
     trendChart = new Chart(document.getElementById('trend-chart'), {
-      type: 'line',
+      type: isBar ? 'bar' : 'line',
       data: {
         labels: trendLabels,
-        datasets: [
-          { label: 'Umsatz',   data: rangeDays.map(d => d.revenue), borderColor: '#185fa5', backgroundColor: 'rgba(24,95,165,0.06)', tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: LINE_WIDTH, hidden: !!trendHidden['Umsatz'] },
-          { label: 'COGS',     data: rangeDays.map(d => d.cogs),    borderColor: '#ba7517', backgroundColor: 'rgba(186,117,23,0.06)', tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: LINE_WIDTH, borderDash: [4, 4], hidden: !!trendHidden['COGS'] },
-          { label: 'Ad Spend', data: rangeDays.map(d => d.spend),   borderColor: '#a32d2d', backgroundColor: 'rgba(163,45,45,0.06)',  tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: LINE_WIDTH, borderDash: [2, 3], hidden: !!trendHidden['Ad Spend'] },
-          { label: 'Gewinn',   data: rangeDays.map(d => d.profit),  borderColor: '#1a7a3e', backgroundColor: profitGradient,        tension: 0.25, pointRadius: pr, pointHoverRadius: prHover, borderWidth: LINE_WIDTH, fill: 'origin', hidden: !!trendHidden['Gewinn'] },
-        ],
+        datasets: trendDatasets,
       },
       options: {
         responsive: true, maintainAspectRatio: false,
@@ -739,6 +767,7 @@
       if (ds && ds.hidden) el.classList.add('hidden');
       else el.classList.remove('hidden');
     });
+    syncChartTypeToggleUI();
 
     // Group aggregation for range
     const grpRowsInRange = (data.groups || []).filter(g => inRange(g.date, from, to));
@@ -1866,6 +1895,17 @@
     const legend = document.getElementById('trend-legend');
     if (!legend) return;
     legend.addEventListener('click', (e) => {
+      // Chart-Type-Toggle (Linien/Säulen)?
+      const typeBtn = e.target.closest('#chart-type-toggle button[data-type]');
+      if (typeBtn) {
+        const newType = typeBtn.dataset.type;
+        const current = (function () { try { return localStorage.getItem('pt-chart-type-v1') || 'line'; } catch (e) { return 'line'; } })();
+        if (newType === current) return;
+        try { localStorage.setItem('pt-chart-type-v1', newType); } catch (e) {}
+        update(); // Re-render — die Render-Funktion liest den Type aus localStorage
+        return;
+      }
+      // Sonst: Legend-Item (Dataset toggle)
       const sp = e.target.closest('span[data-dataset]');
       if (!sp || !trendChart) return;
       const idx = parseInt(sp.dataset.dataset, 10);
@@ -1873,13 +1913,20 @@
       if (!ds) return;
       ds.hidden = !ds.hidden;
       sp.classList.toggle('hidden', ds.hidden);
-      // In localStorage merken
       try {
         const cur = JSON.parse(localStorage.getItem('pt-trend-hidden-v1') || '{}') || {};
         cur[ds.label] = !!ds.hidden;
         localStorage.setItem('pt-trend-hidden-v1', JSON.stringify(cur));
       } catch (e) {}
       trendChart.update();
+    });
+  }
+
+  function syncChartTypeToggleUI() {
+    let cur = 'line';
+    try { if (localStorage.getItem('pt-chart-type-v1') === 'bar') cur = 'bar'; } catch (e) {}
+    document.querySelectorAll('#chart-type-toggle button[data-type]').forEach(b => {
+      b.classList.toggle('active', b.dataset.type === cur);
     });
   }
 
