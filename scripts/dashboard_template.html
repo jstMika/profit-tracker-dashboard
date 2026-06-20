@@ -1972,6 +1972,11 @@
       if (ghCfg && ghCfg.writeToken && ghCfg.writeToken.indexOf('__') !== 0) {
         await ghLoadSpend();
         spendByDateMap = buildSpendByDate();
+        // Re-render der Form mit dem geladenen Stand — z.B. pausierte Kampagnen
+        // wandern jetzt in die Pausierte-Sektion. Getippte Werte preserven.
+        const typed = captureCurrentSpendValues();
+        renderEntryForm();
+        restoreSpendValues(typed);
         renderSavedList();
         prefillEntryForm();
         redrawPickers();
