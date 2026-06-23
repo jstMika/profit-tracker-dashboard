@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-22T22:15:37.767657+00:00",
+  "generated_at": "2026-06-23T22:05:29.653452+00:00",
   "days": [
     {
       "date": "2026-05-14",
@@ -440,6 +440,17 @@
       "margin": -0.0121,
       "roas": 1.5596,
       "be_roas": 1.5895
+    },
+    {
+      "date": "2026-06-23",
+      "orders": 6,
+      "revenue": 315.41,
+      "cogs": 127.51,
+      "spend": 107.69,
+      "profit": 80.21,
+      "margin": 0.2543,
+      "roas": 2.9289,
+      "be_roas": 1.6786
     }
   ],
   "groups": [
@@ -1223,6 +1234,17 @@
       "profit": -2.28,
       "margin": -0.0121,
       "roas": 1.5596
+    },
+    {
+      "date": "2026-06-23",
+      "group": "Weingläser",
+      "orders": 6,
+      "revenue": 315.41,
+      "cogs": 127.51,
+      "spend": 107.69,
+      "profit": 80.21,
+      "margin": 0.2543,
+      "roas": 2.9289
     }
   ],
   "campaigns": [
@@ -1967,6 +1989,22 @@
       "campaign": "CBO SKALIERUNG Weingläser",
       "group": "Weingläser",
       "spend": 52.64,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-06-23",
+      "campaign": "ABO Testing Weingläser",
+      "group": "Weingläser",
+      "spend": 58.11,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-06-23",
+      "campaign": "CBO SKALIERUNG Weingläser",
+      "group": "Weingläser",
+      "spend": 49.58,
       "purchases": null,
       "roas": null
     }
@@ -4476,6 +4514,90 @@
       "discount": 0.0,
       "cogs_net": 12.2,
       "cogs_gross": 12.2,
+      "cogs_source": "printlabs"
+    },
+    {
+      "date": "2026-06-23",
+      "shopify_name": "#1498",
+      "shopify_id": "12776642314588",
+      "printlabs_id": "ORDPL-1001606613",
+      "group": "Weingläser",
+      "items": 1,
+      "total": 31.91,
+      "shipping": 4.95,
+      "discount": 2.99,
+      "cogs_net": 12.2,
+      "cogs_gross": 12.2,
+      "cogs_source": "printlabs"
+    },
+    {
+      "date": "2026-06-23",
+      "shopify_name": "#1499",
+      "shopify_id": "12778525720924",
+      "printlabs_id": "ORDPL-1001606999",
+      "group": "Weingläser",
+      "items": 2,
+      "total": 54.85,
+      "shipping": 4.95,
+      "discount": 0.0,
+      "cogs_net": 19.75,
+      "cogs_gross": 19.75,
+      "cogs_source": "printlabs"
+    },
+    {
+      "date": "2026-06-23",
+      "shopify_name": "#1500",
+      "shopify_id": "12780264980828",
+      "printlabs_id": "ORDPL-1001607042",
+      "group": "Weingläser",
+      "items": 1,
+      "total": 64.95,
+      "shipping": 0.0,
+      "discount": 0.0,
+      "cogs_net": 30.19,
+      "cogs_gross": 30.19,
+      "cogs_source": "printlabs"
+    },
+    {
+      "date": "2026-06-23",
+      "shopify_name": "#1501",
+      "shopify_id": "12781222068572",
+      "printlabs_id": "ORDPL-1001607204",
+      "group": "Weingläser",
+      "items": 3,
+      "total": 58.85,
+      "shipping": 0.0,
+      "discount": 0.0,
+      "cogs_net": 23.04,
+      "cogs_gross": 23.04,
+      "cogs_source": "printlabs"
+    },
+    {
+      "date": "2026-06-23",
+      "shopify_name": "#1502",
+      "shopify_id": "12781236224348",
+      "printlabs_id": "ORDPL-1001607217",
+      "group": "Weingläser",
+      "items": 1,
+      "total": 49.9,
+      "shipping": 4.95,
+      "discount": 0.0,
+      "cogs_net": 18.24,
+      "cogs_gross": 18.24,
+      "cogs_source": "printlabs"
+    },
+    {
+      "date": "2026-06-23",
+      "shopify_name": "#1503",
+      "shopify_id": "12781409534300",
+      "printlabs_id": "ORDPL-1001607316",
+      "group": "Weingläser",
+      "items": 1,
+      "total": 54.95,
+      "shipping": 0.0,
+      "discount": 0.0,
+      "cogs_net": 24.09,
+      "cogs_gross": 24.09,
       "cogs_source": "printlabs"
     }
   ],
