@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-24T22:10:48.442401+00:00",
+  "generated_at": "2026-06-25T22:49:46.063010+00:00",
   "days": [
     {
       "date": "2026-05-14",
@@ -462,6 +462,17 @@
       "margin": 0.0356,
       "roas": 1.8778,
       "be_roas": 1.7601
+    },
+    {
+      "date": "2026-06-25",
+      "orders": 5,
+      "revenue": 266.55,
+      "cogs": 100.74,
+      "spend": 148.52,
+      "profit": 17.29,
+      "margin": 0.0649,
+      "roas": 1.7947,
+      "be_roas": 1.6076
     }
   ],
   "groups": [
@@ -1267,6 +1278,28 @@
       "profit": 10.31,
       "margin": 0.0356,
       "roas": 1.8778
+    },
+    {
+      "date": "2026-06-25",
+      "group": "Schieferherzen",
+      "orders": 1,
+      "revenue": 51.9,
+      "cogs": 15.83,
+      "spend": 0.0,
+      "profit": 36.07,
+      "margin": 0.695,
+      "roas": 0
+    },
+    {
+      "date": "2026-06-25",
+      "group": "Weingläser",
+      "orders": 4,
+      "revenue": 214.65,
+      "cogs": 84.91,
+      "spend": 148.52,
+      "profit": -18.78,
+      "margin": -0.0875,
+      "roas": 1.4453
     }
   ],
   "campaigns": [
@@ -2051,6 +2084,30 @@
       "campaign": "cost cap Weingläser",
       "group": "Weingläser",
       "spend": 41.91,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-06-25",
+      "campaign": "ABO Testing Weingläser",
+      "group": "Weingläser",
+      "spend": 55.71,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-06-25",
+      "campaign": "CBO SKALIERUNG Weingläser",
+      "group": "Weingläser",
+      "spend": 51.09,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-06-25",
+      "campaign": "cost cap Weingläser",
+      "group": "Weingläser",
+      "spend": 41.72,
       "purchases": null,
       "roas": null
     }
@@ -4700,6 +4757,76 @@
       "discount": 5.48,
       "cogs_net": 21.4,
       "cogs_gross": 21.4,
+      "cogs_source": "printlabs"
+    },
+    {
+      "date": "2026-06-25",
+      "shopify_name": "#1508",
+      "shopify_id": "12784298262876",
+      "printlabs_id": "ORDPL-1001608022",
+      "group": "Schieferherzen",
+      "items": 2,
+      "total": 51.9,
+      "shipping": 0.0,
+      "discount": 0.0,
+      "cogs_net": 15.83,
+      "cogs_gross": 15.83,
+      "cogs_source": "printlabs"
+    },
+    {
+      "date": "2026-06-25",
+      "shopify_name": "#1509",
+      "shopify_id": "12785549640028",
+      "printlabs_id": "ORDPL-1001608477",
+      "group": "Weingläser",
+      "items": 1,
+      "total": 49.9,
+      "shipping": 4.95,
+      "discount": 0.0,
+      "cogs_net": 18.24,
+      "cogs_gross": 18.24,
+      "cogs_source": "printlabs"
+    },
+    {
+      "date": "2026-06-25",
+      "shopify_name": "#1510",
+      "shopify_id": "12785645257052",
+      "printlabs_id": "ORDPL-1001608509",
+      "group": "Weingläser",
+      "items": 1,
+      "total": 49.9,
+      "shipping": 4.95,
+      "discount": 0.0,
+      "cogs_net": 18.24,
+      "cogs_gross": 18.24,
+      "cogs_source": "printlabs"
+    },
+    {
+      "date": "2026-06-25",
+      "shopify_name": "#1511",
+      "shopify_id": "12786294882652",
+      "printlabs_id": "ORDPL-1001608658",
+      "group": "Weingläser",
+      "items": 1,
+      "total": 64.95,
+      "shipping": 0.0,
+      "discount": 0.0,
+      "cogs_net": 30.19,
+      "cogs_gross": 30.19,
+      "cogs_source": "printlabs"
+    },
+    {
+      "date": "2026-06-25",
+      "shopify_name": "#1512",
+      "shopify_id": "12787082035548",
+      "printlabs_id": "ORDPL-1001608895",
+      "group": "Weingläser",
+      "items": 1,
+      "total": 49.9,
+      "shipping": 4.95,
+      "discount": 0.0,
+      "cogs_net": 18.24,
+      "cogs_gross": 18.24,
       "cogs_source": "printlabs"
     }
   ],
