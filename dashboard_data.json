@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-30T21:27:10.209749+00:00",
+  "generated_at": "2026-06-30T22:07:14.736847+00:00",
   "days": [
     {
       "date": "2026-05-14",
@@ -523,10 +523,10 @@
       "orders": 3,
       "revenue": 129.56,
       "cogs": 47.17,
-      "spend": 0.0,
-      "profit": 82.39,
-      "margin": 0.6359,
-      "roas": 0,
+      "spend": 84.36,
+      "profit": -1.97,
+      "margin": -0.0152,
+      "roas": 1.5358,
       "be_roas": 1.5725
     }
   ],
@@ -1406,10 +1406,10 @@
       "orders": 3,
       "revenue": 129.56,
       "cogs": 47.17,
-      "spend": 0.0,
-      "profit": 82.39,
-      "margin": 0.6359,
-      "roas": 0
+      "spend": 84.36,
+      "profit": -1.97,
+      "margin": -0.0152,
+      "roas": 1.5358
     }
   ],
   "campaigns": [
@@ -2314,6 +2314,30 @@
       "campaign": "cost cap Weingläser",
       "group": "Weingläser",
       "spend": 12.76,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-06-30",
+      "campaign": "ABO Testing Weingläser",
+      "group": "Weingläser",
+      "spend": 33.16,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-06-30",
+      "campaign": "CBO SKALIERUNG Weingläser",
+      "group": "Weingläser",
+      "spend": 48.54,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-06-30",
+      "campaign": "cost cap Weingläser",
+      "group": "Weingläser",
+      "spend": 2.66,
       "purchases": null,
       "roas": null
     }
