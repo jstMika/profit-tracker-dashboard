@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-30T22:07:14.736847+00:00",
+  "generated_at": "2026-07-01T22:03:37.887922+00:00",
   "days": [
     {
       "date": "2026-05-14",
@@ -528,6 +528,17 @@
       "margin": -0.0152,
       "roas": 1.5358,
       "be_roas": 1.5725
+    },
+    {
+      "date": "2026-07-01",
+      "orders": 1,
+      "revenue": 49.86,
+      "cogs": 19.75,
+      "spend": 94.73,
+      "profit": -64.62,
+      "margin": -1.296,
+      "roas": 0.5263,
+      "be_roas": 1.6559
     }
   ],
   "groups": [
@@ -1410,6 +1421,17 @@
       "profit": -1.97,
       "margin": -0.0152,
       "roas": 1.5358
+    },
+    {
+      "date": "2026-07-01",
+      "group": "Weingläser",
+      "orders": 1,
+      "revenue": 49.86,
+      "cogs": 19.75,
+      "spend": 94.73,
+      "profit": -64.62,
+      "margin": -1.296,
+      "roas": 0.5263
     }
   ],
   "campaigns": [
@@ -2338,6 +2360,22 @@
       "campaign": "cost cap Weingläser",
       "group": "Weingläser",
       "spend": 2.66,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-07-01",
+      "campaign": "ABO Testing Weingläser",
+      "group": "Weingläser",
+      "spend": 40.67,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-07-01",
+      "campaign": "CBO SKALIERUNG Weingläser",
+      "group": "Weingläser",
+      "spend": 54.06,
       "purchases": null,
       "roas": null
     }
@@ -5204,6 +5242,20 @@
       "shopify_name": "#1523",
       "shopify_id": "12808191934812",
       "printlabs_id": "ORDPL-1001612752",
+      "group": "Weingläser",
+      "items": 2,
+      "total": 49.86,
+      "shipping": 4.95,
+      "discount": 4.99,
+      "cogs_net": 19.75,
+      "cogs_gross": 19.75,
+      "cogs_source": "printlabs"
+    },
+    {
+      "date": "2026-07-01",
+      "shopify_name": "#1524",
+      "shopify_id": "12810367140188",
+      "printlabs_id": "ORDPL-1001613351",
       "group": "Weingläser",
       "items": 2,
       "total": 49.86,
