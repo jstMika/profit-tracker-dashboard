@@ -1,5 +1,5 @@
 {
-  "pulled_at": "2026-07-02T22:09:20.795420+00:00",
+  "pulled_at": "2026-07-04T17:28:40.430053+00:00",
   "date": "2026-07-01",
   "shop": "4b841b",
   "order_count": 1,
@@ -9,7 +9,7 @@
       "name": "#1524",
       "created_at": "2026-07-01T16:14:09+02:00",
       "financial_status": "paid",
-      "fulfillment_status": null,
+      "fulfillment_status": "fulfilled",
       "currency": "EUR",
       "subtotal_price": "44.91",
       "total_price": "49.86",
