@@ -1,15 +1,15 @@
 {
-  "pulled_at": "2026-07-05T22:10:42.071437+00:00",
-  "date": "2026-06-28",
+  "pulled_at": "2026-07-05T22:10:39.724568+00:00",
+  "date": "2026-07-05",
   "shop": "4b841b",
   "order_count": 2,
   "orders": [
     {
-      "id": 12796764029276,
-      "name": "#1520",
-      "created_at": "2026-06-28T21:30:12+02:00",
+      "id": 12820601635164,
+      "name": "#1533",
+      "created_at": "2026-07-05T12:53:03+02:00",
       "financial_status": "paid",
-      "fulfillment_status": "fulfilled",
+      "fulfillment_status": null,
       "currency": "EUR",
       "subtotal_price": "44.95",
       "total_price": "49.90",
@@ -18,7 +18,7 @@
       "total_shipping": "4.95",
       "line_items": [
         {
-          "id": 37140051460444,
+          "id": 37192905458012,
           "product_id": 15597876707676,
           "variant_id": 57712005382492,
           "title": "Auf UNS! - personalisiertes Weinglas",
@@ -29,26 +29,26 @@
       ]
     },
     {
-      "id": 12796054438236,
-      "name": "#1519",
-      "created_at": "2026-06-28T16:45:16+02:00",
+      "id": 12820314980700,
+      "name": "#1532",
+      "created_at": "2026-07-05T10:47:25+02:00",
       "financial_status": "paid",
-      "fulfillment_status": "fulfilled",
+      "fulfillment_status": null,
       "currency": "EUR",
-      "subtotal_price": "44.95",
-      "total_price": "49.90",
+      "subtotal_price": "29.95",
+      "total_price": "34.90",
       "total_discounts": "0.00",
       "total_tax": "0.00",
       "total_shipping": "4.95",
       "line_items": [
         {
-          "id": 37138725536092,
+          "id": 37192347091292,
           "product_id": 15597876707676,
-          "variant_id": 57712005382492,
+          "variant_id": 57712005349724,
           "title": "Auf UNS! - personalisiertes Weinglas",
-          "name": "Auf UNS! - personalisiertes Weinglas - 2er Set / Transparent / 450ml",
+          "name": "Auf UNS! - personalisiertes Weinglas - 1 Weinglas / Transparent / 450ml",
           "quantity": 1,
-          "price": "44.95"
+          "price": "29.95"
         }
       ]
     }
