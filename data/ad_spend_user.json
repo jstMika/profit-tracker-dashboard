@@ -958,6 +958,17 @@
           "spend": 52.93
         }
       ]
+    },
+    "2026-07-07": {
+      "saved_at": "2026-07-08T23:17:37.507Z",
+      "source": "dashboard",
+      "campaigns": [
+        {
+          "name": "CBO SKALIERUNG Weingläser",
+          "group": "Weingläser",
+          "spend": 55.22
+        }
+      ]
     }
   },
   "campaigns": [
