@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13T00:14:12.627502+00:00",
+  "generated_at": "2026-07-13T22:42:16.435673+00:00",
   "days": [
     {
       "date": "2026-05-14",
@@ -660,6 +660,17 @@
       "margin": -0.3976,
       "roas": 0.9638,
       "be_roas": 1.5627
+    },
+    {
+      "date": "2026-07-13",
+      "orders": 3,
+      "revenue": 151.21,
+      "cogs": 0.0,
+      "spend": 0.0,
+      "profit": 151.21,
+      "margin": 1.0,
+      "roas": 0,
+      "be_roas": 1.0
     }
   ],
   "groups": [
@@ -1685,6 +1696,28 @@
       "profit": -21.81,
       "margin": -0.3976,
       "roas": 0.9638
+    },
+    {
+      "date": "2026-07-13",
+      "group": "Schieferherzen",
+      "orders": 1,
+      "revenue": 51.9,
+      "cogs": 0.0,
+      "spend": 0.0,
+      "profit": 51.9,
+      "margin": 1.0,
+      "roas": 0
+    },
+    {
+      "date": "2026-07-13",
+      "group": "Weingläser",
+      "orders": 2,
+      "revenue": 99.31,
+      "cogs": 0.0,
+      "spend": 0.0,
+      "profit": 99.31,
+      "margin": 1.0,
+      "roas": 0
     }
   ],
   "campaigns": [
@@ -5987,7 +6020,68 @@
       "cogs_net": 19.75,
       "cogs_gross": 19.75,
       "cogs_source": "printlabs"
+    },
+    {
+      "date": "2026-07-13",
+      "shopify_name": "#1550",
+      "shopify_id": "12839908901212",
+      "printlabs_id": null,
+      "group": "Schieferherzen",
+      "items": 2,
+      "total": 51.9,
+      "shipping": 0.0,
+      "discount": 0.0,
+      "cogs_net": 0.0,
+      "cogs_gross": 0.0,
+      "cogs_source": "missing"
+    },
+    {
+      "date": "2026-07-13",
+      "shopify_name": "#1551",
+      "shopify_id": "12840463958364",
+      "printlabs_id": null,
+      "group": "Weingläser",
+      "items": 2,
+      "total": 53.9,
+      "shipping": 0.0,
+      "discount": 0.0,
+      "cogs_net": 0.0,
+      "cogs_gross": 0.0,
+      "cogs_source": "missing"
+    },
+    {
+      "date": "2026-07-13",
+      "shopify_name": "#1552",
+      "shopify_id": "12841574760796",
+      "printlabs_id": null,
+      "group": "Weingläser",
+      "items": 1,
+      "total": 45.41,
+      "shipping": 4.95,
+      "discount": 4.49,
+      "cogs_net": 0.0,
+      "cogs_gross": 0.0,
+      "cogs_source": "missing"
     }
   ],
-  "missing_costs": []
+  "missing_costs": [
+    {
+      "date": "2026-07-13",
+      "shopify_name": "#1550",
+      "shopify_id": "12839908901212",
+      "reason": "no_printlabs_match"
+    },
+    {
+      "date": "2026-07-13",
+      "shopify_name": "#1551",
+      "shopify_id": "12840463958364",
+      "reason": "no_printlabs_match"
+    },
+    {
+      "date": "2026-07-13",
+      "shopify_name": "#1552",
+      "shopify_id": "12841574760796",
+      "reason": "no_printlabs_match"
+    }
+  ]
 }
