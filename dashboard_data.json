@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-10T22:36:17.841050+00:00",
+  "generated_at": "2026-07-13T00:14:12.627502+00:00",
   "days": [
     {
       "date": "2026-05-14",
@@ -638,6 +638,28 @@
       "margin": 0.4643,
       "roas": 7.1639,
       "be_roas": 1.656
+    },
+    {
+      "date": "2026-07-11",
+      "orders": 1,
+      "revenue": 49.9,
+      "cogs": 18.24,
+      "spend": 37.9,
+      "profit": -6.24,
+      "margin": -0.1251,
+      "roas": 1.3166,
+      "be_roas": 1.5761
+    },
+    {
+      "date": "2026-07-12",
+      "orders": 1,
+      "revenue": 54.85,
+      "cogs": 19.75,
+      "spend": 56.91,
+      "profit": -21.81,
+      "margin": -0.3976,
+      "roas": 0.9638,
+      "be_roas": 1.5627
     }
   ],
   "groups": [
@@ -1641,6 +1663,28 @@
       "profit": 117.79,
       "margin": 0.4214,
       "roas": 6.0419
+    },
+    {
+      "date": "2026-07-11",
+      "group": "Weingläser",
+      "orders": 1,
+      "revenue": 49.9,
+      "cogs": 18.24,
+      "spend": 37.9,
+      "profit": -6.24,
+      "margin": -0.1251,
+      "roas": 1.3166
+    },
+    {
+      "date": "2026-07-12",
+      "group": "Weingläser",
+      "orders": 1,
+      "revenue": 54.85,
+      "cogs": 19.75,
+      "spend": 56.91,
+      "profit": -21.81,
+      "margin": -0.3976,
+      "roas": 0.9638
     }
   ],
   "campaigns": [
@@ -2689,6 +2733,22 @@
       "campaign": "CBO SKALIERUNG Weingläser",
       "group": "Weingläser",
       "spend": 46.26,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-07-11",
+      "campaign": "CBO SKALIERUNG Weingläser",
+      "group": "Weingläser",
+      "spend": 37.9,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-07-12",
+      "campaign": "CBO SKALIERUNG Weingläser",
+      "group": "Weingläser",
+      "spend": 56.91,
       "purchases": null,
       "roas": null
     }
@@ -5898,6 +5958,34 @@
       "discount": 0.0,
       "cogs_net": 15.83,
       "cogs_gross": 15.83,
+      "cogs_source": "printlabs"
+    },
+    {
+      "date": "2026-07-11",
+      "shopify_name": "#1548",
+      "shopify_id": "12836578066780",
+      "printlabs_id": "ORDPL-1001621896",
+      "group": "Weingläser",
+      "items": 1,
+      "total": 49.9,
+      "shipping": 4.95,
+      "discount": 0.0,
+      "cogs_net": 18.24,
+      "cogs_gross": 18.24,
+      "cogs_source": "printlabs"
+    },
+    {
+      "date": "2026-07-12",
+      "shopify_name": "#1549",
+      "shopify_id": "12837260460380",
+      "printlabs_id": "ORDPL-1001622120",
+      "group": "Weingläser",
+      "items": 2,
+      "total": 54.85,
+      "shipping": 4.95,
+      "discount": 0.0,
+      "cogs_net": 19.75,
+      "cogs_gross": 19.75,
       "cogs_source": "printlabs"
     }
   ],
