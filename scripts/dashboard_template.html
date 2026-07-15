@@ -111,7 +111,14 @@
   .pt-theme-toggle .icon-dark { display: none; }
   [data-theme="dark"] .pt-theme-toggle .icon-light { display: none; }
   [data-theme="dark"] .pt-theme-toggle .icon-dark { display: inline; }
-  .pt-sub { font-size: 13px; color: var(--text-muted); margin: 0 0 1rem; }
+  .pt-sub { font-size: 13px; color: var(--text-muted); margin: 0 0 0.5rem; }
+  .pt-inline-settings { font-size: 12px; color: var(--text-muted); margin: 0 0 1rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .pt-inline-settings label { cursor: pointer; user-select: none; display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 14px; background: var(--range-btn-bg); border: 0.5px solid var(--border); transition: all 0.12s; }
+  .pt-inline-settings label:hover { background: var(--hover-bg); }
+  .pt-inline-settings label.on { background: var(--accent-green); color: #fff; border-color: var(--accent-green); }
+  .pt-inline-settings input[type="checkbox"] { cursor: pointer; margin: 0; accent-color: var(--accent-green); }
+  .pt-inline-settings label.on input[type="checkbox"] { accent-color: #fff; }
+  .pt-inline-settings .help { color: var(--text-fainter); font-size: 11px; }
 
   /* Range picker */
   .pt-range { background: var(--card-bg); border: 0.5px solid var(--border); border-radius: 10px; padding: 0.6rem 0.75rem; margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
@@ -338,6 +345,13 @@
     </div>
   </div>
   <p class="pt-sub" id="pt-sub">Shopify-Umsatz, Print-Labs-Kosten und Meta-Ad-Spend — täglich aktualisiert.</p>
+  <div class="pt-inline-settings">
+    <label id="pt-rc-label">
+      <input type="checkbox" id="pt-rc-toggle">
+      <span>+19% USt auf Ad Spend (Reverse Charge Meta)</span>
+    </label>
+    <span class="help" title="Wenn du Kleinunternehmer bist oder die USt vor Vorsteuer-Erstattung sehen willst: multipliziert alle Ad-Spend-Werte im Dashboard mit 1,19 und rechnet Profit/Marge/ROAS entsprechend neu.">ⓘ</span>
+  </div>
 
   <div class="pt-trigger" id="pt-trigger">
     <button class="pt-trigger-btn" id="pt-trigger-btn" type="button">↻ Dashboard jetzt neu bauen</button>
@@ -589,7 +603,10 @@
     document.getElementById('pt-meta').textContent =
       'Stand: ' + new Date(data.generated_at).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
-    const allDays = (data.days || []).slice().sort((a, b) => a.date.localeCompare(b.date));
+    // Reverse-Charge-Toggle: multipliziert Ad-Spend im gesamten Dashboard mit 1.19 wenn aktiv
+    const _spendMult = spendMultiplier();
+    const allDays = (data.days || []).slice().sort((a, b) => a.date.localeCompare(b.date))
+      .map(d => adjustSpendCopy(d, /*hasProfit*/ true, _spendMult));
     // "Heute" / "Gestern" beziehen sich auf den echten heutigen Tag im Browser
     // (Lokalzeit), nicht auf den letzten erfassten Datentag.
     const today = new Date();
@@ -779,7 +796,8 @@
     syncChartTypeToggleUI();
 
     // Group aggregation for range
-    const grpRowsInRange = (data.groups || []).filter(g => inRange(g.date, from, to));
+    const grpRowsInRange = (data.groups || []).filter(g => inRange(g.date, from, to))
+      .map(g => adjustSpendCopy(g, /*hasProfit*/ true, _spendMult));
     const grpAgg = aggregateByGroup(grpRowsInRange);
 
     groupChart = new Chart(document.getElementById('group-chart'), {
@@ -822,7 +840,8 @@
     }
 
     // Campaigns aggregated
-    const campsInRange = (data.campaigns || []).filter(c => inRange(c.date, from, to));
+    const campsInRange = (data.campaigns || []).filter(c => inRange(c.date, from, to))
+      .map(c => adjustSpendCopy(c, /*hasProfit*/ false, _spendMult));
     const campAgg = aggregateByCampaign(campsInRange);
     const campBody = document.querySelector('#camp-table tbody');
     if (campAgg.length === 0) {
@@ -938,6 +957,45 @@
     if (currentPreset === 'custom' && (!customFrom || !customTo)) return;
     render(payload, currentPreset, customFrom, customTo);
     saveState();
+  }
+
+  // ----- Reverse-Charge: +19% USt auf Ad Spend (Toggle) -----
+  const RC_KEY = 'pt-include-reverse-charge-v1';
+  function getIncludeReverseCharge() {
+    try { return localStorage.getItem(RC_KEY) === 'on'; } catch (e) { return false; }
+  }
+  function spendMultiplier() {
+    return getIncludeReverseCharge() ? 1.19 : 1.0;
+  }
+  function rc2(n) { return Math.round(n * 100) / 100; }
+  function rc4(n) { return Math.round(n * 10000) / 10000; }
+  // Passt ein Objekt mit .spend an. Wenn hasProfit, werden profit/margin/roas neu berechnet.
+  function adjustSpendCopy(obj, hasProfit, mult) {
+    if (mult === 1 || obj == null || obj.spend == null) return obj;
+    const newSpend = rc2(obj.spend * mult);
+    const out = Object.assign({}, obj, { spend: newSpend });
+    if (hasProfit) {
+      const rev = obj.revenue || 0;
+      const cogs = obj.cogs || 0;
+      out.profit = rc2(rev - cogs - newSpend);
+      out.margin = rev ? rc4((rev - cogs - newSpend) / rev) : 0;
+      out.roas = newSpend ? rc4(rev / newSpend) : 0;
+    }
+    return out;
+  }
+
+  function initReverseChargeToggle() {
+    const cb = document.getElementById('pt-rc-toggle');
+    const lbl = document.getElementById('pt-rc-label');
+    if (!cb) return;
+    const on = getIncludeReverseCharge();
+    cb.checked = on;
+    if (lbl) lbl.classList.toggle('on', on);
+    cb.addEventListener('change', () => {
+      try { localStorage.setItem(RC_KEY, cb.checked ? 'on' : 'off'); } catch (e) {}
+      if (lbl) lbl.classList.toggle('on', cb.checked);
+      update();
+    });
   }
 
   function fmtRangeInput(from, to) {
@@ -2052,6 +2110,7 @@
     initMhtmlUpload();
     initTrendLegend();
     initThemeToggle();
+    initReverseChargeToggle();
 
     // Wire up the manual nightly-run trigger button.
     // ghCfg is populated by initEntryForm (it reads #pt-cfg). Read it here too as a safety
