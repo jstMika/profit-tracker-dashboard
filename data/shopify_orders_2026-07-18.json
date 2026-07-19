@@ -1,39 +1,30 @@
 {
-  "pulled_at": "2026-07-19T09:26:44.418481+00:00",
-  "date": "2026-07-17",
+  "pulled_at": "2026-07-19T09:26:44.138641+00:00",
+  "date": "2026-07-18",
   "shop": "4b841b",
   "order_count": 1,
   "orders": [
     {
-      "id": 12853744107868,
-      "name": "#1563",
-      "created_at": "2026-07-17T22:44:55+02:00",
+      "id": 12854671638876,
+      "name": "#1564",
+      "created_at": "2026-07-18T12:44:51+02:00",
       "financial_status": "paid",
       "fulfillment_status": null,
       "currency": "EUR",
-      "subtotal_price": "49.90",
-      "total_price": "54.85",
+      "subtotal_price": "44.95",
+      "total_price": "49.90",
       "total_discounts": "0.00",
       "total_tax": "0.00",
       "total_shipping": "4.95",
       "line_items": [
         {
-          "id": 37256588165468,
+          "id": 37258269786460,
           "product_id": 15597876707676,
           "variant_id": 57712005382492,
           "title": "Auf UNS! - personalisiertes Weinglas",
           "name": "Auf UNS! - personalisiertes Weinglas - 2er Set / Transparent / 450ml",
           "quantity": 1,
           "price": "44.95"
-        },
-        {
-          "id": 37256588198236,
-          "product_id": 15486555783516,
-          "variant_id": 56991054168412,
-          "title": "Weinglas - Geschenkbox",
-          "name": "Weinglas - Geschenkbox",
-          "quantity": 1,
-          "price": "4.95"
         }
       ]
     }
