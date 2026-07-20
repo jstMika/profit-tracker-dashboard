@@ -2975,7 +2975,7 @@
       "total_cost_net": 19.75,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-13T00:13:13.021Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     },
     "12836578066780": {
@@ -3001,7 +3001,7 @@
       "total_cost_net": 18.24,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-13T22:42:48.858Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     },
     "12840463958364": {
@@ -3014,7 +3014,7 @@
       "total_cost_net": 21.27,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-13T22:42:48.858Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     },
     "12839908901212": {
@@ -3027,7 +3027,7 @@
       "total_cost_net": 15.83,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-13T22:42:48.858Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     },
     "12842846060892": {
@@ -3040,7 +3040,7 @@
       "total_cost_net": 15.83,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-14T22:06:20.012Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     },
     "12842471620956": {
@@ -3053,7 +3053,7 @@
       "total_cost_net": 19.75,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-14T22:06:20.012Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     },
     "12847143289180": {
@@ -3066,7 +3066,7 @@
       "total_cost_net": 30.19,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-15T22:09:33.939Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     },
     "12846184071516": {
@@ -3079,7 +3079,7 @@
       "total_cost_net": 33.52,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-15T22:09:33.939Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     },
     "12846141604188": {
@@ -3092,7 +3092,7 @@
       "total_cost_net": 18.24,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-15T22:09:33.939Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     },
     "12846055948636": {
@@ -3105,7 +3105,7 @@
       "total_cost_net": 13.71,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-15T22:09:33.939Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     },
     "12845355434332": {
@@ -3118,20 +3118,20 @@
       "total_cost_net": 15.83,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-15T22:09:33.939Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     },
     "12851268288860": {
       "printlabs_id": "ORDPL-1001630990",
       "shopify_order_id": "12851268288860",
-      "status": "In Production",
+      "status": "Fulfilled",
       "created_raw": "July 16, 2026, 10:45 p.m.",
       "created_iso": "2026-07-16T20:45:00.000Z",
       "shipment": "DHL Paket National - Germany",
       "total_cost_net": 12.2,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-16T22:37:19.760Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     },
     "12850402394460": {
@@ -3144,7 +3144,7 @@
       "total_cost_net": 18.24,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-16T22:37:19.760Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     },
     "12850155585884": {
@@ -3157,33 +3157,33 @@
       "total_cost_net": 13.71,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-16T22:37:19.760Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     },
     "12854671638876": {
       "printlabs_id": "ORDPL-1001633574",
       "shopify_order_id": "12854671638876",
-      "status": "In Production",
+      "status": "Fulfilled",
       "created_raw": "July 18, 2026, 1 p.m.",
       "created_iso": null,
       "shipment": "DHL Paket National - Germany",
       "total_cost_net": 18.24,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-19T09:26:20.936Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     },
     "12853744107868": {
       "printlabs_id": "ORDPL-1001632927",
       "shopify_order_id": "12853744107868",
-      "status": "In Production",
+      "status": "Fulfilled",
       "created_raw": "July 17, 2026, 11 p.m.",
       "created_iso": null,
       "shipment": "DHL Paket National - Germany",
       "total_cost_net": 19.75,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-19T09:26:20.936Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     },
     "12858134561116": {
@@ -3196,7 +3196,7 @@
       "total_cost_net": 17.59,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-20T07:59:34.420Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     },
     "12858059915612": {
@@ -3209,7 +3209,7 @@
       "total_cost_net": 30.19,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-20T07:59:34.420Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     },
     "12857742852444": {
@@ -3222,19 +3222,24 @@
       "total_cost_net": 18.24,
       "platform": "Teeinblue via shopify",
       "first_seen": "2026-07-20T07:59:34.420Z",
-      "last_seen": "2026-07-20T07:59:34.420Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
+      "source": "mhtml_upload"
+    },
+    "12859360837980": {
+      "printlabs_id": "ORDPL-1001637311",
+      "shopify_order_id": "12859360837980",
+      "status": "Accepted",
+      "created_raw": "July 20, 2026, 3:28 p.m.",
+      "created_iso": "2026-07-20T13:28:00.000Z",
+      "shipment": "Kleinpaket - Germany",
+      "total_cost_net": 15.83,
+      "platform": "Teeinblue via shopify",
+      "first_seen": "2026-07-20T22:02:59.374Z",
+      "last_seen": "2026-07-20T22:02:59.374Z",
       "source": "mhtml_upload"
     }
   },
   "uploads": [
-    {
-      "at": "2026-06-15T22:06:36.155Z",
-      "filename": "Printlabs_ Orders.mhtml",
-      "orders_in_file": 20,
-      "added": 5,
-      "updated": 6,
-      "unchanged": 9
-    },
     {
       "at": "2026-06-16T22:10:18.980Z",
       "filename": "Printlabs_ Orders.mhtml",
@@ -3466,6 +3471,14 @@
       "added": 3,
       "updated": 3,
       "unchanged": 14
+    },
+    {
+      "at": "2026-07-20T22:02:59.374Z",
+      "filename": "Printlabs_ Orders.mhtml",
+      "orders_in_file": 20,
+      "added": 1,
+      "updated": 3,
+      "unchanged": 16
     }
   ]
 }
