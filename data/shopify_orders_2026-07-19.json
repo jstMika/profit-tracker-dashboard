@@ -1,7 +1,98 @@
 {
-  "pulled_at": "2026-07-19T10:06:26.979236+00:00",
+  "pulled_at": "2026-07-20T07:59:54.719935+00:00",
   "date": "2026-07-19",
   "shop": "4b841b",
-  "order_count": 0,
-  "orders": []
+  "order_count": 3,
+  "orders": [
+    {
+      "id": 12858134561116,
+      "name": "#1567",
+      "created_at": "2026-07-19T23:13:33+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "58.85",
+      "total_price": "58.85",
+      "total_discounts": "0.00",
+      "total_tax": "0.00",
+      "total_shipping": "0.00",
+      "line_items": [
+        {
+          "id": 37264782262620,
+          "product_id": 15672647713116,
+          "variant_id": 58262004334940,
+          "title": "Wo alles begann - Personalisiertes Schieferherz (15x15) mit Namen",
+          "name": "Wo alles begann - Personalisiertes Schieferherz (15x15) mit Namen - Schieferherz 15x15 cm / Transparent / 15x15",
+          "quantity": 1,
+          "price": "44.95"
+        },
+        {
+          "id": 37264782295388,
+          "product_id": 15388839412060,
+          "variant_id": 56476067791196,
+          "title": "Satin Geschenkbeutel",
+          "name": "Satin Geschenkbeutel",
+          "quantity": 1,
+          "price": "6.95"
+        },
+        {
+          "id": 37264782328156,
+          "product_id": 15388836921692,
+          "variant_id": 56476062253404,
+          "title": "Schiefer Aufsteller",
+          "name": "Schiefer Aufsteller",
+          "quantity": 1,
+          "price": "6.95"
+        }
+      ]
+    },
+    {
+      "id": 12858059915612,
+      "name": "#1566",
+      "created_at": "2026-07-19T22:31:59+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "64.95",
+      "total_price": "64.95",
+      "total_discounts": "0.00",
+      "total_tax": "0.00",
+      "total_shipping": "0.00",
+      "line_items": [
+        {
+          "id": 37264632840540,
+          "product_id": 15497934963036,
+          "variant_id": 57096277918044,
+          "title": "Beste Freundin - personalisiertes Weinglas",
+          "name": "Beste Freundin - personalisiertes Weinglas - 4er Set / Transparent / 450ml",
+          "quantity": 1,
+          "price": "64.95"
+        }
+      ]
+    },
+    {
+      "id": 12857742852444,
+      "name": "#1565",
+      "created_at": "2026-07-19T19:55:32+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "44.95",
+      "total_price": "49.90",
+      "total_discounts": "0.00",
+      "total_tax": "0.00",
+      "total_shipping": "4.95",
+      "line_items": [
+        {
+          "id": 37264002515292,
+          "product_id": 15597876707676,
+          "variant_id": 57712005382492,
+          "title": "Auf UNS! - personalisiertes Weinglas",
+          "name": "Auf UNS! - personalisiertes Weinglas - 2er Set / Transparent / 450ml",
+          "quantity": 1,
+          "price": "44.95"
+        }
+      ]
+    }
+  ]
 }
