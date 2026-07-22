@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-22T22:43:49.569564+00:00",
+  "generated_at": "2026-07-22T22:46:12.625610+00:00",
   "days": [
     {
       "date": "2026-05-14",
@@ -753,22 +753,22 @@
       "date": "2026-07-21",
       "orders": 3,
       "revenue": 155.66,
-      "cogs": 0.0,
+      "cogs": 56.85,
       "spend": 57.98,
-      "profit": 97.68,
-      "margin": 0.6275,
+      "profit": 40.83,
+      "margin": 0.2623,
       "roas": 2.6847,
-      "be_roas": 1.0
+      "be_roas": 1.5753
     },
     {
       "date": "2026-07-22",
       "orders": 1,
       "revenue": 64.95,
       "cogs": 0.0,
-      "spend": 0.0,
-      "profit": 64.95,
-      "margin": 1.0,
-      "roas": 0,
+      "spend": 50.8,
+      "profit": 14.15,
+      "margin": 0.2179,
+      "roas": 1.2785,
       "be_roas": 1.0
     }
   ],
@@ -1977,10 +1977,10 @@
       "group": "Schieferherzen",
       "orders": 1,
       "revenue": 51.9,
-      "cogs": 0.0,
+      "cogs": 15.83,
       "spend": 17.04,
-      "profit": 34.86,
-      "margin": 0.6717,
+      "profit": 19.03,
+      "margin": 0.3667,
       "roas": 3.0458
     },
     {
@@ -1988,11 +1988,22 @@
       "group": "Weingläser",
       "orders": 2,
       "revenue": 103.76,
-      "cogs": 0.0,
+      "cogs": 41.02,
       "spend": 40.94,
-      "profit": 62.82,
-      "margin": 0.6054,
+      "profit": 21.8,
+      "margin": 0.2101,
       "roas": 2.5344
+    },
+    {
+      "date": "2026-07-22",
+      "group": "Schieferherzen",
+      "orders": 0,
+      "revenue": 0.0,
+      "cogs": 0.0,
+      "spend": 15.4,
+      "profit": -15.4,
+      "margin": 0,
+      "roas": 0.0
     },
     {
       "date": "2026-07-22",
@@ -2000,10 +2011,10 @@
       "orders": 1,
       "revenue": 64.95,
       "cogs": 0.0,
-      "spend": 0.0,
-      "profit": 64.95,
-      "margin": 1.0,
-      "roas": 0
+      "spend": 35.4,
+      "profit": 29.55,
+      "margin": 0.455,
+      "roas": 1.8347
     }
   ],
   "campaigns": [
@@ -3284,6 +3295,30 @@
       "campaign": "CBO SKALIERUNG Weingläser",
       "group": "Weingläser",
       "spend": 30.68,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-07-22",
+      "campaign": "ABO Testing Schieferherzen",
+      "group": "Schieferherzen",
+      "spend": 15.4,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-07-22",
+      "campaign": "ABO Testing Weingläser",
+      "group": "Weingläser",
+      "spend": 9.98,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-07-22",
+      "campaign": "CBO SKALIERUNG Weingläser",
+      "group": "Weingläser",
+      "spend": 25.42,
       "purchases": null,
       "roas": null
     }
@@ -6793,43 +6828,43 @@
       "date": "2026-07-21",
       "shopify_name": "#1569",
       "shopify_id": "12861646963036",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001639406",
       "group": "Weingläser",
       "items": 2,
       "total": 49.86,
       "shipping": 4.95,
       "discount": 4.99,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0,
-      "cogs_source": "missing"
+      "cogs_net": 19.75,
+      "cogs_gross": 19.75,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-07-21",
       "shopify_name": "#1570",
       "shopify_id": "12862689280348",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001639856",
       "group": "Weingläser",
       "items": 2,
       "total": 53.9,
       "shipping": 0.0,
       "discount": 0.0,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0,
-      "cogs_source": "missing"
+      "cogs_net": 21.27,
+      "cogs_gross": 21.27,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-07-21",
       "shopify_name": "#1571",
       "shopify_id": "12867178168668",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001640543",
       "group": "Schieferherzen",
       "items": 2,
       "total": 51.9,
       "shipping": 0.0,
       "discount": 0.0,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0,
-      "cogs_source": "missing"
+      "cogs_net": 15.83,
+      "cogs_gross": 15.83,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-07-22",
@@ -6847,24 +6882,6 @@
     }
   ],
   "missing_costs": [
-    {
-      "date": "2026-07-21",
-      "shopify_name": "#1569",
-      "shopify_id": "12861646963036",
-      "reason": "no_printlabs_match"
-    },
-    {
-      "date": "2026-07-21",
-      "shopify_name": "#1570",
-      "shopify_id": "12862689280348",
-      "reason": "no_printlabs_match"
-    },
-    {
-      "date": "2026-07-21",
-      "shopify_name": "#1571",
-      "shopify_id": "12867178168668",
-      "reason": "no_printlabs_match"
-    },
     {
       "date": "2026-07-22",
       "shopify_name": "#1572",
