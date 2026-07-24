@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-22T22:46:12.625610+00:00",
+  "generated_at": "2026-07-24T15:21:39.454969+00:00",
   "days": [
     {
       "date": "2026-05-14",
@@ -770,6 +770,17 @@
       "margin": 0.2179,
       "roas": 1.2785,
       "be_roas": 1.0
+    },
+    {
+      "date": "2026-07-23",
+      "orders": 1,
+      "revenue": 54.9,
+      "cogs": 18.8,
+      "spend": 39.17,
+      "profit": -3.07,
+      "margin": -0.0559,
+      "roas": 1.4016,
+      "be_roas": 1.5208
     }
   ],
   "groups": [
@@ -2015,6 +2026,28 @@
       "profit": 29.55,
       "margin": 0.455,
       "roas": 1.8347
+    },
+    {
+      "date": "2026-07-23",
+      "group": "Schieferherzen",
+      "orders": 1,
+      "revenue": 54.9,
+      "cogs": 18.8,
+      "spend": 14.12,
+      "profit": 21.98,
+      "margin": 0.4004,
+      "roas": 3.8881
+    },
+    {
+      "date": "2026-07-23",
+      "group": "Weingläser",
+      "orders": 0,
+      "revenue": 0.0,
+      "cogs": 0.0,
+      "spend": 25.05,
+      "profit": -25.05,
+      "margin": 0,
+      "roas": 0.0
     }
   ],
   "campaigns": [
@@ -3319,6 +3352,30 @@
       "campaign": "CBO SKALIERUNG Weingläser",
       "group": "Weingläser",
       "spend": 25.42,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-07-23",
+      "campaign": "ABO Testing Schieferherzen",
+      "group": "Schieferherzen",
+      "spend": 14.12,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-07-23",
+      "campaign": "ABO Testing Weingläser",
+      "group": "Weingläser",
+      "spend": 0.2,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-07-23",
+      "campaign": "CBO SKALIERUNG Weingläser",
+      "group": "Weingläser",
+      "spend": 24.85,
       "purchases": null,
       "roas": null
     }
@@ -6879,6 +6936,20 @@
       "cogs_net": 0.0,
       "cogs_gross": 0.0,
       "cogs_source": "missing"
+    },
+    {
+      "date": "2026-07-23",
+      "shopify_name": "#1573",
+      "shopify_id": "12879986524508",
+      "printlabs_id": "ORDPL-1001643176",
+      "group": "Schieferherzen",
+      "items": 2,
+      "total": 54.9,
+      "shipping": 0.0,
+      "discount": 0.0,
+      "cogs_net": 18.8,
+      "cogs_gross": 18.8,
+      "cogs_source": "printlabs"
     }
   ],
   "missing_costs": [
