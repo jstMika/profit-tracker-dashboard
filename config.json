@@ -6,7 +6,8 @@
     {"substring": "Weinglas", "name": "Weingläser"},
     {"substring": "Schiefer", "name": "Schieferherzen"},
     {"substring": "Aufsteller", "name": "Schieferherzen"},
-    {"substring": "Geschenkbeutel", "name": "Schieferherzen"}
+    {"substring": "Geschenkbeutel", "name": "Schieferherzen"},
+    {"substring": "Kissen", "name": "Kissen"}
   ],
   "default_group": "Sonstiges",
   "active_campaigns": [

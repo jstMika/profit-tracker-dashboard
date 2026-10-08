@@ -24,6 +24,10 @@
     --pill-wine-fg: #993556;
     --pill-slate-bg: #e1f5ee;
     --pill-slate-fg: #0f6e56;
+    --pill-c1-bg: #e3eefb; --pill-c1-fg: #1f5a99;
+    --pill-c2-bg: #fdf0d5; --pill-c2-fg: #8a5a00;
+    --pill-c3-bg: #efe9fb; --pill-c3-fg: #5b3f9e;
+    --pill-c4-bg: #fde8e0; --pill-c4-fg: #9a3d1c;
     --info-bg: #ddd;
     --info-fg: #666;
     --tip-bg: #1a1a1a;
@@ -74,6 +78,10 @@
     --pill-wine-fg: #f0a3b5;
     --pill-slate-bg: #1a3a2e;
     --pill-slate-fg: #6dcfa8;
+    --pill-c1-bg: #16293f; --pill-c1-fg: #8fbef0;
+    --pill-c2-bg: #3a2d10; --pill-c2-fg: #f0c674;
+    --pill-c3-bg: #2a2140; --pill-c3-fg: #b9a3ee;
+    --pill-c4-bg: #3d2015; --pill-c4-fg: #f0a585;
     --info-bg: #444;
     --info-fg: #ccc;
     --tip-bg: #0a0a0c;
@@ -219,6 +227,9 @@
   .pt-entry-addcamp-form input[type="text"], .pt-entry-addcamp-form select { font: inherit; font-size: 13px; padding: 5px 8px; border: 0.5px solid var(--border-strong); border-radius: 5px; background: var(--card-bg); }
   .pt-entry-addcamp-form input[type="text"] { flex: 1; min-width: 160px; }
   .pt-entry-addcamp-form .pt-btn { padding: 5px 10px; font-size: 12px; }
+  .pt-newgroup-fields { display: none; flex-basis: 100%; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .pt-newgroup-fields.show { display: flex; }
+  .pt-newgroup-hint { flex-basis: 100%; font-size: 11px; color: var(--text-faint); }
   .pt-entry-row-meta { font-size: 9px; color: #999; margin-left: 4px; font-weight: 400; text-transform: none; letter-spacing: 0; }
   /* Campaign row with reorder/delete controls */
   .pt-entry-camp-row { display: flex; align-items: center; gap: 4px; margin-bottom: 6px; padding: 2px 0; }
@@ -293,6 +304,10 @@
   .pt-pill-wine { background: var(--pill-wine-bg); color: var(--pill-wine-fg); }
   .pt-pill-slate { background: var(--pill-slate-bg); color: var(--pill-slate-fg); }
   .pt-pill-other { background: var(--pill-other-bg); color: var(--pill-other-fg); }
+  .pt-pill-c1 { background: var(--pill-c1-bg); color: var(--pill-c1-fg); }
+  .pt-pill-c2 { background: var(--pill-c2-bg); color: var(--pill-c2-fg); }
+  .pt-pill-c3 { background: var(--pill-c3-bg); color: var(--pill-c3-fg); }
+  .pt-pill-c4 { background: var(--pill-c4-bg); color: var(--pill-c4-fg); }
   .pt-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; font-size: 12px; color: var(--text-muted); }
   .pt-legend span { display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 14px; background: var(--card-bg-subtle); cursor: pointer; user-select: none; transition: all 0.12s; border: 0.5px solid transparent; }
   .pt-legend span:hover { background: var(--hover-bg); border-color: var(--border); }
@@ -514,9 +529,20 @@
     return y + '-' + m + '-' + day;
   };
 
+  const escHtml = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+
   function groupPill(g) {
-    const cls = g && g.indexOf('Weingl') === 0 ? 'pt-pill-wine' : (g && g.indexOf('Schiefer') === 0 ? 'pt-pill-slate' : 'pt-pill-other');
-    return '<span class="pt-pill ' + cls + '">' + (g || '–') + '</span>';
+    let cls;
+    if (g && g.indexOf('Weingl') === 0) cls = 'pt-pill-wine';
+    else if (g && g.indexOf('Schiefer') === 0) cls = 'pt-pill-slate';
+    else if (!g || g === '–' || g === 'Sonstiges') cls = 'pt-pill-other';
+    else {
+      // Weitere Kategorien (z.B. Kissen): feste Farbe pro Name
+      let h = 0;
+      for (let i = 0; i < g.length; i++) h = (h + g.charCodeAt(i)) % 4;
+      cls = 'pt-pill-c' + (h + 1);
+    }
+    return '<span class="pt-pill ' + cls + '">' + escHtml(g || '–') + '</span>';
   }
 
   function addDays(d, n) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
@@ -1235,11 +1261,34 @@
     return Array.from(all.values());
   }
 
+  const NEW_GROUP_VALUE = '__new_group__';
+
+  // Liest die Felder für eine neue Kategorie aus. Rückgabe:
+  //   { error }            → ungültige Eingabe
+  //   { group }            → Kategorie existiert schon (Schreibweise wird übernommen)
+  //   { group, newGroup }  → neue Kategorie, die mitgespeichert werden muss
+  function readNewGroupInput() {
+    const name = (document.getElementById('pt-newgroup-name').value || '').trim().replace(/\s+/g, ' ');
+    const subRaw = (document.getElementById('pt-newgroup-sub').value || '').trim().replace(/\s+/g, ' ');
+    if (!name) return { error: 'Name der neuen Kategorie fehlt.' };
+    const existing = knownGroupOptions().find(g => g.toLowerCase() === name.toLowerCase());
+    if (existing) return { group: existing };
+    const sub = subRaw || name;
+    if (sub.length < 3) return { error: 'Stichwort muss mindestens 3 Zeichen haben.' };
+    const taken = (payload.product_groups || []).concat(pendingSpend.groups || [])
+      .find(g => g && g.substring && String(g.substring).toLowerCase() === sub.toLowerCase());
+    if (taken) return { error: 'Stichwort "' + sub + '" gehört schon zur Kategorie "' + taken.name + '".' };
+    return { group: name, newGroup: { name: name, substring: sub, added_at: new Date().toISOString() } };
+  }
+
   function knownGroupOptions() {
     const set = new Set();
     (payload.groups || []).forEach(g => g.group && set.add(g.group));
     (payload.campaigns || []).forEach(c => c.group && set.add(c.group));
     (pendingSpend.campaigns || []).forEach(c => c.group && set.add(c.group));
+    // Kategorien aus config.json (über den Build) + im Dashboard neu angelegte
+    (payload.product_groups || []).forEach(g => g && g.name && set.add(g.name));
+    (pendingSpend.groups || []).forEach(g => g && g.name && set.add(g.name));
     if (!set.size) ['Schieferherzen', 'Weingläser', 'Sonstiges'].forEach(g => set.add(g));
     if (!set.has('Sonstiges')) set.add('Sonstiges');
     return Array.from(set).sort();
@@ -1304,7 +1353,8 @@
           '</div>';
       }
     }
-    const groupOpts = knownGroupOptions().map(g => '<option value="' + g + '">' + g + '</option>').join('');
+    const groupOpts = knownGroupOptions().map(g => '<option value="' + escHtml(g) + '">' + escHtml(g) + '</option>').join('') +
+      '<option value="' + NEW_GROUP_VALUE + '">+ Neue Kategorie…</option>';
     const addHtml =
       '<div class="pt-entry-addcamp" id="pt-entry-addcamp">' +
         '<span class="pt-entry-addcamp-toggle" id="pt-newcamp-toggle">+ Neue Kampagne</span>' +
@@ -1312,6 +1362,11 @@
           '<input type="text" id="pt-newcamp-name" placeholder="Kampagnen-Name (z.B. ABO Skalierung Schieferherzen)">' +
           '<select id="pt-newcamp-group">' + groupOpts + '</select>' +
           '<button type="button" class="pt-btn pt-btn-primary" id="pt-newcamp-add">Hinzufügen</button>' +
+          '<div class="pt-newgroup-fields" id="pt-newgroup-fields">' +
+            '<input type="text" id="pt-newgroup-name" maxlength="40" placeholder="Name der neuen Kategorie (z.B. Kissen)">' +
+            '<input type="text" id="pt-newgroup-sub" maxlength="40" placeholder="Stichwort im Produkttitel (optional)">' +
+            '<span class="pt-newgroup-hint">Bestellungen, deren Produkttitel das Stichwort enthält, zählen zu dieser Kategorie. Leer = Name der Kategorie.</span>' +
+          '</div>' +
         '</div>' +
       '</div>';
     wrap.innerHTML = campsHtml + addHtml;
@@ -1330,6 +1385,17 @@
       setTimeout(() => { document.getElementById('pt-newcamp-name').focus(); }, 0);
     });
     document.getElementById('pt-newcamp-add').addEventListener('click', handleAddCampaign);
+    // Auswahl "+ Neue Kategorie…" blendet die Felder für Name + Stichwort ein
+    document.getElementById('pt-newcamp-group').addEventListener('change', (e) => {
+      const isNew = e.target.value === NEW_GROUP_VALUE;
+      document.getElementById('pt-newgroup-fields').classList.toggle('show', isNew);
+      if (isNew) setTimeout(() => { document.getElementById('pt-newgroup-name').focus(); }, 0);
+    });
+    ['pt-newgroup-name', 'pt-newgroup-sub'].forEach(id => {
+      document.getElementById(id).addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); handleAddCampaign(); }
+      });
+    });
     document.getElementById('pt-newcamp-name').addEventListener('keydown', (e) => {
       if (e.key === 'Enter') { e.preventDefault(); handleAddCampaign(); }
     });
@@ -1467,7 +1533,6 @@
     const nameInp = document.getElementById('pt-newcamp-name');
     const groupSel = document.getElementById('pt-newcamp-group');
     const name = (nameInp.value || '').trim();
-    const group = groupSel.value || 'Sonstiges';
     const statusEl = document.getElementById('pt-entry-status');
     if (!name) {
       statusEl.textContent = '✗ Name fehlt.'; statusEl.className = 'pt-entry-status err'; return;
@@ -1476,7 +1541,21 @@
     if (existing) {
       statusEl.textContent = '✗ Kampagne existiert schon (Gruppe: ' + existing.group + ').'; statusEl.className = 'pt-entry-status err'; return;
     }
+    let group = groupSel.value || 'Sonstiges';
+    let newGroup = null;
+    if (group === NEW_GROUP_VALUE) {
+      const res = readNewGroupInput();
+      if (res.error) {
+        statusEl.textContent = '✗ ' + res.error; statusEl.className = 'pt-entry-status err'; return;
+      }
+      group = res.group;
+      newGroup = res.newGroup || null;
+    }
     const typed = captureCurrentSpendValues();
+    if (newGroup) {
+      pendingSpend.groups = pendingSpend.groups || [];
+      pendingSpend.groups.push(newGroup);
+    }
     pendingSpend.campaigns = pendingSpend.campaigns || [];
     pendingSpend.campaigns.push({ name, group, added_at: new Date().toISOString(), active: true });
     nameInp.value = '';
@@ -1572,8 +1651,18 @@
     try {
       // Capture unsaved user-added campaigns BEFORE reloading from GH
       const localExtras = (pendingSpend.campaigns || []).slice();
+      const localGroups = (pendingSpend.groups || []).slice();
       // Refresh current SHA first (in case another device wrote)
       await ghLoadSpend();
+      // Re-merge neu angelegte Kategorien (nur wenn es welche gibt — sonst bleibt die Datei wie sie ist)
+      if (localGroups.length) {
+        pendingSpend.groups = pendingSpend.groups || [];
+        const groupNames = new Set(pendingSpend.groups.map(g => String(g.name || '').toLowerCase()));
+        localGroups.forEach(g => {
+          const k = String(g.name || '').toLowerCase();
+          if (k && !groupNames.has(k)) { pendingSpend.groups.push(g); groupNames.add(k); }
+        });
+      }
       // Re-merge user-added campaigns
       pendingSpend.campaigns = pendingSpend.campaigns || [];
       const existingNames = new Set(pendingSpend.campaigns.map(c => c.name));
