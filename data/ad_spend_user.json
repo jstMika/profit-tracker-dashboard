@@ -1287,6 +1287,17 @@
           "spend": 11.43
         }
       ]
+    },
+    "2026-10-02": {
+      "saved_at": "2026-10-08T22:11:47.704Z",
+      "source": "dashboard",
+      "campaigns": [
+        {
+          "name": "ABO Testing Weingläser",
+          "group": "Weingläser",
+          "spend": 3.25
+        }
+      ]
     }
   },
   "campaigns": [
