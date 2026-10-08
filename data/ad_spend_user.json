@@ -1347,6 +1347,27 @@
           "spend": 8.68
         }
       ]
+    },
+    "2026-10-07": {
+      "saved_at": "2026-10-08T22:13:30.589Z",
+      "source": "dashboard",
+      "campaigns": [
+        {
+          "name": "ABO Testing Weingläser",
+          "group": "Weingläser",
+          "spend": 44.28
+        },
+        {
+          "name": "ABO Testing Schieferherzen",
+          "group": "Schieferherzen",
+          "spend": 7.36
+        },
+        {
+          "name": "ABO Testing Kissen",
+          "group": "Kissen",
+          "spend": 1.21
+        }
+      ]
     }
   },
   "campaigns": [
@@ -1379,6 +1400,12 @@
       "group": "Weingläser",
       "added_at": "2026-06-24T22:09:37.268Z",
       "active": false
+    },
+    {
+      "name": "ABO Testing Kissen",
+      "group": "Kissen",
+      "added_at": "2026-10-08T22:13:25.231Z",
+      "active": true
     }
   ]
 }
