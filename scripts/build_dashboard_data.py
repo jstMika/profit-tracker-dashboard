@@ -67,7 +67,7 @@ def build(root: Path) -> dict:
         sys.exit(2)
 
     ust = to_float(cfg.get("ust_factor", 1.19), 1.19)
-    product_groups = cfg.get("product_groups", [])
+    product_groups = list(cfg.get("product_groups", []))
     default_group = cfg.get("default_group", "Sonstiges")
     # Map: campaign name → group (from config + ad_spend entries' own group field)
     campaign_to_group = {c["name"]: c.get("group", default_group) for c in cfg.get("active_campaigns", [])}
@@ -106,6 +106,21 @@ def build(root: Path) -> dict:
     for c in (ad.get("campaigns") or []):
         if c.get("name") and c["name"] not in campaign_to_group:
             campaign_to_group[c["name"]] = c.get("group", default_group)
+
+    # ----- Im Dashboard angelegte Kategorien (ad_spend_user.json → "groups") -----
+    # Werden HINTER die Gruppen aus config.json gehängt: bestehende Zuordnungen
+    # behalten also immer Vorrang, eine neue Kategorie kann nur Bestellungen
+    # einsammeln, die bisher in keiner config-Gruppe gelandet sind.
+    seen_subs = {(g.get("substring") or "").strip().lower() for g in product_groups}
+    for g in (ad.get("groups") or []):
+        if not isinstance(g, dict):
+            continue
+        name = str(g.get("name") or "").strip()
+        sub = str(g.get("substring") or name).strip()
+        if not name or len(sub) < 3 or sub.lower() in seen_subs:
+            continue
+        product_groups.append({"substring": sub, "name": name})
+        seen_subs.add(sub.lower())
 
     # ----- Load all Shopify orders -----
     shop_files = sorted(glob.glob(str(data_dir / "shopify_orders_*.json")))
@@ -281,8 +296,16 @@ def build(root: Path) -> dict:
     campaigns_rows.sort(key=lambda x: (x["date"], x["campaign"]))
     missing_costs.sort(key=lambda x: x["date"])
 
+    # Effektive Kategorienliste fürs Dashboard (Dropdown "Neue Kampagne")
+    product_groups_out = [
+        {"name": g.get("name", default_group), "substring": g.get("substring", "")}
+        for g in product_groups if g.get("name")
+    ]
+
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
+        "default_group": default_group,
+        "product_groups": product_groups_out,
         "days": days_rows,
         "groups": groups_rows,
         "campaigns": campaigns_rows,

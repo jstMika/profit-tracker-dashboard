@@ -136,6 +136,11 @@ jobs:
           rm -f dashboard.html
           rm -rf encrypted/
           git add index.html .nojekyll dashboard_data.json data/shopify_orders_*.json
+          # Shopify-Variant-Kosten mit ins Repo legen, damit Rebuilds OHNE Shopify-Pull
+          # (Ad-Spend-Save, MHTML-Upload) die Kosten der 'Sonstiges'-Produkte nicht verlieren.
+          if [ -f data/variant_costs.json ]; then
+            git add data/variant_costs.json
+          fi
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
