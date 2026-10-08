@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-08T22:13:19.851797+00:00",
+  "generated_at": "2026-10-08T22:13:49.365010+00:00",
   "default_group": "Sonstiges",
   "product_groups": [
     {
@@ -887,10 +887,10 @@
       "orders": 2,
       "revenue": 157.72,
       "cogs": 0.0,
-      "spend": 0.0,
-      "profit": 157.72,
-      "margin": 1.0,
-      "roas": 0,
+      "spend": 52.85,
+      "profit": 104.87,
+      "margin": 0.6649,
+      "roas": 2.9843,
       "be_roas": 1.0
     },
     {
@@ -2283,14 +2283,36 @@
     },
     {
       "date": "2026-10-07",
+      "group": "Kissen",
+      "orders": 0,
+      "revenue": 0.0,
+      "cogs": 0.0,
+      "spend": 1.21,
+      "profit": -1.21,
+      "margin": 0,
+      "roas": 0.0
+    },
+    {
+      "date": "2026-10-07",
+      "group": "Schieferherzen",
+      "orders": 0,
+      "revenue": 0.0,
+      "cogs": 0.0,
+      "spend": 7.36,
+      "profit": -7.36,
+      "margin": 0,
+      "roas": 0.0
+    },
+    {
+      "date": "2026-10-07",
       "group": "Weingläser",
       "orders": 2,
       "revenue": 157.72,
       "cogs": 0.0,
-      "spend": 0.0,
-      "profit": 157.72,
-      "margin": 1.0,
-      "roas": 0
+      "spend": 44.28,
+      "profit": 113.44,
+      "margin": 0.7192,
+      "roas": 3.5619
     },
     {
       "date": "2026-10-08",
@@ -3710,6 +3732,30 @@
       "campaign": "ABO Testing Weingläser",
       "group": "Weingläser",
       "spend": 52.41,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-10-07",
+      "campaign": "ABO Testing Kissen",
+      "group": "Kissen",
+      "spend": 1.21,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-10-07",
+      "campaign": "ABO Testing Schieferherzen",
+      "group": "Schieferherzen",
+      "spend": 7.36,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-10-07",
+      "campaign": "ABO Testing Weingläser",
+      "group": "Weingläser",
+      "spend": 44.28,
       "purchases": null,
       "roas": null
     }
