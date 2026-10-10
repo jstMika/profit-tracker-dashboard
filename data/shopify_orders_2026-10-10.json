@@ -1,0 +1,107 @@
+{
+  "pulled_at": "2026-10-10T23:24:17.013874+00:00",
+  "date": "2026-10-10",
+  "shop": "4b841b",
+  "order_count": 3,
+  "orders": [
+    {
+      "id": 13173049983324,
+      "name": "#1591",
+      "created_at": "2026-10-10T18:56:56+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "39.95",
+      "total_price": "44.90",
+      "total_discounts": "0.00",
+      "total_tax": "0.00",
+      "total_shipping": "4.95",
+      "line_items": [
+        {
+          "id": 37882125812060,
+          "product_id": 15597876707676,
+          "variant_id": 57712005382492,
+          "title": "Auf UNS! - personalisiertes Weinglas",
+          "name": "Auf UNS! - personalisiertes Weinglas - 2er Set / Transparent / 450ml",
+          "quantity": 1,
+          "price": "39.95"
+        }
+      ]
+    },
+    {
+      "id": 13172093682012,
+      "name": "#1590",
+      "created_at": "2026-10-10T14:35:13+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "44.90",
+      "total_price": "49.85",
+      "total_discounts": "0.00",
+      "total_tax": "0.00",
+      "total_shipping": "4.95",
+      "line_items": [
+        {
+          "id": 37880414404956,
+          "product_id": 15637910946140,
+          "variant_id": 58109021978972,
+          "title": "Dankbar - personalisiertes Weinglas",
+          "name": "Dankbar - personalisiertes Weinglas - 2er Set / Transparent / 450ml",
+          "quantity": 1,
+          "price": "39.95"
+        },
+        {
+          "id": 37880414437724,
+          "product_id": 15486555783516,
+          "variant_id": 56991054168412,
+          "title": "Weinglas - Geschenkbox",
+          "name": "Weinglas - Geschenkbox",
+          "quantity": 1,
+          "price": "4.95"
+        }
+      ]
+    },
+    {
+      "id": 13171145998684,
+      "name": "#1589",
+      "created_at": "2026-10-10T09:08:55+02:00",
+      "financial_status": "paid",
+      "fulfillment_status": null,
+      "currency": "EUR",
+      "subtotal_price": "58.85",
+      "total_price": "58.85",
+      "total_discounts": "0.00",
+      "total_tax": "0.00",
+      "total_shipping": "0.00",
+      "line_items": [
+        {
+          "id": 37878590079324,
+          "product_id": 15573215543644,
+          "variant_id": 57560817664348,
+          "title": "Wo alles begann - Personalisiertes Schieferherz (15x15)",
+          "name": "Wo alles begann - Personalisiertes Schieferherz (15x15) - Schieferherz 15x15 cm / Transparent / 15x15",
+          "quantity": 1,
+          "price": "44.95"
+        },
+        {
+          "id": 37878590112092,
+          "product_id": 15388839412060,
+          "variant_id": 56476067791196,
+          "title": "Satin Geschenkbeutel",
+          "name": "Satin Geschenkbeutel",
+          "quantity": 1,
+          "price": "6.95"
+        },
+        {
+          "id": 37878590144860,
+          "product_id": 15388836921692,
+          "variant_id": 56476062253404,
+          "title": "Schiefer Aufsteller",
+          "name": "Schiefer Aufsteller",
+          "quantity": 1,
+          "price": "6.95"
+        }
+      ]
+    }
+  ]
+}
