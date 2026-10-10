@@ -1405,15 +1405,15 @@
       "active": false
     },
     {
-      "name": "ABO Testing Weingläser",
-      "group": "Weingläser",
-      "added_at": "2026-05-27T23:17:09.868Z",
-      "active": true
-    },
-    {
       "name": "ABO Testing Kissen",
       "group": "Kissen",
       "added_at": "2026-10-08T22:13:25.231Z",
+      "active": true
+    },
+    {
+      "name": "ABO Testing Weingläser",
+      "group": "Weingläser",
+      "added_at": "2026-05-27T23:17:09.868Z",
       "active": true
     },
     {
