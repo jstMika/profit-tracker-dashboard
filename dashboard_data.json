@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-12T21:36:51.764499+00:00",
+  "generated_at": "2026-10-12T22:12:07.023300+00:00",
   "default_group": "Sonstiges",
   "product_groups": [
     {
@@ -941,12 +941,12 @@
       "date": "2026-10-12",
       "orders": 4,
       "revenue": 221.6,
-      "cogs": 0.0,
-      "spend": 0.0,
-      "profit": 221.6,
-      "margin": 1.0,
-      "roas": 0,
-      "be_roas": 1.0
+      "cogs": 63.93,
+      "spend": 68.09,
+      "profit": 89.58,
+      "margin": 0.4042,
+      "roas": 3.2545,
+      "be_roas": 1.4055
     }
   ],
   "groups": [
@@ -2496,32 +2496,32 @@
       "orders": 1,
       "revenue": 44.9,
       "cogs": 0.0,
-      "spend": 0.0,
-      "profit": 44.9,
-      "margin": 1.0,
-      "roas": 0
+      "spend": 17.42,
+      "profit": 27.48,
+      "margin": 0.612,
+      "roas": 2.5775
     },
     {
       "date": "2026-10-12",
       "group": "Schieferherzen",
       "orders": 1,
       "revenue": 61.85,
-      "cogs": 0.0,
-      "spend": 0.0,
-      "profit": 61.85,
-      "margin": 1.0,
-      "roas": 0
+      "cogs": 20.56,
+      "spend": 21.35,
+      "profit": 19.94,
+      "margin": 0.3224,
+      "roas": 2.897
     },
     {
       "date": "2026-10-12",
       "group": "Weingläser",
       "orders": 2,
       "revenue": 114.85,
-      "cogs": 0.0,
-      "spend": 0.0,
-      "profit": 114.85,
-      "margin": 1.0,
-      "roas": 0
+      "cogs": 43.37,
+      "spend": 29.32,
+      "profit": 42.16,
+      "margin": 0.3671,
+      "roas": 3.9171
     }
   ],
   "campaigns": [
@@ -4050,6 +4050,30 @@
       "campaign": "ABO Testing Weingläser",
       "group": "Weingläser",
       "spend": 35.59,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-10-12",
+      "campaign": "ABO Testing Kissen",
+      "group": "Kissen",
+      "spend": 17.42,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-10-12",
+      "campaign": "ABO Testing Schieferherzen",
+      "group": "Schieferherzen",
+      "spend": 21.35,
+      "purchases": null,
+      "roas": null
+    },
+    {
+      "date": "2026-10-12",
+      "campaign": "ABO Testing Weingläser",
+      "group": "Weingläser",
+      "spend": 29.32,
       "purchases": null,
       "roas": null
     }
@@ -7783,29 +7807,29 @@
       "date": "2026-10-12",
       "shopify_name": "#1592",
       "shopify_id": "13176994431324",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001811094",
       "group": "Weingläser",
       "items": 1,
       "total": 54.95,
       "shipping": 0.0,
       "discount": 0.0,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0,
-      "cogs_source": "missing"
+      "cogs_net": 24.09,
+      "cogs_gross": 24.09,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-10-12",
       "shopify_name": "#1593",
       "shopify_id": "13177613222236",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001811234",
       "group": "Schieferherzen",
       "items": 3,
       "total": 61.85,
       "shipping": 0.0,
       "discount": 0.0,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0,
-      "cogs_source": "missing"
+      "cogs_net": 20.56,
+      "cogs_gross": 20.56,
+      "cogs_source": "printlabs"
     },
     {
       "date": "2026-10-12",
@@ -7825,40 +7849,22 @@
       "date": "2026-10-12",
       "shopify_name": "#1595",
       "shopify_id": "13179217510748",
-      "printlabs_id": null,
+      "printlabs_id": "ORDPL-1001812119",
       "group": "Weingläser",
       "items": 2,
       "total": 59.9,
       "shipping": 0.0,
       "discount": 0.0,
-      "cogs_net": 0.0,
-      "cogs_gross": 0.0,
-      "cogs_source": "missing"
+      "cogs_net": 19.28,
+      "cogs_gross": 19.28,
+      "cogs_source": "printlabs"
     }
   ],
   "missing_costs": [
     {
       "date": "2026-10-12",
-      "shopify_name": "#1592",
-      "shopify_id": "13176994431324",
-      "reason": "no_printlabs_match"
-    },
-    {
-      "date": "2026-10-12",
-      "shopify_name": "#1593",
-      "shopify_id": "13177613222236",
-      "reason": "no_printlabs_match"
-    },
-    {
-      "date": "2026-10-12",
       "shopify_name": "#1594",
       "shopify_id": "13178049331548",
-      "reason": "no_printlabs_match"
-    },
-    {
-      "date": "2026-10-12",
-      "shopify_name": "#1595",
-      "shopify_id": "13179217510748",
       "reason": "no_printlabs_match"
     }
   ]
