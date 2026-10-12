@@ -1456,9 +1456,9 @@
   },
   "campaigns": [
     {
-      "name": "CBO SKALIERUNG Weingläser",
-      "group": "Weingläser",
-      "added_at": "2026-06-02T22:44:05.736Z",
+      "name": "ABO Testing Kissen",
+      "group": "Kissen",
+      "added_at": "2026-10-08T22:13:25.231Z",
       "active": true
     },
     {
@@ -1468,9 +1468,9 @@
       "active": false
     },
     {
-      "name": "ABO Testing Kissen",
-      "group": "Kissen",
-      "added_at": "2026-10-08T22:13:25.231Z",
+      "name": "CBO SKALIERUNG Weingläser",
+      "group": "Weingläser",
+      "added_at": "2026-06-02T22:44:05.736Z",
       "active": true
     },
     {
