@@ -1562,6 +1562,22 @@
           "spend": 33.98
         }
       ]
+    },
+    "2026-10-17": {
+      "saved_at": "2026-10-18T02:18:50.847Z",
+      "source": "dashboard",
+      "campaigns": [
+        {
+          "name": "CBO SKALIERUNG Weingläser",
+          "group": "Weingläser",
+          "spend": 45.15
+        },
+        {
+          "name": "ABO Testing Weingläser",
+          "group": "Weingläser",
+          "spend": 13.39
+        }
+      ]
     }
   },
   "campaigns": [
